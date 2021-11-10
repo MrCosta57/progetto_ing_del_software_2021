@@ -66,14 +66,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void registerUser(String email, String password) {
-        compositeDisposable.add(myAPI.registerUser("given_name", "famiglia",email, password,true,"a")
+        compositeDisposable.add(myAPI.registerUser("given_name", "famiglia",email, password,true,"italian")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
-                        if(s.contains(""))
-                            Toast.makeText(MainActivity.this, "Login Success", Toast.LENGTH_LONG).show();
+                        if(s.contains("200"))
+                            Toast.makeText(MainActivity.this, "You register with success", Toast.LENGTH_LONG).show();
                         else
                             Toast.makeText(MainActivity.this, ""+s, Toast.LENGTH_LONG).show();
                     }
@@ -82,14 +82,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loginUser(String email, String password) {
-        compositeDisposable.add(myAPI.loginUser(email,password)
+        compositeDisposable.add(myAPI.loginUser(email,password, "token", "italian", "Italy")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
-                        if(s.contains(""))
-                            Toast.makeText(MainActivity.this, "Login Success", Toast.LENGTH_LONG).show();
+                        if(s.contains("200"))
+                            Toast.makeText(MainActivity.this, "You Login with Success", Toast.LENGTH_LONG).show();
                         else
                             Toast.makeText(MainActivity.this, ""+s, Toast.LENGTH_LONG).show();
                     }

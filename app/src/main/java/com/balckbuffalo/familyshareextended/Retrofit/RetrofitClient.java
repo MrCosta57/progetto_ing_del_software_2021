@@ -18,7 +18,7 @@ public class RetrofitClient {
     private static Retrofit instance;
 
     public static Retrofit getInstance() {
-        String IPV4 = "192.168.1.6";
+        String IPV4 = "127.0.0.1";
         if (instance == null)
             instance = new Retrofit.Builder()
                     .baseUrl("http://" + IPV4 + ":4000/api/")
