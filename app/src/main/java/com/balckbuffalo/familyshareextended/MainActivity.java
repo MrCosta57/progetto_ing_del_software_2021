@@ -69,15 +69,8 @@ public class MainActivity extends AppCompatActivity {
         compositeDisposable.add(myAPI.registerUser("given_name", "famiglia",email, password,true,"italian")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Exception {
-                        if(s.contains("200"))
-                            Toast.makeText(MainActivity.this, "You register with success", Toast.LENGTH_LONG).show();
-                        else
-                            Toast.makeText(MainActivity.this, ""+s, Toast.LENGTH_LONG).show();
-                    }
-                })
+                .subscribe(s -> Toast.makeText(MainActivity.this, "You register with success", Toast.LENGTH_LONG).show(),
+                           t -> Toast.makeText(MainActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
         );
     }
 
@@ -85,15 +78,8 @@ public class MainActivity extends AppCompatActivity {
         compositeDisposable.add(myAPI.loginUser(email,password, "token", "italian", "Italy")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Exception {
-                        if(s.contains("200"))
-                            Toast.makeText(MainActivity.this, "You Login with Success", Toast.LENGTH_LONG).show();
-                        else
-                            Toast.makeText(MainActivity.this, ""+s, Toast.LENGTH_LONG).show();
-                    }
-                })
+                .subscribe(s -> Toast.makeText(MainActivity.this, "You Login with success", Toast.LENGTH_LONG).show(),
+                        t -> Toast.makeText(MainActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
         );
     }
 }
