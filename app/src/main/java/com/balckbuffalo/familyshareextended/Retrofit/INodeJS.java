@@ -16,7 +16,7 @@ public interface INodeJS {
                                     @Field("visible") Boolean visible,
                                     @Field("language") String language);
 
-    @POST("authenticate/email")
+    @POST("users/authenticate/email/")
     @FormUrlEncoded
     Observable<String> loginUser(@Field("email") String email,
                                  @Field("password") String password,
