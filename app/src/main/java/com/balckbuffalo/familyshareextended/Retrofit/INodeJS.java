@@ -30,4 +30,9 @@ public interface INodeJS {
     Observable<String> Prova(@Header("Authorization") String token,
                              @Path("username") String username,
                              @Path("password") String password);*/
+
+    /*NELLA CLASSE IN CUI DEVI INVIARE IL TOKEN
+    * SharedPreferences sharedPreferences = getSharedPreferences("secret_shared_prefs", Context.MODE_PRIVATE);
+    * token = sharedPreferences.getString("token");
+                                );*/
 }
