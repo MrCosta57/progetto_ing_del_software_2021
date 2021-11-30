@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.balckbuffalo.familyshareextended.Retrofit.INodeJS;
@@ -28,7 +29,8 @@ public class LoginActivity extends AppCompatActivity {
     INodeJS myAPI;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    Button btn_login, btn_register;
+    Button btn_login;
+    TextView sign_up;
     EditText edt_mail, edt_password;
 
     @Override
@@ -51,10 +53,10 @@ public class LoginActivity extends AppCompatActivity {
         myAPI = retrofit.create(INodeJS.class);
 
         btn_login = findViewById(R.id.login_button);
-        btn_register = findViewById(R.id.reg_button);
+        sign_up = findViewById(R.id.SignUp);
 
-        edt_mail = findViewById(R.id.email);
-        edt_password = findViewById(R.id.password);
+        edt_mail = findViewById(R.id.emailText);
+        edt_password = findViewById(R.id.passwordText);
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        btn_register.setOnClickListener(new View.OnClickListener() {
+        sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(LoginActivity.this, RegisterActivity.class);
