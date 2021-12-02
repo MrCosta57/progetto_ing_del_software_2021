@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<style name="CustomStepperLayoutTheme" parent="MSDefaultStepperLayoutTheme">
+        <item name="ms_tabsContainerStyle">@style/CustomStepTabsContainerStyle</item>
+    </style>
+
+    <style name="CustomStepTabsContainerStyle" parent="MSStepTabsContainer">
+        <item name="android:background">@color/main_green</item>
+    </style>-->
+
+    <style name="StepperStyle" parent="MSDefaultStepperLayoutTheme">
+        <item name="ms_bottomNavigationStyle">@style/Widget.StepperStyle.BottomNavigation</item>
+        <!--<item name="ms_completeNavigationButtonStyle">@style/Widget.StepperStyle.Button.Complete</item>-->
+    </style>
+
+    <style name="Widget.StepperStyle.BottomNavigation" parent="">
+        <item name="android:layout_height">70dp</item>
+        <item name="android:background">@color/main_green</item>
+        <item name="elevation">16dp</item>
+    </style>
+
+    <style name="Widget.StepperStyle.Button" parent="Widget.MaterialComponents.Button.TextButton" />
+
+    <style name="Widget.StepperStyle.Button.Complete">
+        <item name="android:text">COMPLETE</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+</resources>
