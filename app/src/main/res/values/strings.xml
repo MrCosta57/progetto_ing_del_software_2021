@@ -13,4 +13,23 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="register">REGISTER</string>
     <string name="complete">COMPLETE</string>
+    <string name="my_groups">My groups</string>
+    <string name="textview">TextView</string>
+    <string name="my_activities">My activities</string>
+    <string name="group_id">Group ID</string>
+    <string name="n_member">N_Member</string>
+    <string name="info">Info</string>
+    <string name="groupicon">GroupIcon</string>
+    <string name="bell_icon">Bell_icon</string>
+    <string name="day">Day</string>
+    <string name="month">Month</string>
+    <string name="hours">Hours</string>
+    <string name="activity_name">Activity name</string>
+    <string name="_3">3</string>
+    <string name="clock_icon">clock icon</string>
+    <string name="activity_icon">activity icon</string>
+    <string name="children_icon">children icon</string>
+    <string name="green_pass_notification_icon">green pass notification icon</string>
+    <string name="adult_icon">adult icon</string>
+    <string name="plus_icon">plus icon</string>
 </resources>

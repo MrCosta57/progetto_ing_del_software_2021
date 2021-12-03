@@ -29,22 +29,6 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="199dp"
-        android:layout_height="53dp"
-        android:background="@color/main_green"
-        android:text="@string/login_button"
-        android:textColor="@android:color/background_light"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintVertical_bias="0.145"
-        tools:ignore="TextContrastCheck" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email"
         android:layout_width="270dp"
@@ -61,10 +45,10 @@
             android:layout_height="match_parent"
             android:ems="10"
             android:hint="@string/EmailHint"
+            android:importantForAutofill="no"
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
-            tools:ignore="SpeakableTextPresentCheck"
-            android:importantForAutofill="no" />
+            tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -83,25 +67,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/PasswordHint"
+            android:importantForAutofill="no"
             android:inputType="textPassword"
             android:minHeight="48dp"
-            tools:ignore="SpeakableTextPresentCheck"
-            android:importantForAutofill="no" />
+            tools:ignore="SpeakableTextPresentCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="199dp"
+        android:layout_height="53dp"
         android:background="@color/main_green"
+        android:text="@string/login_button"
+        android:textColor="@android:color/background_light"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/appBarLayout"
-        app:layout_constraintVertical_bias="1.0"
-        app:menu="@menu/bottom_navigation_menu" />
+        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:layout_constraintVertical_bias="0.145"
+        tools:ignore="TextContrastCheck" />
 
     <TextView
         android:id="@+id/InfoLink"
@@ -129,5 +116,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="TextContrastCheck" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/appBarLayout"
+        app:layout_constraintVertical_bias="1.0"
+        app:menu="@menu/bottom_navigation_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

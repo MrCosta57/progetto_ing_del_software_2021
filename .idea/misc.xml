@@ -8,7 +8,8 @@
         <entry key="..\:/Users/Andrea/AndroidStudioProjects/FamilyShareExtended/app/src/main/res/layout/activity_main.xml" value="0.55" />
         <entry key="..\:/Users/Andrea/AndroidStudioProjects/FamilyShareExtended/app/src/main/res/xml/network_security_config.xml" value="0.328125" />
         <entry key="..\:/Users/andre/StudioProjects/progetto_ing_del_software_2021/app/src/main/res/drawable/ic_menu.xml" value="0.2140625" />
-        <entry key="..\:/Users/andre/StudioProjects/progetto_ing_del_software_2021/app/src/main/res/layout/activity_home_page.xml" value="0.19375" />
+        <entry key="..\:/Users/andre/StudioProjects/progetto_ing_del_software_2021/app/src/main/res/layout/activity_home_page.xml" value="0.264" />
+        <entry key="..\:/Users/andre/StudioProjects/progetto_ing_del_software_2021/app/src/main/res/layout/activity_list_item.xml" value="0.264" />
         <entry key="..\:/Users/andre/StudioProjects/progetto_ing_del_software_2021/app/src/main/res/layout/activity_login.xml" value="0.25675675675675674" />
         <entry key="..\:/Users/andre/StudioProjects/progetto_ing_del_software_2021/app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/Users/andre/StudioProjects/progetto_ing_del_software_2021/app/src/main/res/layout/activity_register.xml" value="0.33" />
@@ -16,12 +17,13 @@
         <entry key="..\:/Users/andre/StudioProjects/progetto_ing_del_software_2021/app/src/main/res/layout/activity_splash_screen.xml" value="0.19375" />
         <entry key="..\:/Users/andre/StudioProjects/progetto_ing_del_software_2021/app/src/main/res/layout/fragment_sign_up1.xml" value="0.33" />
         <entry key="..\:/Users/andre/StudioProjects/progetto_ing_del_software_2021/app/src/main/res/layout/fragment_sign_up2.xml" value="0.25" />
+        <entry key="..\:/Users/andre/StudioProjects/progetto_ing_del_software_2021/app/src/main/res/layout/group_list_item.xml" value="0.6" />
         <entry key="..\:/Users/andre/StudioProjects/progetto_ing_del_software_2021/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.19375" />
         <entry key="..\:/Users/andre/StudioProjects/progetto_ing_del_software_2021/app/src/main/res/menu/top_app_bar.xml" value="0.33" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
