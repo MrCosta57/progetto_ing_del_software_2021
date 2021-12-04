@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,12 +15,12 @@ import com.balckbuffalo.familyshareextended.R;
 import java.util.ArrayList;
 
 public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycleAdapter.ViewHolder>{
-    private ArrayList<String> mDate = new ArrayList<>();
-    private ArrayList<String> mName = new ArrayList<>();
-    private ArrayList<String> mNAdult = new ArrayList<>();
-    private ArrayList<String> mNChildren = new ArrayList<>();
+    private final ArrayList<String> mDate;
+    private final ArrayList<String> mName;
+    private final ArrayList<String> mNAdult;
+    private final ArrayList<String> mNChildren;
 
-    private Context mContext;
+    private final Context mContext;
 
     public ActivityRecycleAdapter(Context mContext, ArrayList<String> mDate, ArrayList<String> mName, ArrayList<String> mNAdult, ArrayList<String> mNChildren) {
         this.mDate = mDate;
@@ -49,11 +48,8 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
         holder.n_children.setText(mNChildren.get(position));
 
 
-        holder.parent_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: manda alla schermata del gruppo relativo a mGroupID(pposition)
-            }
+        holder.parent_layout.setOnClickListener(v -> {
+            //TODO: manda alla schermata del gruppo relativo a mGroupID(position)
         });
     }
 

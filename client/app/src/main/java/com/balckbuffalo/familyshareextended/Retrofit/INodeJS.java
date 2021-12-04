@@ -1,5 +1,7 @@
 package com.balckbuffalo.familyshareextended.Retrofit;
 
+import java.util.Date;
+
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -21,11 +23,11 @@ public interface INodeJS {
 
     @POST("users/authenticate/email/")
     @FormUrlEncoded
-    Observable<String> loginUser(@Field("email") String email,
-                                 @Field("password") String password,
-                                 @Field("deviceToken") String deviceToken,
-                                 @Field("language") String language,
-                                 @Field("origin") String origin);
+    Observable<String> authenticateUser(@Field("email") String email,
+                                        @Field("password") String password,
+                                        @Field("deviceToken") String deviceToken,
+                                        @Field("language") String language,
+                                        @Field("origin") String origin);
 
     @GET("users/{id}/groups")
     Observable<String> groupList(@Header("Authorization") String token,
@@ -34,18 +36,21 @@ public interface INodeJS {
 
     @GET("groups/{id}/activities")
     Observable<String> activityList(@Header("Authorization") String token,
-                                 @Path("id") String group_id,
-                                 @Query("user_id") String user_id);
+                                    @Path("id") String group_id,
+                                    @Query("user_id") String user_id);
 
-
-    /*@GET("user/{username}/{password}")
+    @POST("users/{id}/children")
     @FormUrlEncoded
-    Observable<String> Prova(@Header("Authorization") String token,
-                             @Path("username") String username,
-                             @Path("password") String password);*/
-
-    /*NELLA CLASSE IN CUI DEVI INVIARE IL TOKEN
-    * SharedPreferences sharedPreferences = getSharedPreferences("secret_shared_prefs", Context.MODE_PRIVATE);
-    * token = sharedPreferences.getString("token");
-                                );*/
+    Observable<String> insertChild(@Header("Authorization") String token,
+                                   @Path("id") String id,
+                                   @Query("user_id") String user_id,
+                                   @Field("birthdate") Date date,
+                                   @Field("given_name") String name,
+                                   @Field("family_name") String surname,
+                                   @Field("gender") String gender,
+                                   @Field("allergies") String allergies,
+                                   @Field("other_info") String other_info,
+                                   @Field("special_needs") String special_needs,
+                                   @Field("background") String background,
+                                   @Field("imagePath") String image_path);
 }

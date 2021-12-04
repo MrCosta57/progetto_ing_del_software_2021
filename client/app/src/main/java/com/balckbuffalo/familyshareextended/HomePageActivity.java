@@ -8,7 +8,6 @@ import androidx.security.crypto.MasterKeys;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.balckbuffalo.familyshareextended.Adapters.ActivityRecycleAdapter;
@@ -38,10 +37,10 @@ public class HomePageActivity extends AppCompatActivity {
     private final ArrayList<Boolean> mVisible = new ArrayList<>();
     private final ArrayList<Boolean> mNotifications = new ArrayList<>();
 
-    private ArrayList<String> mDate = new ArrayList<>();
-    private ArrayList<String> mName = new ArrayList<>();
-    private ArrayList<String> mNAdult = new ArrayList<>();
-    private ArrayList<String> mNChildren = new ArrayList<>();
+    private final ArrayList<String> mDate = new ArrayList<>();
+    private final ArrayList<String> mName = new ArrayList<>();
+    private final ArrayList<String> mNAdult = new ArrayList<>();
+    private final ArrayList<String> mNChildren = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

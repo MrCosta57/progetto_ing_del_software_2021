@@ -32,4 +32,7 @@
     <string name="green_pass_notification_icon">green pass notification icon</string>
     <string name="adult_icon">adult icon</string>
     <string name="plus_icon">plus icon</string>
+    <string name="would_you_like_to_insert_a_child">Would you like to insert a child?</string>
+    <string name="gender">Gender</string>
+    <string name="allergy_or_allergies">Allergy (or allergies)</string>
 </resources>

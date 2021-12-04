@@ -1,8 +1,6 @@
 package com.balckbuffalo.familyshareextended.Adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +17,12 @@ import java.util.ArrayList;
 
 public class GroupRecycleAdapter extends  RecyclerView.Adapter<GroupRecycleAdapter.ViewHolder>{
 
-    private ArrayList<String> mGroupId = new ArrayList<>();
-    private ArrayList<String> mMembers = new ArrayList<>();
-    private ArrayList<Boolean> mVisible = new ArrayList<>();
-    private ArrayList<Boolean> mNotifications = new ArrayList<>();
+    private final ArrayList<String> mGroupId;
+    private final ArrayList<String> mMembers;
+    private final ArrayList<Boolean> mVisible;
+    private final ArrayList<Boolean> mNotifications;
 
-    private Context mContext;
+    private final Context mContext;
 
     public GroupRecycleAdapter(Context mContext, ArrayList<String> mGroupId, ArrayList<String> mMembers, ArrayList<Boolean> mVisible, ArrayList<Boolean> mNotifications) {
         this.mGroupId = mGroupId;
@@ -56,11 +54,8 @@ public class GroupRecycleAdapter extends  RecyclerView.Adapter<GroupRecycleAdapt
         else
             holder.bell.setVisibility(View.INVISIBLE);
 
-        holder.parent_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: manda alla schermata del gruppo relativo a mGroupID(pposition)
-            }
+        holder.parent_layout.setOnClickListener(v -> {
+            //TODO: manda alla schermata del gruppo relativo a mGroupID(pposition)
         });
     }
 
