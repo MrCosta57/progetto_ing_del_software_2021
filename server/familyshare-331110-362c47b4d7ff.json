@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "familyshare-331110",
+  "private_key_id": "362c47b4d7fff307805eaa5bf8e893136a65a783",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDJVUzyc3LyKRR+\nPPzQQftAJapDpkkLdOjec2hmu3qbbPpJXTvMYx/LYhUwfFwRHCm0qfLzpDmxhJaV\nJwap2/QLezj1gf4fw/PTYXy/q/31tM9162cZJ4XkWXwk+lCDwUc43ERuE3Zv1QmQ\n1bpV2C8LkhXvrg95g8AgFDAyb3RlhXGUg6vJ4f+NgEnBOMOGL7xsCN7ozP5Uw9cA\nNtPCYR97wiIPjEN/c9WC8EujiAVUh3sYDh1udy22zfFL7Si38vbDpueRmLLkCQPp\nkDN+3rnX7bIwa+mxUCKKjY6H4KQjqQ7fCetqC4SpfJRbj10dfCe/CpkM+CbPq5s3\nu/vMM6+5AgMBAAECggEAEjxXq94pGyX9ZTHA9FwFldnTgi0dkJwWO4/YdPWmNU25\nncuEDw8rYhCQOsQI0sPqQyLhjo/haeLIgNn4EIqLoD6Y+iO8EMR+4TaDRhkd95NY\n9yVLQUwDJJu2UuMZR9XJzaylxhKdN6PkKeox5nSeTj39Hqh1XlxAmqc5dlgCAu/a\nKDCHuXaeBK/HCA/hFr3eSeZrMAj9sH9LsB876zqfzzJPXTpdnWWlQvNm5jDlmc0G\nG364L8/iS+ygP0Jp6ooD0nHvAb0wATH+yJ0KhWOOQS5QKD+UDm//Q28mfQvifldo\nY+O+O1uMfj8ia6GZtBvNZ9CEOmKZ+aW04KOgF+NRwQKBgQDmgRLzLKpyzlAPfrdu\nsZJ4V+i9XI92joQoQT+0RLNndJyh0XQQw+kHPy/6Dzy1WVgdT05P1x3ZY6/FpMF7\nMfrjsYtb9d/A6xSzPFh27hnBkyV93hntnvITdKleafXj3U2F3SsYW7mKvnWNBJrJ\nq0D5OceSYMVndZNVkpLF2claRwKBgQDfmjmFz6kU4nmOGuApEsMAHvaCkDNHMVU8\n6qfwztHQcgJfJCTXUHKKRXKcYOVes08cjeOGlO5IxmYZMyGfKgaiv78E5QeId9VD\nzHLxl8CsKVQ43mg5kdj7neUj3EMYKEJnZhdQrfwTBtEthFLhLE0On5KMwfwMG1Dq\n+luNFXWl/wKBgQCFeB+85xQbPhNlpX4ZfoDNZjnBzCLWB1fG52E3xMANG5zGpj2K\np6X7KD9jkAcbCwzWi+FQocMK6YoR64CNETexOFD1gr15O6XU0xB2bRBE4itHYp+o\n0+xgD6EypjBXLQGCjboydIpPKFFwwkXOmHca2LYSsC4d5hrV5fVO0vigaQKBgAs9\n9sxqf2bEaDYj1cda4SD9bYls9JcMvOteJOlvjI79XG8qIwwMSGX5TeTc3ktfmoel\n/p2CmWRhTTrRHkyhUUoXd+QoG7PZyogpHFJXPeGqBkkBrZ3PXmhwLNgbt+fcBlKq\niFuPE9BlFFlEgOI/VvR4Q2b+TczSBsR5p+a1AIBDAoGBAKpbYuEpo5pfMOGAiHEO\nTeIaOS4GBBNQeCgrvbmD7jL1rP5QZEeTosTsMNxbKXMlamLaAsIigz56sv0IOPA/\nyGgdYH21VR+PT7SiVV+EmLF4cbPvf/NepHmSvDhBWhuAkbZgr5ZfRjus6UlGMsfo\nRbsmTk2nyH4Jdaa5Ccm1iQly\n-----END PRIVATE KEY-----\n",
+  "client_email": "massimo-cailotto@familyshare-331110.iam.gserviceaccount.com",
+  "client_id": "111507298969860472643",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/massimo-cailotto%40familyshare-331110.iam.gserviceaccount.com"
+}
