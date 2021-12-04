@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginUser(String email, String password) {
-        compositeDisposable.add(myAPI.authenticateUser(email,password, "", "english", "")
+        compositeDisposable.add(myAPI.authenticateUser(email,password, "token_device", "english", "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {Toast.makeText(LoginActivity.this, "You Login with success", Toast.LENGTH_LONG).show();

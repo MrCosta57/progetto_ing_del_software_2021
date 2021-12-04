@@ -947,7 +947,7 @@ router.post('/:id/children', childProfileUpload.single('photo'), async (req, res
     child_id
   }
   try {
-    await Image.create(image)
+    // await Image.create(image)
     await Child.create(child)
     await Parent.create(parent)
     res.status(200).send('Child created')
