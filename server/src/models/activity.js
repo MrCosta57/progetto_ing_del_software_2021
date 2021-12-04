@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { bool } = require('sharp')
 
 const activitySchema = new mongoose.Schema({
   activity_id: {
@@ -38,6 +39,11 @@ const activitySchema = new mongoose.Schema({
   },
   status: {
     type: String,
+    required: true
+  },
+  /* For each activity, it's creator has to specify whether the GREEN PASS certification is mandatory or not */
+  greenpass_isrequired: {
+    type: Boolean,
     required: true
   }
 }, { timestamps: true, toJSON: { virtuals: true } })
