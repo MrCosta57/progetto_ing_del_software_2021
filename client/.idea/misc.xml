@@ -7,14 +7,23 @@
         <entry key="..\:/Users/Andrea/AndroidStudioProjects/FamilyShareExtended/app/src/main/res/drawable/ic_launcher_background.xml" value="0.33541666666666664" />
         <entry key="..\:/Users/Andrea/AndroidStudioProjects/FamilyShareExtended/app/src/main/res/layout/activity_main.xml" value="0.55" />
         <entry key="..\:/Users/Andrea/AndroidStudioProjects/FamilyShareExtended/app/src/main/res/xml/network_security_config.xml" value="0.328125" />
+        <entry key="..\:/Users/Andrea/FAMILY_SHARE_CODE/client/app/src/main/res/layout/activity_group.xml" value="0.55" />
         <entry key="..\:/Users/Andrea/FAMILY_SHARE_CODE/client/app/src/main/res/layout/activity_home_page.xml" value="0.3074074074074074" />
         <entry key="..\:/Users/Andrea/FAMILY_SHARE_CODE/client/app/src/main/res/layout/activity_list_item.xml" value="0.3074074074074074" />
         <entry key="..\:/Users/Andrea/FAMILY_SHARE_CODE/client/app/src/main/res/layout/activity_login.xml" value="0.3074074074074074" />
         <entry key="..\:/Users/Andrea/FAMILY_SHARE_CODE/client/app/src/main/res/layout/activity_sing_up.xml" value="0.3074074074074074" />
         <entry key="..\:/Users/Andrea/FAMILY_SHARE_CODE/client/app/src/main/res/layout/activity_splash_screen.xml" value="0.3074074074074074" />
+        <entry key="..\:/Users/Andrea/FAMILY_SHARE_CODE/client/app/src/main/res/layout/app_bar_group.xml" value="0.55" />
+        <entry key="..\:/Users/Andrea/FAMILY_SHARE_CODE/client/app/src/main/res/layout/content_group.xml" value="0.55" />
+        <entry key="..\:/Users/Andrea/FAMILY_SHARE_CODE/client/app/src/main/res/layout/fragment_gallery.xml" value="0.55" />
+        <entry key="..\:/Users/Andrea/FAMILY_SHARE_CODE/client/app/src/main/res/layout/fragment_home.xml" value="0.55" />
         <entry key="..\:/Users/Andrea/FAMILY_SHARE_CODE/client/app/src/main/res/layout/fragment_sign_up1.xml" value="0.55" />
         <entry key="..\:/Users/Andrea/FAMILY_SHARE_CODE/client/app/src/main/res/layout/fragment_sign_up2.xml" value="0.67" />
+        <entry key="..\:/Users/Andrea/FAMILY_SHARE_CODE/client/app/src/main/res/layout/fragment_slideshow.xml" value="0.55" />
         <entry key="..\:/Users/Andrea/FAMILY_SHARE_CODE/client/app/src/main/res/layout/group_list_item.xml" value="0.55" />
+        <entry key="..\:/Users/Andrea/FAMILY_SHARE_CODE/client/app/src/main/res/layout/nav_header_group.xml" value="0.55" />
+        <entry key="..\:/Users/Andrea/FAMILY_SHARE_CODE/client/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.55" />
+        <entry key="..\:/Users/Andrea/FAMILY_SHARE_CODE/client/app/src/main/res/menu/top_app_bar.xml" value="0.55" />
         <entry key="..\:/Users/andre/StudioProjects/progetto_ing_del_software_2021/app/src/main/res/drawable/ic_menu.xml" value="0.2140625" />
         <entry key="..\:/Users/andre/StudioProjects/progetto_ing_del_software_2021/app/src/main/res/layout/activity_home_page.xml" value="0.264" />
         <entry key="..\:/Users/andre/StudioProjects/progetto_ing_del_software_2021/app/src/main/res/layout/activity_list_item.xml" value="0.264" />

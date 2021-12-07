@@ -1,5 +1,6 @@
 package com.balckbuffalo.familyshareextended;
 
+import androidx.annotation.MenuRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
@@ -8,13 +9,20 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.balckbuffalo.familyshareextended.Retrofit.INodeJS;
 import com.balckbuffalo.familyshareextended.Retrofit.RetrofitClient;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import org.json.JSONObject;
 
@@ -31,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btn_login;
     TextView sign_up;
     EditText edt_mail, edt_password;
+    MaterialToolbar toolbar;
 
     @Override
     protected void onStop() {
@@ -63,6 +72,9 @@ public class LoginActivity extends AppCompatActivity {
             Intent myIntent = new Intent(LoginActivity.this, SignUpActivity.class);
             LoginActivity.this.startActivity(myIntent);
         });
+        toolbar = findViewById(R.id.topAppBar);
+        toolbar.setOnClickListener (v->{
+            showMenu(v, R.menu.top_app_bar);});
     }
 
     private void loginUser(String email, String password) {
@@ -90,5 +102,19 @@ public class LoginActivity extends AppCompatActivity {
                             LoginActivity.this.startActivity(myIntent);},
                         t -> Toast.makeText(LoginActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
         );
+    }
+
+    private void showMenu(View v, @MenuRes int menuRes) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.inflate(menuRes);
+
+       popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+           @Override
+           public boolean onMenuItemClick(MenuItem menuItem) {
+               return false;
+           }
+       });
+        // Show the popup menu.
+        popup.show();;
     }
 }

@@ -34,4 +34,7 @@
     <string name="would_you_like_to_insert_a_child">Would you like to insert a child?</string>
     <string name="gender">Gender</string>
     <string name="allergy_or_allergies">Allergy (or allergies)</string>
+    <string name="title_activity_group">GroupActivity</string>
+    <string name="homepage">HOMEPAGE</string>
+    <string name="logout">LOGOUT</string>
 </resources>
