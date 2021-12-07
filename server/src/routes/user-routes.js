@@ -936,8 +936,8 @@ router.post('/:id/children', childProfileUpload.single('photo'), async (req, res
       })
       .toFile(path.join(__dirname, `../../images/profiles/${fileName[0]}_t.${fileName[1]}`))
   } else {
-    // the following statement is no longer required since the app doesn't manage profile pictures anymore 
-    //image.path = imagePath
+    // the following statement is no longer required since the app doesn't manage profile pictures anymore
+    // image.path = imagePath
     image.thumbnail_path = imagePath
   }
   child.child_id = child_id
@@ -947,7 +947,7 @@ router.post('/:id/children', childProfileUpload.single('photo'), async (req, res
     child_id
   }
   try {
-    await Image.create(image)
+    // await Image.create(image)
     await Child.create(child)
     await Parent.create(parent)
     res.status(200).send('Child created')

@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item
+        android:checkable="false"
+        android:enabled="true"
+        android:title="@string/login_button"
+        android:visible="true" />
+    <item android:title="@string/register" />
+    <item android:title="@string/homepage" />
+    <item android:title="@string/logout" />
 </menu>

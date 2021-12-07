@@ -5,7 +5,6 @@
     <string name="EmailHint">E-mail</string>
     <string name="SignUpLink"><u>SIGN UP</u></string>
     <string name="InfoSIgnUpLink">If you don\'t have an account, please sign up using:</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="name">Name</string>
     <string name="surname">Surname</string>
@@ -35,4 +34,7 @@
     <string name="would_you_like_to_insert_a_child">Would you like to insert a child?</string>
     <string name="gender">Gender</string>
     <string name="allergy_or_allergies">Allergy (or allergies)</string>
+    <string name="title_activity_group">GroupActivity</string>
+    <string name="homepage">HOMEPAGE</string>
+    <string name="logout">LOGOUT</string>
 </resources>
