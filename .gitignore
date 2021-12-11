@@ -22,3 +22,4 @@ server/images/groups/
 !server/images/groups/group_default_photo.png
 server/coverage
 .idea/
+server/client/node_modules/

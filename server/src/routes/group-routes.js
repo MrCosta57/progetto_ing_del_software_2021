@@ -49,10 +49,10 @@ const transporter = nodemailer.createTransport({
 })
 
 const groupStorage = multer.diskStorage({
-  destination (req, file, cb) {
+  destination(req, file, cb) {
     cb(null, path.join(__dirname, '../../images/groups'))
   },
-  filename (req, file, cb) {
+  filename(req, file, cb) {
     const fileName = `${req.params.id}-${Date.now()}.${file.mimetype.slice(
       file.mimetype.indexOf('/') + 1,
       file.mimetype.length
@@ -67,10 +67,10 @@ const groupUpload = multer({
 })
 
 const announcementStorage = multer.diskStorage({
-  destination (req, file, cb) {
+  destination(req, file, cb) {
     cb(null, path.join(__dirname, '../../images/announcements'))
   },
-  filename (req, file, cb) {
+  filename(req, file, cb) {
     if (req.params.announcement_id === undefined) {
       req.params.announcement_id = objectid()
     }
@@ -286,7 +286,16 @@ router.get('/:id', (req, res, next) => {
       if (!group) {
         return res.status(404).send('Group not found')
       }
-      res.json(group)
+      
+      Member.find({ group_id: id })
+        .then(members => {
+          var customRes = {
+            "group": group,
+            "members": members
+          }
+          res.json(JSON.stringify(customRes));
+        })
+        .catch(next)
     })
     .catch(next)
 })
