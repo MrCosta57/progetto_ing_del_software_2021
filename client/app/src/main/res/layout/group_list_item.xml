@@ -4,18 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="120dp">
 
     <ImageView
         android:id="@+id/group_icon"
-        android:layout_width="114dp"
-        android:layout_height="114dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
         android:contentDescription="@string/groupicon"
         tools:ignore="ImageContrastCheck"
-        tools:srcCompat="@color/black" />
+        tools:srcCompat="@drawable/group_icon" />
 
     <TextView
-        android:id="@+id/group_id"
+        android:id="@+id/group_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -57,6 +61,6 @@
         android:layout_marginStart="359dp"
         android:layout_marginTop="21dp"
         android:contentDescription="@string/bell_icon"
-        app:srcCompat="@android:drawable/btn_star_big_on"
+        app:srcCompat="@drawable/bell_icon"
         tools:ignore="ImageContrastCheck" />
 </RelativeLayout>

@@ -23,14 +23,8 @@ const childSchema = new mongoose.Schema(
       type: Date,
       required: true
     },
-    image_id: {
-      type: String,
-      required: true
-    },
-    background: {
-      type: String,
-      required: true
-    },
+    image_id: String,
+    background: String,
     suspended: {
       type: Boolean,
       required: true

@@ -20,6 +20,11 @@ const memberSchema = new mongoose.Schema({
   user_accepted: {
     type: Boolean,
     required: true
+  },
+  /* Used to specify whether the user has at leat one new notification from a certain group */
+  has_notifications: {
+    type: Boolean,
+    required: true
   }
 }, { timestamps: true })
 

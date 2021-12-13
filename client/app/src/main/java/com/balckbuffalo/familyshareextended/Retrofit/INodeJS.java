@@ -53,4 +53,14 @@ public interface INodeJS {
                                    @Field("special_needs") String special_needs,
                                    @Field("background") String background,
                                    @Field("imagePath") String image_path);
+
+    @GET("groups/{id}/members")
+    Observable<String> membersList(@Header("Authorization") String token,
+                                    @Path("id") String group_id,
+                                    @Query("user_id") String user_id);
+
+    @GET("groups/{id}")
+    Observable<String> groupInfo(@Header("Authorization") String token,
+                                   @Path("id") String group_id,
+                                   @Query("user_id") String user_id);
 }
