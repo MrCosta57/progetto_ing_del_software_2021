@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent_layout"
     android:layout_width="match_parent"
-    android:layout_height="114dp">
+    android:layout_height="120dp">
 
     <TextView
         android:id="@+id/day_text"
@@ -73,67 +74,69 @@
 
     <ImageView
         android:id="@+id/clock_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="111dp"
         android:layout_marginTop="12dp"
         android:contentDescription="@string/clock_icon"
-        app:srcCompat="@drawable/ms_animated_vector_circle_to_warning_24dp" />
+        app:srcCompat="@drawable/clock_icon" />
 
     <ImageView
         android:id="@+id/green_pass_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="329dp"
         android:layout_marginTop="45dp"
         android:contentDescription="@string/green_pass_notification_icon"
-        app:srcCompat="@drawable/ms_animated_vector_circle_to_warning_24dp" />
+        app:srcCompat="@drawable/alert_icon" />
 
     <ImageView
         android:id="@+id/plus_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="370dp"
         android:layout_marginTop="45dp"
         android:contentDescription="@string/plus_icon"
-        app:srcCompat="@drawable/ms_animated_vector_circle_to_warning_24dp" />
+        app:srcCompat="@drawable/plus_icon" />
 
     <ImageView
         android:id="@+id/children_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="195dp"
         android:layout_marginTop="76dp"
         android:contentDescription="@string/children_icon"
-        app:srcCompat="@drawable/ms_animated_vector_circle_to_warning_24dp" />
+        app:srcCompat="@drawable/child_icon"
+        tools:ignore="ImageContrastCheck" />
 
     <ImageView
         android:id="@+id/activity_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="111dp"
         android:layout_marginTop="44dp"
         android:contentDescription="@string/activity_icon"
-        app:srcCompat="@drawable/ms_animated_vector_circle_to_warning_24dp" />
+        app:srcCompat="@drawable/bookmark_icon" />
 
     <ImageView
         android:id="@+id/adult_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="111dp"
         android:layout_marginTop="77dp"
         android:contentDescription="@string/adult_icon"
-        app:srcCompat="@drawable/ms_animated_vector_circle_to_warning_24dp" />
+        app:srcCompat="@drawable/couple_icon"
+        tools:ignore="ImageContrastCheck" />
 </RelativeLayout>

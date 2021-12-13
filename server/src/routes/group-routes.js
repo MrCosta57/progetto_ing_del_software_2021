@@ -289,11 +289,8 @@ router.get('/:id', (req, res, next) => {
       
       Member.find({ group_id: id })
         .then(members => {
-          var customRes = {
-            "group": group,
-            "members": members
-          }
-          res.json(JSON.stringify(customRes));
+          group.members = members.length
+          res.json(group);
         })
         .catch(next)
     })

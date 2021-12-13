@@ -1,6 +1,7 @@
 package com.balckbuffalo.familyshareextended;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.security.crypto.EncryptedSharedPreferences;
@@ -32,7 +33,7 @@ public class HomePageActivity extends AppCompatActivity {
     INodeJS myAPI;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private final ArrayList<String> mGroupId = new ArrayList<>();
+    private final ArrayList<String> mGroupName = new ArrayList<>();
     private final ArrayList<String> mMembers = new ArrayList<>();
     private final ArrayList<Boolean> mVisible = new ArrayList<>();
     private final ArrayList<Boolean> mNotifications = new ArrayList<>();
@@ -70,7 +71,9 @@ public class HomePageActivity extends AppCompatActivity {
 
     private void initGroupRecycler(){
         RecyclerView groupRecyclerView = findViewById(R.id.groupsRecycler);
-        GroupRecycleAdapter adapter = new GroupRecycleAdapter(this, mGroupId, mMembers, mVisible, mNotifications);
+        GroupRecycleAdapter adapter = new GroupRecycleAdapter(this, mGroupName, mMembers, mVisible, mNotifications);
+        groupRecyclerView.addItemDecoration(new DividerItemDecoration(groupRecyclerView.getContext(),
+                DividerItemDecoration.VERTICAL));
         groupRecyclerView.setAdapter(adapter);
         groupRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -79,13 +82,15 @@ public class HomePageActivity extends AppCompatActivity {
     private void initActivityRecycler(){
         RecyclerView activityRecyclerView = findViewById(R.id.activityRecycler);
         ActivityRecycleAdapter adapter = new ActivityRecycleAdapter(this, mDate, mName, mNAdult, mNChildren);
+        activityRecyclerView.addItemDecoration(new DividerItemDecoration(activityRecyclerView.getContext(),
+                DividerItemDecoration.VERTICAL));
         activityRecyclerView.setAdapter(adapter);
         activityRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
     private void groupList(String token, String id, String user_id) {
-        compositeDisposable.add(myAPI.groupList(token,id, user_id)
+        compositeDisposable.add(myAPI.groupList(token, id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
@@ -93,23 +98,33 @@ public class HomePageActivity extends AppCompatActivity {
                     for(int i = 0; i<arr.length();i++)
                     {
                         String group_id = arr.getJSONObject(i).getString("group_id");
-                        mGroupId.add(group_id);
 
-                        //TODO: modificare endpoint in modo che restituisca numero membri gruppo
-                        mMembers.add("0");
                         mVisible.add(arr.getJSONObject(i).getBoolean("user_accepted"));
                         //TODO: modficare endpoint in modo che restituisca se ci sono notifiche o no
-                        mNotifications.add(true);
+                        mNotifications.add(false);
 
+                        groupInfo(token, group_id, user_id);
                         activityList(token,group_id,user_id);
                     }
+                }, t -> Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
+        );
+    }
+
+    private void groupInfo(String token, String group_id, String user_id) {
+        compositeDisposable.add(myAPI.groupInfo(token, group_id, user_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                    JSONObject obj = new JSONObject(s);
+                    mGroupName.add(obj.getString("name"));
+                    mMembers.add(obj.getString("members"));
                     initGroupRecycler();
                 }, t -> Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
         );
     }
 
     private void activityList(String token, String group_id, String user_id) {
-        compositeDisposable.add(myAPI.activityList(token,group_id, user_id)
+        compositeDisposable.add(myAPI.activityList(token, group_id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {

@@ -110,7 +110,7 @@ public class SignUpActivity extends AppCompatActivity implements StepperLayout.S
 
                                 JSONObject obj = new JSONObject(s);
 
-                                insertChild(obj.getString("token"), obj.getString("id"), obj.getString("id"), new Date(birthdate.getCalendarView().getDate()), edt_children_name.getText().toString(), edt_children_surname.getText().toString(), edt_gender.getText().toString(), edt_allergy.getText().toString(), "no", "no", "white", "none");
+                                insertChild(obj.getString("token"), obj.getString("id"), obj.getString("id"), new Date(birthdate.getCalendarView().getDate()), edt_children_name.getText().toString(), edt_children_surname.getText().toString(), edt_gender.getText().toString(), edt_allergy.getText().toString(), "", "", "", "");
 
                             }
                         },
