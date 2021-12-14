@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -40,8 +41,9 @@ public class HomePageActivity extends AppCompatActivity {
 
     private final ArrayList<String> mDate = new ArrayList<>();
     private final ArrayList<String> mName = new ArrayList<>();
-    private final ArrayList<String> mNAdult = new ArrayList<>();
-    private final ArrayList<String> mNChildren = new ArrayList<>();
+    private final ArrayList<Integer> mNAdult = new ArrayList<Integer>();
+    private final ArrayList<Integer> mNChildren = new ArrayList<Integer>();
+    private final ArrayList<Boolean> mGreenPass = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +83,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     private void initActivityRecycler(){
         RecyclerView activityRecyclerView = findViewById(R.id.activityRecycler);
-        ActivityRecycleAdapter adapter = new ActivityRecycleAdapter(this, mDate, mName, mNAdult, mNChildren);
+        ActivityRecycleAdapter adapter = new ActivityRecycleAdapter(this, mDate, mName, mNAdult, mNChildren, mGreenPass);
         activityRecyclerView.addItemDecoration(new DividerItemDecoration(activityRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
         activityRecyclerView.setAdapter(adapter);
@@ -97,11 +99,11 @@ public class HomePageActivity extends AppCompatActivity {
                     JSONArray arr = new JSONArray(s);
                     for(int i = 0; i<arr.length();i++)
                     {
-                        String group_id = arr.getJSONObject(i).getString("group_id");
+                        JSONObject obj = arr.getJSONObject(i);
+                        String group_id = obj.getString("group_id");
 
-                        mVisible.add(arr.getJSONObject(i).getBoolean("user_accepted"));
-                        //TODO: modficare endpoint in modo che restituisca se ci sono notifiche o no
-                        mNotifications.add(false);
+                        mVisible.add(obj.getBoolean("user_accepted"));
+                        mNotifications.add(obj.getBoolean("has_notifications"));
 
                         groupInfo(token, group_id, user_id);
                         activityList(token,group_id,user_id);
@@ -133,14 +135,36 @@ public class HomePageActivity extends AppCompatActivity {
                     {
                         JSONObject obj = arr.getJSONObject(i);
                         mName.add(obj.getString("name"));
-                        //TODO: mDate.add()
-                        //TODO:
-                        mNAdult.add("4");
-                        //TODO:
-                        mNChildren.add("12");
+                        mGreenPass.add(obj.getBoolean("greenpass_isrequired"));
+
+                        timeslotsActivity(token, group_id, obj.getString("activity_id"), user_id);
+                    }
+                }, t -> Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
+        );
+    }
+    private void timeslotsActivity(String token, String group_id, String activity_id, String user_id) {
+        compositeDisposable.add(myAPI.timeslotsActivity(token, group_id, activity_id, user_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                    JSONArray arr = new JSONArray(s);
+                    for(int i = 0; i<arr.length();i++)
+                    {
+                        JSONObject obj = arr.getJSONObject(i);
+                        mDate.add(obj.getJSONObject("start").getString("dateTime")+obj.getJSONObject("end").getString("dateTime"));
+                        mNAdult.add(obj.getJSONObject("extendedProperties").getJSONObject("shared").getString("children").split(",").length);
+                        mNChildren.add(obj.getJSONObject("extendedProperties").getJSONObject("shared").getString("parents").split(",").length);
                     }
                     initActivityRecycler();
-                }, t -> Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
+                }, t -> {
+                    if(Objects.requireNonNull(t.getMessage()).contains("404")) {
+                        mDate.add("N/D");
+                        initActivityRecycler();
+                        Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                    else
+                        Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show();
+                })
         );
     }
 }

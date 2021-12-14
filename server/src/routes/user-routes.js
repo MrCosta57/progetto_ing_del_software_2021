@@ -80,7 +80,7 @@ const Community = require('../models/community')
 
 router.post('/', async (req, res, next) => {
   const {
-    given_name, family_name, number, email, password, visible, language, deviceToken
+    given_name, family_name, number, email, password, visible, language, deviceToken, greenpass_available
   } = req.body
   if (!(given_name && family_name && email && password && visible !== undefined && language)) {
     return res.status(400).send('Bad Request')
@@ -115,7 +115,8 @@ router.post('/', async (req, res, next) => {
       image_id,
       address_id,
       suspended: false,
-      description: ''
+      description: '',
+      greenpass_available: false
     }
     const image = {
       image_id,

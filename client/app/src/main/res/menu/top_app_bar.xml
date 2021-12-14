@@ -2,11 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/home_menu"
         android:checkable="false"
         android:enabled="true"
-        android:title="@string/login_button"
+        android:title="@string/home"
         android:visible="true" />
-    <item android:title="@string/register" />
-    <item android:title="@string/homepage" />
-    <item android:title="@string/logout" />
+    <item
+        android:id="@+id/profile_menu"
+        android:title="@string/my_profile" />
+    <item
+        android:id="@+id/create_group_menu"
+        android:title="@string/create_a_group" />
+    <item
+        android:id="@+id/join_group_menu"
+        android:title="@string/join_a_group" />
+    <item
+        android:id="@+id/guide_menu"
+        android:title="@string/guide" />
+    <item
+        android:id="@+id/quit_menu"
+        android:title="@string/quit" />
 </menu>
