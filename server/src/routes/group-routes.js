@@ -1227,7 +1227,8 @@ router.patch('/:id/activities/:activityId', async (req, res, next) => {
         activityPatch.name ||
         activityPatch.description ||
         activityPatch.color ||
-        activityPatch.status
+        activityPatch.status ||
+        activityPatch.greenpass_isrequired
       )
     ) {
       return res.status(400).send('Bad Request')
