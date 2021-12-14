@@ -1,6 +1,6 @@
 const express = require('express')
 const router = new express.Router()
-
+const jwt = require('jsonwebtoken')
 const Profile = require('../models/profile')
 const Image = require('../models/image')
 
@@ -76,33 +76,31 @@ router.get('/', (req, res, next) => {
   }
 })
 
-//TODO: Brothers è da fare
-/*
 router.post('/change_greenpass_available', async (req, res, next) => {
-  //if (!req.user_id) { return res.status(401).send('Not authorized') }
+  if (!req.query.user_id) { return res.status(401).send('Not authorized') }
   try {
-    const { user_id, greenpass_available } = req
-    const profile = await Profile.findOne({ user_id }).populate('image').lean().exec()
+    const user_id = req.query.user_id
+    const greenpass_available = req.query.greenpass_available
+    const profile = await Profile.findOne({ user_id: user_id })
     if (profile.suspended) {
       await Profile.updateOne({ user_id }, { suspended: false })
       const usersChildren = await Parent.find({ parent_id: user_id })
       const childIds = usersChildren.map(usersChildren.child_id)
       await Child.updateMany({ child_id: { $in: childIds } }, { suspended: false })
     }
-    
-    const token = await jwt.sign({ user_id, email }, process.env.SERVER_SECRET)
+    const token = await jwt.sign({ user_id, greenpass_available }, process.env.SERVER_SECRET)
     const response = {
       id: user_id,
       greenpass_available,
       token
     }
-    profile.greenpass_available = req.body.greenpass_available
+    profile.greenpass_available = req.query.greenpass_available
     await profile.save()
     res.json(response)
   } catch (error) {
     next(error)
   }
 })
-*/
+
 
 module.exports = router
