@@ -1,5 +1,6 @@
 package com.balckbuffalo.familyshareextended.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,16 +42,24 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String dateTime = mDate.get(position).substring(11,16)+" - "+mDate.get(position).substring(31,36);
-        holder.hours.setText(dateTime);
-        holder.day.setText(mDate.get(position).substring(8,10));
-        holder.month.setText(new DateFormatSymbols().getMonths()[Integer.parseInt(mDate.get(position).substring(5,7))-1]);
+        if(mDate.get(position).equals("N/D")) {
+            holder.hours.setText("N/D");
+            holder.day.setText("N/D");
+            holder.month.setText("N/D");
+        }
+        else {
+            String dateTime = mDate.get(position).substring(11, 16) + " - " + mDate.get(position).substring(31, 36);
+            holder.hours.setText(dateTime);
+            holder.day.setText(mDate.get(position).substring(8, 10));
+            holder.month.setText(new DateFormatSymbols().getMonths()[Integer.parseInt(mDate.get(position).substring(5, 7)) - 1]);
+        }
 
         holder.name_activity.setText(mName.get(position));
-        /*holder.n_adult.setText(mNAdult.get(position));
-        holder.n_children.setText(mNChildren.get(position));*/
+        holder.n_adult.setText(mNAdult.get(position).toString());
+        holder.n_children.setText(mNChildren.get(position).toString());
 
         if (mGreenPass.get(position)) {
             holder.green_pass_icon.setVisibility(View.VISIBLE);

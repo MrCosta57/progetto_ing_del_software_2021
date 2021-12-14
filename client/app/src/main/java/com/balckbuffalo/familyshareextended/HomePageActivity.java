@@ -21,8 +21,13 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -148,19 +153,38 @@ public class HomePageActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
                     JSONArray arr = new JSONArray(s);
+                    Date maxDate = null;
+                    String insertDate = "";
+                    JSONObject prop = null;
+
                     for(int i = 0; i<arr.length();i++)
                     {
                         JSONObject obj = arr.getJSONObject(i);
-                        mDate.add(obj.getJSONObject("start").getString("dateTime")+obj.getJSONObject("end").getString("dateTime"));
-                        mNAdult.add(obj.getJSONObject("extendedProperties").getJSONObject("shared").getString("children").split(",").length);
-                        mNChildren.add(obj.getJSONObject("extendedProperties").getJSONObject("shared").getString("parents").split(",").length);
+                        String date = obj.getJSONObject("start").getString("dateTime")+obj.getJSONObject("end").getString("dateTime");
+
+                        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY);
+                        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Rome"),Locale.ITALY);
+                        Date myDate = dateFormat.parse(date.substring(28,30)+"/"+date.substring(25,27)+"/"+date.substring(20,24));
+                        assert myDate != null;
+                        if((maxDate == null) || (maxDate.before(myDate))){
+                            maxDate = myDate;
+                            insertDate = date;
+                            prop = obj.getJSONObject("extendedProperties").getJSONObject("shared");
+                        }
+                        if((myDate.after(calendar.getTime())) || (i == arr.length()-1)) {
+                            mDate.add(insertDate);
+
+                            mNAdult.add(prop.getString("children").equals("[]") ? 0 : prop.getString("children").split(",").length);
+                            mNChildren.add(prop.getString("parents").equals("[]") ? 0 : prop.getString("parents").split(",").length);
+                            initActivityRecycler();
+                            break;
+                        }
                     }
-                    initActivityRecycler();
+
                 }, t -> {
                     if(Objects.requireNonNull(t.getMessage()).contains("404")) {
                         mDate.add("N/D");
                         initActivityRecycler();
-                        Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show();
                     }
                     else
                         Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show();
