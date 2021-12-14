@@ -1306,6 +1306,15 @@ router.get('/:groupId/activities/:activityId', (req, res, next) => {
           if (!activity) {
             return res.status(404).send('Activity not found')
           }
+          if (activity.greenpass_isrequired) {
+            const profile = await Profile.findOne({ user_id: req.user_id });
+            if (!profile.greenpass_available) {
+              return res.status(401).send('Greenpass not valid')
+            } else {
+              res.json(activity)
+            }
+
+          }
           res.json(activity)
         })
     })
