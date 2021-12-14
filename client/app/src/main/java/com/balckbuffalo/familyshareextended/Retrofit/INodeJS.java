@@ -65,7 +65,7 @@ public interface INodeJS {
                                    @Query("user_id") String user_id);
 
 
-    @GET("/{groupId}/activities/{activityId}/timeslots")
+    @GET("groups/{groupId}/activities/{activityId}/timeslots")
     Observable<String> timeslotsActivity(@Header("Authorization") String token,
                                  @Path("groupId") String group_id,
                                  @Path("activityId") String activity_id,

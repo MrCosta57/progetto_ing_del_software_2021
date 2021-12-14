@@ -13,18 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.balckbuffalo.familyshareextended.R;
 
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 
 public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycleAdapter.ViewHolder>{
     private final ArrayList<String> mDate;
     private final ArrayList<String> mName;
-    private final ArrayList<String> mNAdult;
-    private final ArrayList<String> mNChildren;
+    private final ArrayList<Integer> mNAdult;
+    private final ArrayList<Integer> mNChildren;
     private final ArrayList<Boolean> mGreenPass;
 
     private final Context mContext;
 
-    public ActivityRecycleAdapter(Context mContext, ArrayList<String> mDate, ArrayList<String> mName, ArrayList<String> mNAdult, ArrayList<String> mNChildren, ArrayList<Boolean> mGreenPass) {
+    public ActivityRecycleAdapter(Context mContext, ArrayList<String> mDate, ArrayList<String> mName, ArrayList<Integer> mNAdult, ArrayList<Integer> mNChildren, ArrayList<Boolean> mGreenPass) {
         this.mDate = mDate;
         this.mName = mName;
         this.mNAdult = mNAdult;
@@ -42,13 +43,14 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        /*holder.hours.setText(mDate.get(position).getHours());
-        holder.day.setText(mDate.get(position).getDay());
-        holder.month.setText(mDate.get(position).getMonth());*/
+        String dateTime = mDate.get(position).substring(11,16)+" - "+mDate.get(position).substring(31,36);
+        holder.hours.setText(dateTime);
+        holder.day.setText(mDate.get(position).substring(8,10));
+        holder.month.setText(new DateFormatSymbols().getMonths()[Integer.parseInt(mDate.get(position).substring(5,7))-1]);
 
         holder.name_activity.setText(mName.get(position));
-        holder.n_adult.setText(mNAdult.get(position));
-        holder.n_children.setText(mNChildren.get(position));
+        /*holder.n_adult.setText(mNAdult.get(position));
+        holder.n_children.setText(mNChildren.get(position));*/
 
         if (mGreenPass.get(position)) {
             holder.green_pass_icon.setVisibility(View.VISIBLE);

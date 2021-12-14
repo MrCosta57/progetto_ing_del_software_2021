@@ -9,7 +9,6 @@ import androidx.security.crypto.MasterKeys;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.balckbuffalo.familyshareextended.Adapters.ActivityRecycleAdapter;
@@ -42,8 +41,8 @@ public class HomePageActivity extends AppCompatActivity {
 
     private final ArrayList<String> mDate = new ArrayList<>();
     private final ArrayList<String> mName = new ArrayList<>();
-    private final ArrayList<String> mNAdult = new ArrayList<>();
-    private final ArrayList<String> mNChildren = new ArrayList<>();
+    private final ArrayList<Integer> mNAdult = new ArrayList<Integer>();
+    private final ArrayList<Integer> mNChildren = new ArrayList<Integer>();
     private final ArrayList<Boolean> mGreenPass = new ArrayList<>();
 
     @Override
@@ -138,17 +137,11 @@ public class HomePageActivity extends AppCompatActivity {
                         mName.add(obj.getString("name"));
                         mGreenPass.add(obj.getBoolean("greenpass_isrequired"));
 
-                        //TODO:
-                        mNAdult.add("4");
-                        //TODO:
-                        mNChildren.add("12");
-
                         timeslotsActivity(token, group_id, obj.getString("activity_id"), user_id);
                     }
                 }, t -> Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
         );
     }
-
     private void timeslotsActivity(String token, String group_id, String activity_id, String user_id) {
         compositeDisposable.add(myAPI.timeslotsActivity(token, group_id, activity_id, user_id)
                 .subscribeOn(Schedulers.io())
@@ -158,13 +151,16 @@ public class HomePageActivity extends AppCompatActivity {
                     for(int i = 0; i<arr.length();i++)
                     {
                         JSONObject obj = arr.getJSONObject(i);
-                        Log.d("TEST TIMESOLT "+i, obj.toString());
+                        mDate.add(obj.getJSONObject("start").getString("dateTime")+obj.getJSONObject("end").getString("dateTime"));
+                        mNAdult.add(obj.getJSONObject("extendedProperties").getJSONObject("shared").getString("children").split(",").length);
+                        mNChildren.add(obj.getJSONObject("extendedProperties").getJSONObject("shared").getString("parents").split(",").length);
                     }
                     initActivityRecycler();
                 }, t -> {
                     if(Objects.requireNonNull(t.getMessage()).contains("404")) {
                         mDate.add("N/D");
                         initActivityRecycler();
+                        Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show();
                     }
                     else
                         Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show();

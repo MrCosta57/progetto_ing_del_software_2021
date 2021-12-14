@@ -214,7 +214,7 @@ describe('Test', () => {
     await initializeDB()
   })
 
-  importTest('User Endpoints Test', './Users/userEndpoints')
+  /*importTest('User Endpoints Test', './Users/userEndpoints')
   importTest('Group Endpoints Test', './Groups/groupEndpoints')
   importTest('Users Groups Endpoints Test', './Users/groupEndpoints')
   importTest('Users Profile Endpoints Test', './Users/profileEndpoints')
@@ -226,9 +226,10 @@ describe('Test', () => {
   importTest('User Various Endpoints Test', './Users/variousEndpoints')
   importTest('Child Endpoints Test', './Children/childEndpoints')
   importTest('Profile Endpoints Test', './Profiles/profileEndpoints')
-  importTest('Community Endpoints Test', './Community/communityEndpoints')
+  importTest('Community Endpoints Test', './Community/communityEndpoints')*/
+  console.log("esplodi")
 
-  after('Cleaning up', async () => {
+  /*after('Cleaning up', async () => {
     await User.deleteMany({})
     await Profile.deleteMany({})
     await Image.deleteMany({})
@@ -245,5 +246,5 @@ describe('Test', () => {
     await Activity.deleteMany({})
     await Reply.deleteMany({})
     await Announcement.deleteMany({})
-  })
+  })*/
 })
