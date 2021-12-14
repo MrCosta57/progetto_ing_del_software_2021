@@ -321,6 +321,7 @@ router.delete('/:id', async (req, res, next) => {
     await Member.deleteMany({ group_id: id })
     await Group_Settings.deleteOne({ group_id: id })
     await Image.deleteMany({ owner_type: 'group', owner_id: id })
+    //TODO: implementare la cancellazione di tutti i file del gruppo
     res.status(200).send('Group was deleted')
   } catch (error) {
     next(error)
