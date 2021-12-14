@@ -37,4 +37,11 @@
     <string name="title_activity_group">GroupActivity</string>
     <string name="homepage">HOMEPAGE</string>
     <string name="logout">LOGOUT</string>
+    <string name="message_green_pass_icon">If you see the ! icon, it means that the activity requires the GREEN PASS certification</string>
+    <string name="home">Home</string>
+    <string name="my_profile">My Profile</string>
+    <string name="create_a_group">Create a group</string>
+    <string name="join_a_group">Join a group</string>
+    <string name="guide">Guide</string>
+    <string name="quit">Quit</string>
 </resources>

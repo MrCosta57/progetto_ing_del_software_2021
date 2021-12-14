@@ -6,9 +6,12 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,6 +28,9 @@ import com.balckbuffalo.familyshareextended.Retrofit.RetrofitClient;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -108,13 +114,69 @@ public class LoginActivity extends AppCompatActivity {
         PopupMenu popup = new PopupMenu(this, v);
         popup.inflate(menuRes);
 
-       popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-           @Override
-           public boolean onMenuItemClick(MenuItem menuItem) {
-               return false;
-           }
-       });
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @SuppressLint("NonConstantResourceId")
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+
+                String token = "none";
+                String user_id = "none";
+                try {
+                    String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+                    SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(
+                            "secret_shared_prefs",
+                            masterKeyAlias,
+                            getApplicationContext(),
+                            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+                    );
+                    token = sharedPreferences.getString("token", "none");
+                    user_id = sharedPreferences.getString("user_id", "none");
+                } catch (GeneralSecurityException | IOException e) { e.printStackTrace(); }
+
+                Context ctx = LoginActivity.this;
+                switch(menuItem.getItemId()){
+                    case R.id.home_menu:
+                        Log.d("PROVA", token+" "+user_id);
+                        if(!(token.equals("none")||user_id.equals("none"))) {
+                            Intent myIntent = new Intent(ctx, HomePageActivity.class);
+                            LoginActivity.this.startActivity(myIntent);
+                        }
+                        break;
+                    case R.id.profile_menu:
+                        /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
+                           Intent myIntent = new Intent(ctx, ProfileActivity.class);
+                           LoginActivity.this.startActivity(myIntent);
+                        }*/
+                        break;
+                    case R.id.create_group_menu:
+                        /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
+                           Intent myIntent = new Intent(ctx, CreateGroupActivity.class);
+                           LoginActivity.this.startActivity(myIntent);
+                        }*/
+                        break;
+                    case R.id.join_group_menu:
+                        /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
+                           Intent myIntent = new Intent(ctx, JoinGroupActivity.class);
+                           LoginActivity.this.startActivity(myIntent);
+                        }*/
+                        break;
+                    case R.id.guide_menu:
+                        /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
+                           Intent myIntent = new Intent(ctx, GuideActivity.class);
+                           LoginActivity.this.startActivity(myIntent);
+                        }*/
+                        break;
+                    case R.id.quit_menu:
+                        finish();
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
         // Show the popup menu.
-        popup.show();;
+        popup.show();
     }
 }

@@ -230,7 +230,8 @@ router.post('/', async (req, res, next) => {
       user_id: owner_id,
       admin: true,
       group_accepted: true,
-      user_accepted: true
+      user_accepted: true,
+      has_notifications: false
     }
   ]
   invite_ids.forEach(invite_id => {
