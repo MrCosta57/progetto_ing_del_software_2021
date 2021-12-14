@@ -34,7 +34,8 @@ const initializeDB = async () => {
     email: 'test2@email.com',
     password: 'password',
     visible: true,
-    language: 'en'
+    language: 'en',
+    greenpass_available: true
   }
   const user3 = {
     given_name: 'Test',
@@ -43,7 +44,8 @@ const initializeDB = async () => {
     email: 'test3@email.com',
     password: 'password',
     visible: true,
-    language: 'en'
+    language: 'en',
+    greenpass_available: false
   }
   await chai.request(server).post('/api/users').send(user2)
   await chai.request(server).post('/api/users').send(user3)
@@ -80,7 +82,8 @@ const initializeDB = async () => {
     location: 'Kuala lumpur',
     repetition: true,
     repetition_type: 'weekly',
-    different_timeslots: false
+    different_timeslots: false,
+    greenpass_isrequired: true
   }
   const events = [
     {
