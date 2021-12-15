@@ -904,7 +904,7 @@ router.post('/:id/children', childProfileUpload.single('photo'), async (req, res
     birthdate, given_name, family_name, gender, allergies, other_info, special_needs, background, image: imagePath
   } = req.body
   const { file } = req
-  if (!(birthdate && given_name && family_name && gender && background)) {
+  if (!(birthdate && given_name && family_name && gender /*&& background*/)) {
     return res.status(400).send('Bad Request')
   }
   const parent_id = req.params.id
