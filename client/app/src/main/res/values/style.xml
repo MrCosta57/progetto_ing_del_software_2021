@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--<style name="CustomStepperLayoutTheme" parent="MSDefaultStepperLayoutTheme">
-        <item name="ms_tabsContainerStyle">@style/CustomStepTabsContainerStyle</item>
-    </style>
-
-    <style name="CustomStepTabsContainerStyle" parent="MSStepTabsContainer">
-        <item name="android:background">@color/main_green</item>
-    </style>-->
-
     <style name="StepperStyle" parent="MSDefaultStepperLayoutTheme">
         <item name="ms_bottomNavigationStyle">@style/Widget.StepperStyle.BottomNavigation</item>
         <!--<item name="ms_completeNavigationButtonStyle">@style/Widget.StepperStyle.Button.Complete</item>-->
@@ -27,5 +19,11 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="Theme.App" parent="Theme.MaterialComponents">
+        <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
+        <item name="colorPrimary">@color/main_green</item>
+        <item name="colorOnPrimary">@color/white</item>
     </style>
 </resources>

@@ -20,6 +20,9 @@
         android:id="@+id/guide_menu"
         android:title="@string/guide" />
     <item
+        android:id="@+id/logout_menu"
+        android:title="@string/logout_menu" />
+    <item
         android:id="@+id/quit_menu"
         android:title="@string/quit" />
 </menu>

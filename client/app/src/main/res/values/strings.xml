@@ -44,4 +44,10 @@
     <string name="join_a_group">Join a group</string>
     <string name="guide">Guide</string>
     <string name="quit">Quit</string>
+    <string name="logout_menu">Logout</string>
+    <string name="info_menu">Info</string>
+    <string name="members_menu">Members</string>
+    <string name="activities_menu">Activities</string>
+    <string name="cabinet_menu">Cabinet</string>
+    <string name="market_menu">Market</string>
 </resources>

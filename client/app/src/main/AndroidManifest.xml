@@ -14,7 +14,9 @@
         android:theme="@style/Theme.FamiliesShareExtended"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
-
+        <activity
+            android:name=".GroupActivity"
+            android:exported="false" />
         <activity
             android:name="com.balckbuffalos.familiesshareextended.SplashScreenActivity"
             android:exported="true" >
@@ -24,7 +26,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.balckbuffalos.familiesshareextended.HomePageActivity"
             android:exported="false" />
