@@ -1,5 +1,7 @@
 package com.balckbuffalo.familyshareextended;
 
+import static com.balckbuffalo.familyshareextended.Utility.Utility.showMenu;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import com.balckbuffalo.familyshareextended.Adapters.SignUpFragmentAdapter;
 import com.balckbuffalo.familyshareextended.Retrofit.INodeJS;
 import com.balckbuffalo.familyshareextended.Retrofit.RetrofitClient;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
@@ -37,6 +40,7 @@ public class SignUpActivity extends AppCompatActivity implements StepperLayout.S
     EditText edt_name, edt_surname, edt_mail, edt_password, edt_confirm_password, edt_children_name, edt_children_surname, edt_gender, edt_allergy;
     SwitchMaterial add_child;
     DatePicker birthdate;
+
     @Override
     protected void onStop() {
         super.onStop();

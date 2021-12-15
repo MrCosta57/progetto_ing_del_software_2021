@@ -1,5 +1,7 @@
 package com.balckbuffalo.familyshareextended;
 
+import static com.balckbuffalo.familyshareextended.Utility.Utility.showMenu;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,11 +12,13 @@ import androidx.security.crypto.MasterKeys;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.balckbuffalo.familyshareextended.Adapters.ActivityRecycleAdapter;
 import com.balckbuffalo.familyshareextended.Adapters.GroupRecycleAdapter;
 import com.balckbuffalo.familyshareextended.Retrofit.INodeJS;
 import com.balckbuffalo.familyshareextended.Retrofit.RetrofitClient;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,6 +43,9 @@ public class HomePageActivity extends AppCompatActivity {
     INodeJS myAPI;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
+    MaterialToolbar toolbar;
+
+    private final ArrayList<String> mGroupId = new ArrayList<>();
     private final ArrayList<String> mGroupName = new ArrayList<>();
     private final ArrayList<String> mMembers = new ArrayList<>();
     private final ArrayList<Boolean> mVisible = new ArrayList<>();
@@ -46,8 +53,8 @@ public class HomePageActivity extends AppCompatActivity {
 
     private final ArrayList<String> mDate = new ArrayList<>();
     private final ArrayList<String> mName = new ArrayList<>();
-    private final ArrayList<Integer> mNAdult = new ArrayList<Integer>();
-    private final ArrayList<Integer> mNChildren = new ArrayList<Integer>();
+    private final ArrayList<Integer> mNAdult = new ArrayList<>();
+    private final ArrayList<Integer> mNChildren = new ArrayList<>();
     private final ArrayList<Boolean> mGreenPass = new ArrayList<>();
 
     @Override
@@ -58,6 +65,10 @@ public class HomePageActivity extends AppCompatActivity {
         //Init API
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
+
+        toolbar = findViewById(R.id.topAppBar);
+        toolbar.setOnClickListener (v->{
+            showMenu(v, R.menu.top_app_bar, this, getApplicationContext());});
 
         try {
             String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
@@ -78,7 +89,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     private void initGroupRecycler(){
         RecyclerView groupRecyclerView = findViewById(R.id.groupsRecycler);
-        GroupRecycleAdapter adapter = new GroupRecycleAdapter(this, mGroupName, mMembers, mVisible, mNotifications);
+        GroupRecycleAdapter adapter = new GroupRecycleAdapter(mGroupId, this, mGroupName, mMembers, mVisible, mNotifications);
         groupRecyclerView.addItemDecoration(new DividerItemDecoration(groupRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
         groupRecyclerView.setAdapter(adapter);
@@ -106,13 +117,26 @@ public class HomePageActivity extends AppCompatActivity {
                     {
                         JSONObject obj = arr.getJSONObject(i);
                         String group_id = obj.getString("group_id");
-
+                        mGroupId.add(group_id);
                         mVisible.add(obj.getBoolean("user_accepted"));
                         mNotifications.add(obj.getBoolean("has_notifications"));
 
-                        groupInfo(token, group_id, user_id);
+                        groupSettings(token, group_id, user_id);
                         activityList(token,group_id,user_id);
                     }
+                }, t -> Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
+        );
+    }
+
+    private void groupSettings(String token, String id, String user_id) {
+        compositeDisposable.add(myAPI.groupSettings(token, id, user_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                    JSONObject obj = new JSONObject(s);
+                    mVisible.add(obj.getBoolean("open"));
+
+                    groupInfo(token, id, user_id);
                 }, t -> Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
         );
     }

@@ -1,6 +1,7 @@
 package com.balckbuffalo.familyshareextended.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +12,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.balckbuffalo.familyshareextended.GroupActivity;
+import com.balckbuffalo.familyshareextended.HomePageActivity;
 import com.balckbuffalo.familyshareextended.R;
 
 import java.util.ArrayList;
 
 public class GroupRecycleAdapter extends  RecyclerView.Adapter<GroupRecycleAdapter.ViewHolder>{
 
+    private final ArrayList<String> mGroupId;
     private final ArrayList<String> mGroupName;
     private final ArrayList<String> mMembers;
     private final ArrayList<Boolean> mVisible;
@@ -24,7 +28,8 @@ public class GroupRecycleAdapter extends  RecyclerView.Adapter<GroupRecycleAdapt
 
     private final Context mContext;
 
-    public GroupRecycleAdapter(Context mContext, ArrayList<String> mGroupName, ArrayList<String> mMembers, ArrayList<Boolean> mVisible, ArrayList<Boolean> mNotifications) {
+    public GroupRecycleAdapter(ArrayList<String> mGroupId, Context mContext, ArrayList<String> mGroupName, ArrayList<String> mMembers, ArrayList<Boolean> mVisible, ArrayList<Boolean> mNotifications) {
+        this.mGroupId = mGroupId;
         this.mGroupName = mGroupName;
         this.mMembers = mMembers;
         this.mVisible = mVisible;
@@ -56,7 +61,9 @@ public class GroupRecycleAdapter extends  RecyclerView.Adapter<GroupRecycleAdapt
             holder.bell_icon.setVisibility(View.INVISIBLE);
 
         holder.parent_layout.setOnClickListener(v -> {
-            //TODO: manda alla schermata del gruppo relativo a mGroupID(pposition)
+            Intent myIntent = new Intent(mContext, GroupActivity.class);
+            myIntent.putExtra("group_id", mGroupId.get(position));
+            mContext.startActivity(myIntent);
         });
     }
 

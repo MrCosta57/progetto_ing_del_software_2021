@@ -34,6 +34,11 @@ public interface INodeJS {
                                  @Path("id") String id,
                                  @Query("user_id") String user_id);
 
+    @GET("groups/{id}/settings")
+    Observable<String> groupSettings(@Header("Authorization") String token,
+                                 @Path("id") String id,
+                                 @Query("user_id") String user_id);
+
     @GET("groups/{id}/activities")
     Observable<String> activityList(@Header("Authorization") String token,
                                     @Path("id") String group_id,

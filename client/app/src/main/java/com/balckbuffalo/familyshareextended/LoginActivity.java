@@ -1,5 +1,7 @@
 package com.balckbuffalo.familyshareextended;
 
+import static com.balckbuffalo.familyshareextended.Utility.Utility.showMenu;
+
 import androidx.annotation.MenuRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
@@ -66,6 +68,10 @@ public class LoginActivity extends AppCompatActivity {
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
 
+        toolbar = findViewById(R.id.topAppBar);
+        toolbar.setOnClickListener (v->{
+            showMenu(v, R.menu.top_app_bar, this, getApplicationContext());});
+
         btn_login = findViewById(R.id.login_button);
         sign_up = findViewById(R.id.SignUp);
 
@@ -78,9 +84,6 @@ public class LoginActivity extends AppCompatActivity {
             Intent myIntent = new Intent(LoginActivity.this, SignUpActivity.class);
             LoginActivity.this.startActivity(myIntent);
         });
-        toolbar = findViewById(R.id.topAppBar);
-        toolbar.setOnClickListener (v->{
-            showMenu(v, R.menu.top_app_bar);});
     }
 
     private void loginUser(String email, String password) {
@@ -105,78 +108,9 @@ public class LoginActivity extends AppCompatActivity {
 
                             editor.apply();
                             Intent myIntent = new Intent(LoginActivity.this, HomePageActivity.class);
-                            LoginActivity.this.startActivity(myIntent);},
+                            LoginActivity.this.startActivity(myIntent);
+                            finish();},
                         t -> Toast.makeText(LoginActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
         );
-    }
-
-    private void showMenu(View v, @MenuRes int menuRes) {
-        PopupMenu popup = new PopupMenu(this, v);
-        popup.inflate(menuRes);
-
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @SuppressLint("NonConstantResourceId")
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-
-                String token = "none";
-                String user_id = "none";
-                try {
-                    String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-                    SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(
-                            "secret_shared_prefs",
-                            masterKeyAlias,
-                            getApplicationContext(),
-                            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-                    );
-                    token = sharedPreferences.getString("token", "none");
-                    user_id = sharedPreferences.getString("user_id", "none");
-                } catch (GeneralSecurityException | IOException e) { e.printStackTrace(); }
-
-                Context ctx = LoginActivity.this;
-                switch(menuItem.getItemId()){
-                    case R.id.home_menu:
-                        Log.d("PROVA", token+" "+user_id);
-                        if(!(token.equals("none")||user_id.equals("none"))) {
-                            Intent myIntent = new Intent(ctx, HomePageActivity.class);
-                            LoginActivity.this.startActivity(myIntent);
-                        }
-                        break;
-                    case R.id.profile_menu:
-                        /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
-                           Intent myIntent = new Intent(ctx, ProfileActivity.class);
-                           LoginActivity.this.startActivity(myIntent);
-                        }*/
-                        break;
-                    case R.id.create_group_menu:
-                        /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
-                           Intent myIntent = new Intent(ctx, CreateGroupActivity.class);
-                           LoginActivity.this.startActivity(myIntent);
-                        }*/
-                        break;
-                    case R.id.join_group_menu:
-                        /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
-                           Intent myIntent = new Intent(ctx, JoinGroupActivity.class);
-                           LoginActivity.this.startActivity(myIntent);
-                        }*/
-                        break;
-                    case R.id.guide_menu:
-                        /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
-                           Intent myIntent = new Intent(ctx, GuideActivity.class);
-                           LoginActivity.this.startActivity(myIntent);
-                        }*/
-                        break;
-                    case R.id.quit_menu:
-                        finish();
-                        break;
-                    default:
-                        break;
-                }
-                return true;
-            }
-        });
-        // Show the popup menu.
-        popup.show();
     }
 }

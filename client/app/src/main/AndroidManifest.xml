@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.balckbuffalo.familyshareextended" >
+    package="com.balckbuffalo.familyshareextended">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -14,17 +14,18 @@
         android:theme="@style/Theme.FamilyShareExtended"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
-
+        <activity
+            android:name=".GroupActivity"
+            android:exported="false" />
         <activity
             android:name=".SplashScreenActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".HomePageActivity"
             android:exported="false" />

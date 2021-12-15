@@ -1,4 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <item
+        android:id="@+id/page_info"
+        android:enabled="true"
+        android:title="@string/info_menu"
+        android:visible="true" />
+    <item
+        android:id="@+id/page_members"
+        android:enabled="true"
+        android:title="@string/members_menu"
+        android:visible="true" />
+    <item
+        android:id="@+id/page_activities"
+        android:enabled="true"
+        android:title="@string/activities_menu"
+        android:visible="true" />
+    <item
+        android:id="@+id/page_cabinet"
+        android:enabled="true"
+        android:title="@string/cabinet_menu"
+        android:visible="true" />
+    <item
+        android:id="@+id/page_market"
+        android:enabled="true"
+        android:title="@string/market_menu"
+        android:visible="true" />
 </menu>
