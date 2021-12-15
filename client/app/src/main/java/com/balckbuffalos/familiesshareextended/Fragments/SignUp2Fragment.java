@@ -1,4 +1,4 @@
-package com.balckbuffalo.familyshareextended.Fragments;
+package com.balckbuffalos.familiesshareextended.Fragments;
 
 import android.os.Bundle;
 
@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 
-import com.balckbuffalo.familyshareextended.R;
+import com.balckbuffalos.familiesshareextended.R;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputLayout;
 import com.stepstone.stepper.Step;

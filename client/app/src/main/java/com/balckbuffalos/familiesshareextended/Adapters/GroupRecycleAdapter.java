@@ -1,4 +1,4 @@
-package com.balckbuffalo.familyshareextended.Adapters;
+package com.balckbuffalos.familiesshareextended.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.balckbuffalo.familyshareextended.R;
+import com.balckbuffalos.familiesshareextended.R;
 
 import java.util.ArrayList;
 

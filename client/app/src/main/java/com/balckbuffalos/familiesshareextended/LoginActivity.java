@@ -1,4 +1,4 @@
-package com.balckbuffalo.familyshareextended;
+package com.balckbuffalos.familiesshareextended;
 
 import androidx.annotation.MenuRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,9 +11,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -21,10 +18,9 @@ import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
-import com.balckbuffalo.familyshareextended.Retrofit.INodeJS;
-import com.balckbuffalo.familyshareextended.Retrofit.RetrofitClient;
+import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
+import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import org.json.JSONObject;

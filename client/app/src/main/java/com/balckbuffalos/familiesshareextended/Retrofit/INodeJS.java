@@ -1,4 +1,4 @@
-package com.balckbuffalo.familyshareextended.Retrofit;
+package com.balckbuffalos.familiesshareextended.Retrofit;
 
 import java.util.Date;
 

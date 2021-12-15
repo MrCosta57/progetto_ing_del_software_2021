@@ -1,27 +1,22 @@
-package com.balckbuffalo.familyshareextended;
+package com.balckbuffalos.familiesshareextended;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKeys;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.balckbuffalo.familyshareextended.Adapters.SignUpFragmentAdapter;
-import com.balckbuffalo.familyshareextended.Retrofit.INodeJS;
-import com.balckbuffalo.familyshareextended.Retrofit.RetrofitClient;
+import com.balckbuffalos.familiesshareextended.Adapters.SignUpFragmentAdapter;
+import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
+import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.Date;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;

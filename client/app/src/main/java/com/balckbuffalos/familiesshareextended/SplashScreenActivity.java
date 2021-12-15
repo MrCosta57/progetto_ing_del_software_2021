@@ -1,4 +1,4 @@
-package com.balckbuffalo.familyshareextended;
+package com.balckbuffalos.familiesshareextended;
 
 import androidx.appcompat.app.AppCompatActivity;
 

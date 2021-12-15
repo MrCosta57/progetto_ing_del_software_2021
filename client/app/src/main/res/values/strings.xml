@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FamilyShareExtended</string>
+    <string name="app_name">FamiliesShareExtended</string>
     <string name="login_button">LOGIN</string>
     <string name="PasswordHint">Password</string>
     <string name="EmailHint">E-mail</string>

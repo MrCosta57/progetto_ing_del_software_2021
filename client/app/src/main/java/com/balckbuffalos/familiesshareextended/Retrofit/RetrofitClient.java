@@ -1,4 +1,4 @@
-package com.balckbuffalo.familyshareextended.Retrofit;
+package com.balckbuffalos.familiesshareextended.Retrofit;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -9,9 +9,10 @@ public class RetrofitClient {
 
     public static Retrofit getInstance() {
         String IPV4 = "192.168.1.9";
+        String port="4000";
         if (instance == null)
             instance = new Retrofit.Builder()
-                    .baseUrl("http://" + IPV4 + ":4000/api/")
+                    .baseUrl("http://" + IPV4 + ":"+port+"/api/")
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();

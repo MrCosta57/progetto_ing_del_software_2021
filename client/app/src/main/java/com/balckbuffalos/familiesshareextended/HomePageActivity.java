@@ -1,4 +1,4 @@
-package com.balckbuffalo.familyshareextended;
+package com.balckbuffalos.familiesshareextended;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -11,10 +11,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.balckbuffalo.familyshareextended.Adapters.ActivityRecycleAdapter;
-import com.balckbuffalo.familyshareextended.Adapters.GroupRecycleAdapter;
-import com.balckbuffalo.familyshareextended.Retrofit.INodeJS;
-import com.balckbuffalo.familyshareextended.Retrofit.RetrofitClient;
+import com.balckbuffalos.familiesshareextended.Adapters.ActivityRecycleAdapter;
+import com.balckbuffalos.familiesshareextended.Adapters.GroupRecycleAdapter;
+import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
+import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
