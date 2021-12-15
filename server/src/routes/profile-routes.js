@@ -76,7 +76,7 @@ router.get('/', (req, res, next) => {
   }
 })
 
-router.post('/change_greenpass_available', async (req, res, next) => {
+router.post('/change_greenpass_available', async (req, res, next) => {  //Usato req.query !!!
   if (!req.query.user_id) { return res.status(401).send('Not authorized') }
   try {
     const user_id = req.query.user_id

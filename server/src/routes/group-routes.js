@@ -1124,11 +1124,11 @@ router.post('/:groupId/plans/:planId/activities', async (req, res, next) => {
   }
 })
 
-router.post('/:id/activities', async (req, res, next) => {
-  if (!req.user_id) {
+router.post('/:id/activities', async (req, res, next) => {  //Usato req.query !!!
+  if (!req.query.user_id) {
     return res.status(401).send('Not authenticated')
   }
-  const user_id = req.user_id
+  const user_id = req.query.user_id
   const group_id = req.params.id
   try {
     const { activity, events } = req.body
