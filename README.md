@@ -1,4 +1,4 @@
-# Annunci / Status del progetto
+## Annunci / Status del progetto
 Beta version - Codice Sorgente 1.0
 Non tutte le features sono testate e funzionanti
 
