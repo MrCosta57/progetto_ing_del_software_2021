@@ -1144,6 +1144,10 @@ router.post('/:id/activities', async (req, res, next) => {
     if (!(events && activity)) {
       return res.status(400).send('Bad Request')
     }
+    const profile = await Profile.findOne({ user_id: member.user_id })
+    if (activity.greenpass_isrequired && !profile.greenpass_available) {
+      return res.status(400).send('Greenpass Required But Not Available')
+    }
     const activity_id = objectid()
     activity.status = member.admin ? 'accepted' : 'pending'
     activity.activity_id = activity_id
@@ -1191,6 +1195,10 @@ router.get('/:id/activities', (req, res, next) => {
         .then(activities => {
           if (activities.length === 0) {
             return res.status(404).send('Group has no activities')
+          }
+          const profile = await Profile.findOne({ user_id: member.user_id })
+          if (!profile.greenpass_available) {
+            activities = activities.filter((activity) => { return !activity.greenpass_isrequired })
           }
           res.json(activities)
         })
@@ -1307,13 +1315,13 @@ router.get('/:groupId/activities/:activityId', (req, res, next) => {
             return res.status(404).send('Activity not found')
           }
           if (activity.greenpass_isrequired) {
-            const profile = await Profile.findOne({ user_id: req.user_id });
-            if (!profile.greenpass_available) {
-              return res.status(401).send('Greenpass not valid')
-            } else {
-              res.json(activity)
-            }
-
+            Profile.findOne({ user_id: member.user_id }).then(profile => {
+              if (!profile.greenpass_available) {
+                return res.status(401).send('Greenpass not valid')
+              } else {
+                res.json(activity)
+              }
+            })       
           }
           res.json(activity)
         })
