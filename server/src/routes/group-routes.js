@@ -1196,11 +1196,12 @@ router.get('/:id/activities', (req, res, next) => {
           if (activities.length === 0) {
             return res.status(404).send('Group has no activities')
           }
-          const profile = await Profile.findOne({ user_id: member.user_id })
-          if (!profile.greenpass_available) {
-            activities = activities.filter((activity) => { return !activity.greenpass_isrequired })
-          }
-          res.json(activities)
+          Profile.findOne({ user_id: member.user_id }).then(profile => {
+            if (!profile.greenpass_available) {
+              activities = activities.filter((activity) => { return !activity.greenpass_isrequired })
+            }
+            res.json(activities)
+          })          
         })
     })
     .catch(next)
