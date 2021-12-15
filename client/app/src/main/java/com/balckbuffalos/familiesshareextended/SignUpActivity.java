@@ -1,6 +1,6 @@
 package com.balckbuffalos.familiesshareextended;
 
-import static com.balckbuffalo.familyshareextended.Utility.Utility.showMenu;
+import static com.balckbuffalos.familiesshareextended.Utility.Utility.showMenu;
 
 import androidx.appcompat.app.AppCompatActivity;
 
