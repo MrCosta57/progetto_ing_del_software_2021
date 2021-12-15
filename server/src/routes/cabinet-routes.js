@@ -132,10 +132,10 @@ router.get("/:id", async (req, res) => {
     }
 
     let fileInfos = [];
-    await cursor.forEach((doc) => {
+    await cursor.forEach(async (doc) => {
       let creator_id = doc.metadata.creator_id;
-      let user_info = async () => { return Profile.findOne({ user_id: creator_id }) };
-
+      let user_info = await Profile.findOne({ user_id: creator_id });
+      
       fileInfos.push({
         file_id: doc._id,
         name: doc.filename,
@@ -176,7 +176,7 @@ router.get("/:group_id/:file_id", async (req, res) => {
     const database = mongoClient.db(db_config.split("/").pop()); //extract the database name from string
     const files = database.collection(bucket_name + ".files");
     const cursor = files.find({ _id: ObjectID(file_id) });
-
+    
     if ((await cursor.count()) === 0) {
       return res.status(500).send({
         message: "No files found!",
