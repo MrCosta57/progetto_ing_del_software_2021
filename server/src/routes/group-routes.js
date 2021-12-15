@@ -1172,12 +1172,12 @@ router.post('/:id/activities', async (req, res, next) => {  //Usato req.query !!
   }
 })
 
-router.get('/:id/activities', (req, res, next) => {
-  if (!req.user_id) {
+router.get('/:id/activities', (req, res, next) => {  //Usato req.query !!!
+  if (!req.query.user_id) {
     return res.status(401).send('Not authenticated')
   }
   const group_id = req.params.id
-  const user_id = req.user_id
+  const user_id = req.query.user_id
   Member.findOne({
     group_id,
     user_id,
@@ -1293,14 +1293,14 @@ router.delete('/:groupId/activities/:activityId', async (req, res, next) => {
   }
 })
 
-router.get('/:groupId/activities/:activityId', (req, res, next) => {
-  if (!req.user_id) {
+router.get('/:groupId/activities/:activityId', (req, res, next) => {  //Usato req.query !!!
+  if (!req.query.user_id) {
     return res.status(401).send('Not authenticated')
   }
   const { activityId } = req.params
   Member.findOne({
     group_id: req.params.groupId,
-    user_id: req.user_id,
+    user_id: req.query.user_id,
     group_accepted: true,
     user_accepted: true
   })
@@ -1324,7 +1324,8 @@ router.get('/:groupId/activities/:activityId', (req, res, next) => {
               }
             })       
           }
-          res.json(activity)
+          else
+            res.json(activity)
         })
     })
     .catch(next)
