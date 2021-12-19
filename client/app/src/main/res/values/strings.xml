@@ -50,6 +50,13 @@
     <string name="activities_menu">Activities</string>
     <string name="cabinet_menu">Cabinet</string>
     <string name="market_menu">Market</string>
+    <string name="title">Title</string>
+    <string name="position_optional">Position (optional)</string>
+    <string name="description_optional">Description (optional)</string>
+    <string name="set_the_activity_position_optional">Set the activity position (optional)</string>
+    <string name="select_the_activity_color_optional">Select the activity color (optional)</string>
+    <string name="activity_color_optional">Activity color (optional)</string>
+    <string name="your_picked_color_is">Your picked color is:</string>
     <string name="description">Description</string>
     <string name="description_text">description</string>
     <string name="visibility">Visibility</string>

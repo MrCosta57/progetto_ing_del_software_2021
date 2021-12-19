@@ -4,6 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:ms_activeStepColor="@color/white"
+    app:ms_backButtonColor="@color/white"
+    app:ms_completeButtonColor="@color/white"
+    app:ms_completeButtonText="@string/complete"
+    app:ms_errorColor="@color/ms_errorColor"
+    app:ms_inactiveStepColor="@color/ms_bottomNavigationButtonTextColor"
+    app:ms_nextButtonColor="@color/white"
+    app:ms_stepperLayoutTheme="@style/StepperStyle"
+    app:ms_stepperType="progress_bar"
     tools:context=".ActivitiesCreationActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>
