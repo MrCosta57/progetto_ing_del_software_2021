@@ -7,6 +7,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -68,6 +69,18 @@ public interface INodeJS {
     Observable<String> groupInfo(@Header("Authorization") String token,
                                    @Path("id") String group_id,
                                    @Query("user_id") String user_id);
+
+    @PATCH("groups/{id}")
+    @FormUrlEncoded
+    Observable<String> editGroup(@Header("Authorization") String token,
+                                 @Path("id") String group_id,
+                                 @Query("user_id") String user_id,
+                                 @Field("visible") Boolean visible,
+                                 @Field("name") String name,
+                                 @Field("description") String description,
+                                 @Field("location") String location,
+                                 @Field("background") String background,
+                                 @Field("contact_type") String contact_type);
 
 
     @GET("groups/{groupId}/activities/{activityId}/timeslots")

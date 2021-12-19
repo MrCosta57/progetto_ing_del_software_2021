@@ -118,7 +118,6 @@ public class HomePageActivity extends AppCompatActivity {
                         JSONObject obj = arr.getJSONObject(i);
                         String group_id = obj.getString("group_id");
                         mGroupId.add(group_id);
-                        mVisible.add(obj.getBoolean("user_accepted"));
                         mNotifications.add(obj.getBoolean("has_notifications"));
 
                         groupSettings(token, group_id, user_id);

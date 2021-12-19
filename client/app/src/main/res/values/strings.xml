@@ -50,4 +50,9 @@
     <string name="activities_menu">Activities</string>
     <string name="cabinet_menu">Cabinet</string>
     <string name="market_menu">Market</string>
+    <string name="description">Description</string>
+    <string name="description_text">description</string>
+    <string name="visibility">Visibility</string>
+    <string name="change_visibility">CHANGE VISIBILITY</string>
+    <string name="visibility_text">visibility</string>
 </resources>
