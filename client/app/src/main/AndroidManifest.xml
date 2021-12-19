@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.balckbuffalos.familiesshareextended" >
+    package="com.balckbuffalos.familiesshareextended">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -15,11 +15,17 @@
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
         <activity
+            android:name=".ActivitiesCreationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GroupCreationActivity"
+            android:exported="false" />
+        <activity
             android:name=".GroupActivity"
             android:exported="false" />
         <activity
-            android:name="com.balckbuffalos.familiesshareextended.SplashScreenActivity"
-            android:exported="true" >
+            android:name=".SplashScreenActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,13 +33,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.balckbuffalos.familiesshareextended.HomePageActivity"
+            android:name=".HomePageActivity"
             android:exported="false" />
         <activity
-            android:name="com.balckbuffalos.familiesshareextended.SignUpActivity"
+            android:name=".SignUpActivity"
             android:exported="false" />
         <activity
-            android:name="com.balckbuffalos.familiesshareextended.LoginActivity"
+            android:name=".LoginActivity"
             android:exported="true" />
     </application>
 
