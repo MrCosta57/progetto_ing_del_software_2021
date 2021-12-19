@@ -1,7 +1,5 @@
 package com.balckbuffalos.familiesshareextended;
 
-import static com.balckbuffalos.familiesshareextended.Utility.Utility.showMenu;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,7 +11,6 @@ import android.widget.Toast;
 import com.balckbuffalos.familiesshareextended.Adapters.SignUpFragmentAdapter;
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
@@ -49,7 +46,7 @@ public class SignUpActivity extends AppCompatActivity implements StepperLayout.S
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sing_up);
+        setContentView(R.layout.activity_sign_up);
 
         //Init API
         Retrofit retrofit = RetrofitClient.getInstance();
@@ -67,30 +64,23 @@ public class SignUpActivity extends AppCompatActivity implements StepperLayout.S
         edt_mail = findViewById(R.id.emailText);
         edt_password = findViewById(R.id.passwordText);
         edt_confirm_password = findViewById(R.id.confirmPasswordText);
+
         if(!((edt_password.getText().toString()).equals(edt_confirm_password.getText().toString()))){
             Toast.makeText(SignUpActivity.this, "DIFFERENT PASSWORDS", Toast.LENGTH_LONG).show();
             return;
         }
 
-
         signUpUser(edt_name.getText().toString(), edt_surname.getText().toString(), edt_mail.getText().toString(), edt_password.getText().toString());
-
     }
 
     @Override
-    public void onError(VerificationError verificationError) {
-
-    }
+    public void onError(VerificationError verificationError) { }
 
     @Override
-    public void onStepSelected(int newStepPosition) {
-
-    }
+    public void onStepSelected(int newStepPosition) { }
 
     @Override
-    public void onReturn() {
-
-    }
+    public void onReturn() { }
 
     private void signUpUser(String name, String surname, String email, String password) {
         compositeDisposable.add(myAPI.signUpUser(name, surname, email, password,true,"en")
