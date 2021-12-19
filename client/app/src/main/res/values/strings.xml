@@ -62,4 +62,6 @@
     <string name="visibility">Visibility</string>
     <string name="change_visibility">CHANGE VISIBILITY</string>
     <string name="visibility_text">visibility</string>
+    <string name="button_for_creating_activity">Button for creating activity</string>
+    <string name="work_in_progress_image">work in progress image</string>
 </resources>
