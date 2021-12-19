@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.balckbuffalos.familiesshareextended.Adapters.ActivitiesCreationFragmentAdapter;
 import com.balckbuffalos.familiesshareextended.Adapters.SignUpFragmentAdapter;
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
@@ -34,36 +35,9 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
 
-        StepperLayout mStepperLayout = findViewById(R.id.stepperLayout);
+        StepperLayout mStepperLayout = findViewById(R.id.stepper_layout_activities);
         mStepperLayout.setListener(this);
-        mStepperLayout.setAdapter(new SignUpFragmentAdapter(getSupportFragmentManager(), this));
-
-        mPickColorButton = findViewById(R.id.pick_color_button);
-        mColorPreview = findViewById(R.id.preview_selected_color);
-        mDefaultColor = 0;
-
-        mPickColorButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        openColorPickerDialogue();
-                    }
-                });
-    }
-
-    public void openColorPickerDialogue() {
-        final AmbilWarnaDialog colorPickerDialogue = new AmbilWarnaDialog(this, mDefaultColor,
-                new AmbilWarnaDialog.OnAmbilWarnaListener() {
-                    @Override
-                    public void onCancel(AmbilWarnaDialog dialog) { }
-
-                    @Override
-                    public void onOk(AmbilWarnaDialog dialog, int color) {
-                        mDefaultColor = color;
-                        mColorPreview.setBackgroundColor(mDefaultColor);
-                    }
-                });
-        colorPickerDialogue.show();
+        mStepperLayout.setAdapter(new ActivitiesCreationFragmentAdapter(getSupportFragmentManager(), this));
     }
 
     @Override
