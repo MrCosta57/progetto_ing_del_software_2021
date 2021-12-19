@@ -57,4 +57,9 @@
     <string name="select_the_activity_color_optional">Select the activity color (optional)</string>
     <string name="activity_color_optional">Activity color (optional)</string>
     <string name="your_picked_color_is">Your picked color is:</string>
+    <string name="description">Description</string>
+    <string name="description_text">description</string>
+    <string name="visibility">Visibility</string>
+    <string name="change_visibility">CHANGE VISIBILITY</string>
+    <string name="visibility_text">visibility</string>
 </resources>

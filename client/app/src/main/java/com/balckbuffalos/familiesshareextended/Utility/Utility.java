@@ -52,31 +52,31 @@ public class Utility {
                             Intent myIntent = new Intent(ctx, HomePageActivity.class);
                             ctx.startActivity(myIntent);
                         }
-                        break;
+                        return true;
                     case R.id.profile_menu:
                         /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
                            Intent myIntent = new Intent(ctx, ProfileActivity.class);
                            ctx.startActivity(myIntent);
                         }*/
-                        break;
+                        return true;
                     case R.id.create_group_menu:
                         /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
                            Intent myIntent = new Intent(ctx, CreateGroupActivity.class);
                            ctx.startActivity(myIntent);
                         }*/
-                        break;
+                        return true;
                     case R.id.join_group_menu:
                         /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
                            Intent myIntent = new Intent(ctx, JoinGroupActivity.class);
                            ctx.startActivity(myIntent);
                         }*/
-                        break;
+                        return true;
                     case R.id.guide_menu:
                         /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
                            Intent myIntent = new Intent(ctx, GuideActivity.class);
                            ctx.startActivity(myIntent);
                         }*/
-                        break;
+                        return true;
                     case R.id.logout_menu:
                         String masterKeyAlias = null;
                         try {
@@ -97,14 +97,12 @@ public class Utility {
                         } catch (GeneralSecurityException | IOException e) { e.printStackTrace(); }
                         Intent myIntent = new Intent(ctx, LoginActivity.class);
                         ctx.startActivity(myIntent);
-                        break;
+                        return true;
                     case R.id.quit_menu:
                         System.exit(0);
-                        break;
-                    default:
-                        break;
+                        return true;
                 }
-                return true;
+                return false;
             }
         });
         // Show the popup menu.
