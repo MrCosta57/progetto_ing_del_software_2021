@@ -27,7 +27,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <DatePicker
-        android:id="@+id/activity_start_date_picker"
+        android:id="@+id/activity_end_date_picker"
         android:layout_width="411dp"
         android:layout_height="300dp"
         android:layout_marginTop="20dp"
@@ -42,14 +42,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="@string/select_a_date_for_the_start_of_the_activity"
+        android:text="@string/select_a_date_for_the_end_of_the_activity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.126"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <TimePicker
-        android:id="@+id/activity_start_time_picker"
+        android:id="@+id/activity_end_time_picker"
         android:layout_width="286dp"
         android:layout_height="90dp"
         android:layout_marginTop="20dp"
@@ -64,11 +64,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:text="@string/select_a_time_for_the_start_of_the_activity"
+        android:text="@string/select_a_time_for_the_end_of_the_activity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.127"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_start_date_picker" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_end_date_picker" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
