@@ -35,9 +35,7 @@ public class SignUpActivity extends AppCompatActivity implements StepperLayout.S
     DatePicker birthdate;
 
     @Override
-    protected void onStop() {
-        super.onStop();
-    }
+    protected void onStop() { super.onStop(); }
 
     @Override
     protected void onDestroy() {

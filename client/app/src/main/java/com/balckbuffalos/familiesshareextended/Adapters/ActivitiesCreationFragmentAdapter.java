@@ -16,7 +16,7 @@ import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 import com.stepstone.stepper.viewmodel.StepViewModel;
 
 public class ActivitiesCreationFragmentAdapter extends AbstractFragmentStepAdapter {
-
+    //public ActivitiesCreation1Fragment step = new ActivitiesCreation1Fragment();
     public ActivitiesCreationFragmentAdapter(@NonNull FragmentManager fm, @NonNull Context context) {
         super(fm, context);
     }

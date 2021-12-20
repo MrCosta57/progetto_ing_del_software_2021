@@ -64,6 +64,10 @@ public class ActivitiesCreation1Fragment extends Fragment implements Step {
         colorPickerDialogue.show();
     }
 
+    /*public int getmDefaultColor() {
+        return mDefaultColor;
+    }*/
+
     @Nullable
     @Override
     public VerificationError verifyStep() { return null; }
