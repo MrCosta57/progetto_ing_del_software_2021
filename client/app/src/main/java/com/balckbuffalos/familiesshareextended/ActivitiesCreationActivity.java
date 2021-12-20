@@ -67,6 +67,14 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
         endDate = findViewById(R.id.activity_end_date_picker);
         endTime = findViewById(R.id.activity_end_time_picker);
 
+        /*//se data inizio è > data fine
+        //se data inizio è <= data fine ma ora inizio è > ora fine
+        //se data inizio è <= data fine e ora inizio è = ora fine ma minuto inizio è > minuto fine
+        if(){
+            Toast.makeText(ActivitiesCreationActivity.this, "INVALID START OR END TIME ATTRIBUTES", Toast.LENGTH_LONG).show();
+            return;
+        }*/
+
         createActivity(edt_title.getText().toString(), edt_description.getText().toString(), edt_position.getText().toString(), edt_color,
                 new Date(startDate.getCalendarView().getDate()), startTime.getCurrentHour(), startTime.getCurrentMinute(),
                 new Date(endDate.getCalendarView().getDate()), endTime.getCurrentHour(), endTime.getCurrentMinute());
