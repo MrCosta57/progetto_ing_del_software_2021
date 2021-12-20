@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.balckbuffalos.familiesshareextended.GroupActivity;
-import com.balckbuffalos.familiesshareextended.HomePageActivity;
 import com.balckbuffalos.familiesshareextended.R;
 
 import java.util.ArrayList;
@@ -80,8 +79,8 @@ public class GroupRecycleAdapter extends  RecyclerView.Adapter<GroupRecycleAdapt
             super(itemView);
             group_icon = itemView.findViewById(R.id.group_icon);
             bell_icon = itemView.findViewById(R.id.bell_icon);
-            groupName = itemView.findViewById(R.id.group_name);
-            members = itemView.findViewById(R.id.n_members);
+            groupName = itemView.findViewById(R.id.member_name);
+            members = itemView.findViewById(R.id.role_member);
             info = itemView.findViewById(R.id.group_info);
             parent_layout = itemView.findViewById(R.id.parent_layout);
         }

@@ -10,9 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.balckbuffalos.familiesshareextended.GroupActivity;
 import com.balckbuffalos.familiesshareextended.R;
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
@@ -26,7 +23,7 @@ public class InfoGroupFragment extends Fragment {
 
     INodeJS myAPI;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
-    String group_id, token, user_id, desc;
+    String group_id, token, user_id;
 
     private TextView visibility;
     private boolean current_visibility;

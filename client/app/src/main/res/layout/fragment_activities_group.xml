@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.ActivitiesGroupFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_activity_button"
@@ -24,5 +23,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.946"
         tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck,RedundantDescriptionCheck" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/activityRecycler"
+        android:layout_width="416dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

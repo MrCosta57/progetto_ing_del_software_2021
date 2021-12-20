@@ -11,7 +11,7 @@ import androidx.security.crypto.MasterKeys;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.util.Log;
 import android.widget.Toolbar;
 
 import com.balckbuffalos.familiesshareextended.Adapters.ActivityRecycleAdapter;
@@ -123,7 +123,7 @@ public class HomePageActivity extends AppCompatActivity {
                         groupSettings(token, group_id, user_id);
                         activityList(token,group_id,user_id);
                     }
-                }, t -> Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
+                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
     }
 
@@ -136,7 +136,7 @@ public class HomePageActivity extends AppCompatActivity {
                     mVisible.add(obj.getBoolean("open"));
 
                     groupInfo(token, id, user_id);
-                }, t -> Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
+                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
     }
 
@@ -149,7 +149,7 @@ public class HomePageActivity extends AppCompatActivity {
                     mGroupName.add(obj.getString("name"));
                     mMembers.add(obj.getString("members"));
                     initGroupRecycler();
-                }, t -> Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
+                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
     }
 
@@ -167,7 +167,7 @@ public class HomePageActivity extends AppCompatActivity {
 
                         timeslotsActivity(token, group_id, obj.getString("activity_id"), user_id);
                     }
-                }, t -> Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
+                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
     }
     private void timeslotsActivity(String token, String group_id, String activity_id, String user_id) {
@@ -210,7 +210,7 @@ public class HomePageActivity extends AppCompatActivity {
                         initActivityRecycler();
                     }
                     else
-                        Toast.makeText(HomePageActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.d("HTTP REQUEST ERROR: ", t.getMessage());
                 })
         );
     }
