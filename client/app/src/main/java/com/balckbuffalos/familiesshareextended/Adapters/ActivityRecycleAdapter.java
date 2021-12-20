@@ -81,6 +81,7 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
         RelativeLayout parent_layout;
         ImageView green_pass_icon;
         TextView hours, day, month, name_activity, n_adult, n_children;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             parent_layout = itemView.findViewById(R.id.parent_layout);

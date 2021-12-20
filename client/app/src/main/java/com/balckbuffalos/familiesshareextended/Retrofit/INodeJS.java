@@ -31,7 +31,7 @@ public interface INodeJS {
                                         @Field("origin") String origin);
 
     @GET("profiles/")
-    Observable<String> profileInfo(@Header("Authorization") String token,
+    Observable<String> profilesInfo(@Header("Authorization") String token,
                                    @Query("searchBy") String search_By,
                                    @Query("ids") String[] ids,
                                    @Query("visible") Boolean visible);
@@ -88,6 +88,18 @@ public interface INodeJS {
                                  @Field("background") String background,
                                  @Field("contact_type") String contact_type);
 
+    @POST("groups/")
+    @FormUrlEncoded
+    Observable<String> createGroup(@Header("Authorization") String token,
+                                   @Query("user_id") String user_id,
+                                   @Field("invite_ids") String[] invite_ids,
+                                   @Field("location") String location,
+                                   @Field("owner_id") String owner_id,
+                                   @Field("contact_type") String contact_type,
+                                   @Field("contact_info") String contact_info,
+                                   @Field("visible") Boolean visible,
+                                   @Field("name") String name,
+                                   @Field("description") String description);
 
     @GET("groups/{groupId}/activities/{activityId}/timeslots")
     Observable<String> timeslotsActivity(@Header("Authorization") String token,

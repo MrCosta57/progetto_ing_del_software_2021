@@ -89,7 +89,7 @@ public class MembersGroupFragment extends Fragment {
     }
 
     private void profileInfo(String token, String[] ids) {
-        compositeDisposable.add(myAPI.profileInfo(token,"ids", ids, true)
+        compositeDisposable.add(myAPI.profilesInfo(token,"ids", ids, true)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
