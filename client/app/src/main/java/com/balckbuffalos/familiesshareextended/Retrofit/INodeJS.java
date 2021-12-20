@@ -1,5 +1,8 @@
 package com.balckbuffalos.familiesshareextended.Retrofit;
 
+import androidx.annotation.ColorInt;
+
+import java.time.LocalTime;
 import java.util.Date;
 
 import io.reactivex.Observable;
@@ -49,6 +52,19 @@ public interface INodeJS {
     Observable<String> groupSettings(@Header("Authorization") String token,
                                  @Path("id") String id,
                                  @Query("user_id") String user_id);
+
+    @POST("groups/{id}/activities")
+    @FormUrlEncoded
+    Observable<String> createActivity(@Field("title") String title,
+                                      @Field("description") String description,
+                                      @Field("position") String position,
+                                      @Field("color") @ColorInt int color,
+                                      @Field("startDate") Date startDate,
+                                      @Field("startHour") int startHour,
+                                      @Field("startMinute") int startMinute,
+                                      @Field("endDate") Date endDate,
+                                      @Field("endHour") int endHour,
+                                      @Field("endMinute") int endMinute);
 
     @GET("groups/{id}/activities")
     Observable<String> activityList(@Header("Authorization") String token,

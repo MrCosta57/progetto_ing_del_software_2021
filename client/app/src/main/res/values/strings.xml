@@ -64,6 +64,10 @@
     <string name="visibility_text">visibility</string>
     <string name="button_for_creating_activity">Button for creating activity</string>
     <string name="work_in_progress_image">work in progress image</string>
+    <string name="select_a_date_for_the_start_of_the_activity">Select a date for the start of the activity</string>
+    <string name="select_a_time_for_the_start_of_the_activity">Select a time for the start of the activity</string>
+    <string name="select_a_date_for_the_end_of_the_activity">Select a date for the end of the activity</string>
+    <string name="select_a_time_for_the_end_of_the_activity">Select a time for the end of the activity</string>
     <string name="member_icon">member icon</string>
     <string name="member_name">Member Name</string>
     <string name="role_member">Role Member</string>
