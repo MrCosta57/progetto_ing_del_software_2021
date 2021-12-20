@@ -67,4 +67,8 @@
     <string name="member_icon">member icon</string>
     <string name="member_name">Member Name</string>
     <string name="role_member">Role Member</string>
+    <string name="gg_mm_aaaa">gg/mm/aaaa</string>
+    <string name="download">DOWNLOAD</string>
+    <string name="description_icon">description icon</string>
+    <string name="insert_file">INSERT FILE</string>
 </resources>

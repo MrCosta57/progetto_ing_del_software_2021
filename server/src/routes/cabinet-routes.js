@@ -37,8 +37,8 @@ router.post("/:id", async (req, res, next) => {
   const group_id = req.params.id;
 
   const member = await Member.findOne({
-    group_id,
-    creator_id,
+    group_id: group_id,
+    user_id: creator_id,
     group_accepted: true,
     user_accepted: true
   })
@@ -65,7 +65,7 @@ router.post("/:id", async (req, res, next) => {
         return {
           bucketName: 'cabinet_bucket',
           filename: `${Date.now()}-${file.originalname}`,
-          metadata: { 'group_id': group_id, 'creator_id': creator_id, description: req.description }
+          metadata: { 'group_id': group_id, 'creator_id': creator_id, description: req.query.description }
         };
       }
     });
@@ -108,8 +108,8 @@ router.get("/:id", async (req, res) => {
   }
   const group_id = req.params.id;
   const member = await Member.findOne({
-    group_id,
-    user_id,
+    group_id: group_id,
+    user_id: user_id,
     group_accepted: true,
     user_accepted: true
   })
@@ -132,20 +132,22 @@ router.get("/:id", async (req, res) => {
     }
 
     let fileInfos = [];
-    await cursor.forEach(async (doc) => {
-      let creator_id = doc.metadata.creator_id;
-      let user_info = await Profile.findOne({ user_id: creator_id });
-      
+    for(let doc; await cursor.hasNext();){
+      doc = await cursor.next()
+      const creator_id = doc.metadata.creator_id
+      const user_info = await Profile.findOne({ user_id: creator_id })
       fileInfos.push({
         file_id: doc._id,
         name: doc.filename,
         date: doc.uploadDate,
         contentType: doc.contentType,
-        creator_name: user_info.given_name
+        creator_name: user_info.given_name,
+        description: doc.metadata.description
       });
-    });
+    }
 
     return res.status(200).send(fileInfos);
+    
   } catch (error) {
     next(error);
   }
@@ -161,8 +163,8 @@ router.get("/:group_id/:file_id", async (req, res) => {
     return res.status(401).send('Not authenticated')
   }
   const member = await Member.findOne({
-    group_id,
-    user_id,
+    group_id: group_id,
+    user_id: user_id,
     group_accepted: true,
     user_accepted: true
   })
@@ -216,8 +218,8 @@ router.delete('/:group_id/:file_id', async (req, res, next) => {
   }
   user_id = req.user_id + '';
   const member = await Member.findOne({
-    group_id,
-    user_id,
+    group_id: group_id,
+    user_id: user_id,
     group_accepted: true,
     user_accepted: true
   })

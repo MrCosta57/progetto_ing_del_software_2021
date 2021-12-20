@@ -3,12 +3,16 @@ package com.balckbuffalos.familiesshareextended.Retrofit;
 import java.util.Date;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -94,4 +98,15 @@ public interface INodeJS {
                                  @Path("groupId") String group_id,
                                  @Path("activityId") String activity_id,
                                  @Query("user_id") String user_id);
+    @GET("cabinet/{id}")
+    Observable<String> listFiles(@Header("Authorization") String token,
+                                         @Path("id") String id,
+                                         @Query("user_id") String user_id);
+    @Multipart
+    @POST("cabinet/{id}")
+    Observable<String> addFile(@Header("Authorization") String token,
+                               @Path("id") String id,
+                               @Query("user_id") String user_id,
+                               @Query("description") String description,
+                               @Part MultipartBody.Part file);
 }
