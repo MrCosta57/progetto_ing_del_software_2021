@@ -141,7 +141,7 @@ router.get("/:id", async (req, res) => {
         name: doc.filename,
         date: doc.uploadDate,
         contentType: doc.contentType,
-        creator_name: user_info.given_name,
+        creator_name: user_info.given_name + " " + user_info.family_name,
         description: doc.metadata.description
       });
     }
@@ -157,7 +157,7 @@ router.get("/:id", async (req, res) => {
 //Get file in a group by id
 router.get("/:group_id/:file_id", async (req, res) => {
   const user_id = req.user_id;
-  const group_id = req.params.id;
+  const group_id = req.params.group_id;
   const file_id = req.params.file_id;
   if (!user_id) {
     return res.status(401).send('Not authenticated')
@@ -190,6 +190,15 @@ router.get("/:group_id/:file_id", async (req, res) => {
     });
 
     let downloadStream = bucket.openDownloadStream(ObjectID(file_id));
+    let file = await cursor.next();
+    console.log(file)
+    res.set('Content-Type', file.contentType);
+    res.set('Content-Disposition', 'attachment; filename="' + file.filename + '"');
+    readstream.on('errror', function(err) {
+      res.end();
+    });
+    readstream.pipe(res);
+    return res.status(204).send();
 
     downloadStream.on("data", function (data) {
       return res.status(200).write(data);
