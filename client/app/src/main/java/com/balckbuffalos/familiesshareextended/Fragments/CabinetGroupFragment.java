@@ -1,16 +1,77 @@
 package com.balckbuffalos.familiesshareextended.Fragments;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ContentUris;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.balckbuffalos.familiesshareextended.Adapters.ActivityRecycleAdapter;
+import com.balckbuffalos.familiesshareextended.Adapters.FileRecycleAdapter;
+import com.balckbuffalos.familiesshareextended.Adapters.GroupRecycleAdapter;
 import com.balckbuffalos.familiesshareextended.R;
+import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
+import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Objects;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Retrofit;
 
 public class CabinetGroupFragment extends Fragment {
+
+    INodeJS myAPI;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    String group_id, token, user_id;
+
+    private static final int PICK_PDF_FILE = 2;
+    Uri uri;
+    String description = "";
+
+    private final ArrayList<String> mFileId = new ArrayList<>();
+    private final ArrayList<String> mMemberName = new ArrayList<>();
+    private final ArrayList<String> mDescription = new ArrayList<>();
+    private final ArrayList<String> mDate = new ArrayList<>();
+    private final ArrayList<String> mFileType = new ArrayList<>();
+
+    View view;
 
     public CabinetGroupFragment() { }
 
@@ -18,6 +79,124 @@ public class CabinetGroupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cabinet_group, container, false);
+        view =  inflater.inflate(R.layout.fragment_cabinet_group, container, false);
+
+        Retrofit retrofit = RetrofitClient.getInstance();
+        myAPI = retrofit.create(INodeJS.class);
+
+        Bundle extras = this.getArguments();
+
+        group_id = extras.getString("group_id");
+        token = extras.getString("token");
+        user_id = extras.getString("user_id");
+
+        view.findViewById(R.id.floating_file_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopup();
+            }
+        });
+
+        mFileId.clear();
+        mMemberName.clear();
+        mDescription.clear();
+        mDate.clear();
+        mFileType.clear();
+        fileList(token, group_id, user_id);
+        return view;
+    }
+
+    private void showPopup(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.popup_insert_file, null);
+
+        alertDialogBuilder.setView(R.layout.popup_insert_file);
+
+        alertDialogBuilder.setCancelable(false).setPositiveButton("CARICA FILE", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                performFileSearch("CARICA FILE");
+            }
+        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, final Intent resultData) {
+        if (requestCode == 2 && resultCode == Activity.RESULT_OK)
+        {
+            if (resultData != null && resultData.getData() != null) {
+                uri = resultData.getData();
+                Log.d("TEST", resultData.toString());
+                Log.d("TEST URI", uri.toString());
+                File file = new File(uri.getPath());
+
+                RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), uri.getPath());
+
+                MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file",file.getName(),requestFile);
+                addFile(token, group_id, user_id, description, multipartBody);
+            } else {
+                Log.d("TEST","File uri not found {}");
+            }
+        }
+        else {
+            Log.d("TEST","User cancelled file browsing {}");
+        }
+    }
+
+    @SuppressLint("QueryPermissionsNeeded")
+    private void performFileSearch(String messageTitle) {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        intent.setType("*/*");
+        /*String[] mimeTypes = new String[]{"application/x-binary,application/octet-stream"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);*/
+
+        startActivityForResult(Intent.createChooser(intent, messageTitle), 2);
+
+    }
+
+    private void initFileRecycler(){
+        RecyclerView fileRecyclerView = view.findViewById(R.id.file_recycler);
+        FileRecycleAdapter adapter = new FileRecycleAdapter(getActivity(), mFileId, mMemberName, mDescription, mDate, mFileType);
+        fileRecyclerView.addItemDecoration(new DividerItemDecoration(fileRecyclerView.getContext(),
+                DividerItemDecoration.VERTICAL));
+        fileRecyclerView.setAdapter(adapter);
+        fileRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+    }
+
+    private void fileList(String token, String id, String user_id) {
+        compositeDisposable.add(myAPI.listFiles(token, id, user_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                    JSONArray arr = new JSONArray(s);
+                    for(int i = 0; i<arr.length();i++)
+                    {
+                        JSONObject obj = arr.getJSONObject(i);
+                        mFileId.add(obj.getString("file_id"));
+                        mDescription.add(obj.getString("description"));
+                        mDate.add(obj.getString("date"));
+                        mFileType.add(obj.getString("contentType"));
+                        mMemberName.add(obj.getString("creator_name"));
+                    }
+                    initFileRecycler();
+                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+        );
+    }
+
+    private void addFile(String token, String id, String user_id, String description, MultipartBody.Part file) {
+        compositeDisposable.add(myAPI.addFile(token, id, user_id, description, file)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+        );
     }
 }

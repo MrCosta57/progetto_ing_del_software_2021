@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.balckbuffalos.familiesshareextended.Fragments.ActivitiesCreation1Fragment;
 import com.balckbuffalos.familiesshareextended.Fragments.ActivitiesCreation2Fragment;
+import com.balckbuffalos.familiesshareextended.Fragments.ActivitiesCreation3Fragment;
 import com.balckbuffalos.familiesshareextended.Fragments.SignUp1Fragment;
 import com.balckbuffalos.familiesshareextended.Fragments.SignUp2Fragment;
 import com.stepstone.stepper.Step;
@@ -24,6 +25,7 @@ public class ActivitiesCreationFragmentAdapter extends AbstractFragmentStepAdapt
     public Step createStep(int position) {
         final ActivitiesCreation1Fragment step = new ActivitiesCreation1Fragment();
         final ActivitiesCreation2Fragment step2 = new ActivitiesCreation2Fragment();
+        final ActivitiesCreation3Fragment step3 = new ActivitiesCreation3Fragment();
 
         Bundle b = new Bundle();
 
@@ -36,14 +38,17 @@ public class ActivitiesCreationFragmentAdapter extends AbstractFragmentStepAdapt
             step2.setArguments(b);
             return step2;
         }
-        else{
+        else if(position == 2){
+            step3.setArguments(b);
+            return step3;
+        } else {
             return null;
         }
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @NonNull
