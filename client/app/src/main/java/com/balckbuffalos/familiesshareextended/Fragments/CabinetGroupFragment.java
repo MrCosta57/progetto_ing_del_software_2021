@@ -3,6 +3,7 @@ package com.balckbuffalos.familiesshareextended.Fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,6 +28,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -61,7 +63,6 @@ public class CabinetGroupFragment extends Fragment {
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     String group_id, token, user_id;
 
-    private static final int PICK_PDF_FILE = 2;
     Uri uri;
     String description = "";
 
@@ -107,14 +108,23 @@ public class CabinetGroupFragment extends Fragment {
     }
 
     private void showPopup(){
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity()).setTitle("Load File");
         @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.popup_insert_file, null);
 
-        alertDialogBuilder.setView(R.layout.popup_insert_file);
 
-        alertDialogBuilder.setCancelable(false).setPositiveButton("CARICA FILE", new DialogInterface.OnClickListener() {
+        final EditText input = new EditText (getActivity());
+        input.setHint("description");
+        alertDialogBuilder.setView(input);
+
+        alertDialogBuilder.setCancelable(false).setPositiveButton("LOAD FILE", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                performFileSearch("CARICA FILE");
+                description = input.getText().toString();
+                performFileSearch("LOAD FILE");
+            }
+        });
+
+        alertDialogBuilder.setCancelable(false).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
             }
         });
 
@@ -125,18 +135,23 @@ public class CabinetGroupFragment extends Fragment {
         alertDialog.show();
     }
 
+
+
+
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent resultData) {
-        if (requestCode == 2 && resultCode == Activity.RESULT_OK)
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK)
         {
             if (resultData != null && resultData.getData() != null) {
                 uri = resultData.getData();
-                Log.d("TEST", resultData.toString());
-                Log.d("TEST URI", uri.toString());
-                File file = new File(uri.getPath());
 
-                RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), uri.getPath());
+                File file = new File(getPath(uri));
+                ContentResolver cR = getActivity().getContentResolver();
 
+                RequestBody requestFile = RequestBody.create(MediaType.parse(cR.getType(uri)), file);
+                Log.d("FILENAME", file.getName());
                 MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file",file.getName(),requestFile);
                 addFile(token, group_id, user_id, description, multipartBody);
             } else {
@@ -148,6 +163,25 @@ public class CabinetGroupFragment extends Fragment {
         }
     }
 
+    public String getPath(Uri uri) {
+
+        String path = null;
+        String[] projection = { MediaStore.Files.FileColumns.DATA };
+        Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
+
+        if(cursor == null){
+            path = uri.getPath();
+        }
+        else{
+            cursor.moveToFirst();
+            int column_index = cursor.getColumnIndexOrThrow(projection[0]);
+            path = cursor.getString(column_index);
+            cursor.close();
+        }
+
+        return (path == null || path.isEmpty())?uri.getPath():path;
+    }
+
     @SuppressLint("QueryPermissionsNeeded")
     private void performFileSearch(String messageTitle) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
@@ -157,13 +191,19 @@ public class CabinetGroupFragment extends Fragment {
         /*String[] mimeTypes = new String[]{"application/x-binary,application/octet-stream"};
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);*/
 
-        startActivityForResult(Intent.createChooser(intent, messageTitle), 2);
+        startActivityForResult(Intent.createChooser(intent, messageTitle), 0);
 
     }
 
+
+
+
+
+
+
     private void initFileRecycler(){
         RecyclerView fileRecyclerView = view.findViewById(R.id.file_recycler);
-        FileRecycleAdapter adapter = new FileRecycleAdapter(getActivity(), mFileId, mMemberName, mDescription, mDate, mFileType);
+        FileRecycleAdapter adapter = new FileRecycleAdapter(getActivity(), mFileId, mMemberName, mDescription, mDate, mFileType, group_id, user_id, token);
         fileRecyclerView.addItemDecoration(new DividerItemDecoration(fileRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
         fileRecyclerView.setAdapter(adapter);
@@ -182,7 +222,7 @@ public class CabinetGroupFragment extends Fragment {
                         JSONObject obj = arr.getJSONObject(i);
                         mFileId.add(obj.getString("file_id"));
                         mDescription.add(obj.getString("description"));
-                        mDate.add(obj.getString("date"));
+                        mDate.add(obj.getString("date").substring(0,10));
                         mFileType.add(obj.getString("contentType"));
                         mMemberName.add(obj.getString("creator_name"));
                     }
@@ -196,6 +236,12 @@ public class CabinetGroupFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
+                    mFileId.clear();
+                    mMemberName.clear();
+                    mDescription.clear();
+                    mDate.clear();
+                    mFileType.clear();
+                    fileList(token, group_id, user_id);
                 }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
     }
