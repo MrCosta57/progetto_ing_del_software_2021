@@ -2,7 +2,11 @@ package com.balckbuffalos.familiesshareextended;
 
 import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +21,8 @@ import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Date;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -30,6 +36,8 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
     EditText edt_title, edt_description, edt_position;
     DatePicker startDate, endDate;
     TimePicker startTime, endTime;
+
+    String token,group_id,user_id;
     //ActivitiesCreationFragmentAdapter adapter = new ActivitiesCreationFragmentAdapter(getSupportFragmentManager(), this);
     @ColorInt
     private int color;
@@ -52,6 +60,13 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            token = extras.getString("token");
+            group_id = extras.getString("group_id");
+            user_id = extras.getString("user_id");
+        }
+
         StepperLayout mStepperLayout = findViewById(R.id.stepper_layout_activities);
         mStepperLayout.setListener(this);
         //mStepperLayout.setAdapter(adapter);
@@ -60,21 +75,22 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
 
     @Override
     public void onCompleted(View completeButton) {
+
+        setContentView(R.layout.fragment_activities_creation1);
         edt_title = findViewById(R.id.activity_title_text);
-        if (edt_title == null) {
-            Log.d("Test ", "FUNZIONAAAA");
-        }
         edt_description = findViewById(R.id.activity_description_text);
         edt_position = findViewById(R.id.activity_position_text);
         color = findViewById(R.id.preview_selected_color).getSolidColor();
         //color = adapter.step.getmDefaultColor();
+        setContentView(R.layout.fragment_activities_creation2);
         startDate = findViewById(R.id.activity_start_date_picker);
         startTime = findViewById(R.id.activity_start_time_picker);
+        setContentView(R.layout.fragment_activities_creation3);
         endDate = findViewById(R.id.activity_end_date_picker);
         endTime = findViewById(R.id.activity_end_time_picker);
-
         Date data_inizio = new Date(startDate.getCalendarView().getDate());
         Date data_fine = new Date(endDate.getCalendarView().getDate());
+        setContentView(R.layout.activity_activities_creation);
         int ora_inizio = startTime.getCurrentHour();
         int ora_fine = endTime.getCurrentHour();
         int minuto_inizio = startTime.getCurrentMinute();
@@ -85,7 +101,7 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
             return;
         }
 
-        createActivity(edt_title.getText().toString(), edt_description.getText().toString(), edt_position.getText().toString(), color,
+        createActivity(token, group_id, user_id, edt_title.getText().toString(), edt_description.getText().toString(), edt_position.getText().toString(), color,
                 data_inizio, ora_inizio, minuto_inizio, data_fine, ora_fine, minuto_fine);
     }
 
@@ -98,15 +114,19 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
     @Override
     public void onReturn() { }
 
-    private void createActivity(String title, String description, String position, @ColorInt int color,
+    private void createActivity(String token, String id, String user_id, String title, String description, String position, @ColorInt int color,
                                 Date startDate, int startHour, int startMinute , Date endDate, int endHour, int endMinute) {
-        compositeDisposable.add(myAPI.createActivity(title, description, position, color, startDate, startHour, startMinute, endDate, endHour, endMinute)
+        compositeDisposable.add(myAPI.createActivity(token, id, user_id, title, description, position, color, startDate, startHour, startMinute, endDate, endHour, endMinute)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s ->{
                             Toast.makeText(ActivitiesCreationActivity.this, "Activity created with success", Toast.LENGTH_LONG).show();
+                            Intent myIntent = new Intent(ActivitiesCreationActivity.this, GroupActivity.class);
+                            ActivitiesCreationActivity.this.startActivity(myIntent);
                         },
-                        t -> Toast.makeText(ActivitiesCreationActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
+                        t -> {Toast.makeText(ActivitiesCreationActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show();
+        Intent myIntent = new Intent(ActivitiesCreationActivity.this, GroupActivity.class);
+        ActivitiesCreationActivity.this.startActivity(myIntent);})
         );
     }
 }

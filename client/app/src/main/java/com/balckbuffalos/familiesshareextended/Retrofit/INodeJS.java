@@ -58,7 +58,10 @@ public interface INodeJS {
 
     @POST("groups/{id}/activities")
     @FormUrlEncoded
-    Observable<String> createActivity(@Field("title") String title,
+    Observable<String> createActivity(@Header("Authorization") String token,
+                                      @Path("id") String group_id,
+                                      @Query("user_id") String user_id,
+                                      @Field("title") String title,
                                       @Field("description") String description,
                                       @Field("position") String position,
                                       @Field("color") @ColorInt int color,

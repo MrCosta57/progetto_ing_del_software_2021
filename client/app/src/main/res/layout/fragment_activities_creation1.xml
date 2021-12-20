@@ -70,7 +70,7 @@
             android:ems="10"
             android:hint="@string/position_optional"
             android:importantForAutofill="no"
-            android:inputType="textEmailAddress"
+            android:inputType="textNoSuggestions"
             android:minHeight="48dp"
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -93,7 +93,7 @@
             android:ems="10"
             android:hint="@string/title"
             android:importantForAutofill="no"
-            android:inputType="textPersonName"
+            android:inputType="textNoSuggestions"
             android:minHeight="48dp"
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -138,7 +138,7 @@
             android:ems="10"
             android:hint="@string/description_optional"
             android:importantForAutofill="no"
-            android:inputType="textPersonName"
+            android:inputType="textNoSuggestions"
             android:minHeight="48dp"
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>

@@ -75,6 +75,9 @@ public class ActivitiesGroupFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ActivitiesCreationActivity.class);
+                intent.putExtra("token", token);
+                intent.putExtra("group_id", group_id);
+                intent.putExtra("user_id", user_id);
                 startActivity(intent);
             }
         });
