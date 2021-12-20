@@ -64,4 +64,7 @@
     <string name="visibility_text">visibility</string>
     <string name="button_for_creating_activity">Button for creating activity</string>
     <string name="work_in_progress_image">work in progress image</string>
+    <string name="member_icon">member icon</string>
+    <string name="member_name">Member Name</string>
+    <string name="role_member">Role Member</string>
 </resources>

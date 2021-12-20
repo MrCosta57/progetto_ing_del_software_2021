@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -103,7 +104,7 @@ public class SignUpActivity extends AppCompatActivity implements StepperLayout.S
 
                             }
                         },
-                        t -> Toast.makeText(SignUpActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
+                        t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
     }
 
@@ -112,10 +113,10 @@ public class SignUpActivity extends AppCompatActivity implements StepperLayout.S
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s ->{
-                            Toast.makeText(SignUpActivity.this, "You register with success", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SignUpActivity.this, "Child register with success", Toast.LENGTH_LONG).show();
                             Intent myIntent = new Intent(SignUpActivity.this, LoginActivity.class);
                             SignUpActivity.this.startActivity(myIntent);},
-                        t -> Toast.makeText(SignUpActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
+                        t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
     }
 }

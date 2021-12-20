@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.balckbuffalos.familiesshareextended.Adapters.ActivitiesCreationFragmentAdapter;
 import com.balckbuffalos.familiesshareextended.Adapters.SignUpFragmentAdapter;
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
@@ -49,7 +47,7 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
         edt_confirm_password = findViewById(R.id.confirmPasswordText);
 
         if(!((edt_password.getText().toString()).equals(edt_confirm_password.getText().toString()))){
-            Toast.makeText(SignUpActivity.this, "DIFFERENT PASSWORDS", Toast.LENGTH_LONG).show();
+            Log.d("HTTP REQUEST ERROR: ", t.getMessage())
             return;
         }
 

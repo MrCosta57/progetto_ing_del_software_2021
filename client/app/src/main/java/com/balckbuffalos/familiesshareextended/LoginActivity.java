@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
@@ -86,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
         compositeDisposable.add(myAPI.authenticateUser(email, password, "deviceToken", "en", "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> {Toast.makeText(LoginActivity.this, "You Login with success", Toast.LENGTH_LONG).show();
+                .subscribe(s -> {
                             JSONObject obj = new JSONObject(s);
                             String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
 
@@ -106,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                             Intent myIntent = new Intent(LoginActivity.this, HomePageActivity.class);
                             LoginActivity.this.startActivity(myIntent);
                             finish();},
-                        t -> Toast.makeText(LoginActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
+                        t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
     }
 }

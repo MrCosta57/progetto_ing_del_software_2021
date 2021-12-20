@@ -12,10 +12,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.balckbuffalos.familiesshareextended.Fragments.ActivitiesGroupFragment;
 import com.balckbuffalos.familiesshareextended.Fragments.CabinetGroupFragment;
@@ -61,10 +57,7 @@ public class GroupActivity extends AppCompatActivity implements BottomNavigation
 
 
         Bundle extras = getIntent().getExtras();
-
-        if (extras != null) {
-            group_id = extras.getString("group_id");
-        }
+        group_id = extras.getString("group_id");
 
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
@@ -132,15 +125,15 @@ public class GroupActivity extends AppCompatActivity implements BottomNavigation
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
                     JSONObject obj = new JSONObject(s);
-                    Log.d("TEST", obj.toString());
                     bundle.putString("description", obj.getString("description"));
                     bundle.putString("name", obj.getString("name"));
                     bundle.putString("location", obj.getString("location"));
                     bundle.putString("background", obj.getString("background"));
                     bundle.putString("contact_type", obj.getString("contact_type"));
+                    toolbar.setTitle(obj.getString("name"));
                     groupSettings(token,group_id,user_id);
 
-                }, t -> Toast.makeText(GroupActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
+                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
     }
     private void groupSettings(String token, String id, String user_id) {
@@ -153,7 +146,7 @@ public class GroupActivity extends AppCompatActivity implements BottomNavigation
 
                     bottomNavigationView.setOnNavigationItemSelectedListener(this);
                     bottomNavigationView.setSelectedItemId(R.id.page_activities);
-                }, t -> Toast.makeText(GroupActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show())
+                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
     }
 }

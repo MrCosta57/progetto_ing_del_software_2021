@@ -30,6 +30,12 @@ public interface INodeJS {
                                         @Field("language") String language,
                                         @Field("origin") String origin);
 
+    @GET("profiles/")
+    Observable<String> profileInfo(@Header("Authorization") String token,
+                                   @Query("searchBy") String search_By,
+                                   @Query("ids") String[] ids,
+                                   @Query("visible") Boolean visible);
+
     @GET("users/{id}/groups")
     Observable<String> groupList(@Header("Authorization") String token,
                                  @Path("id") String id,
