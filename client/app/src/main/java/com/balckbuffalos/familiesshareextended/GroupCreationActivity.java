@@ -28,8 +28,10 @@ import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Console;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -47,9 +49,7 @@ public class GroupCreationActivity extends AppCompatActivity {
 
     private MaterialToolbar toolbar;
 
-    private ArrayList<String> mProfileName=new ArrayList<>();
-    private ArrayList<String> mProfileEmail=new ArrayList<>();
-    private ArrayList<String> mProfileId= new ArrayList<>();
+    private JSONArray mProfileInfo;
     private ArrayList<String> ids;
     private AllProfilesRecycleAdapter adapter;
 
@@ -73,8 +73,14 @@ public class GroupCreationActivity extends AppCompatActivity {
         createButton=findViewById(R.id.create_button);
         TextView name=findViewById(R.id.group_name_text);
         TextView desc=findViewById(R.id.group_description_text);
+
+
         createButton.setOnClickListener((v)->{
-            createGroup(token, user_id, (String[])ids.toArray(), "location", user_id,
+            ids=adapter.getSelectedIds();
+            String[] ids_array=new String[ids.size()];
+            ids_array=ids.toArray(ids_array);
+
+            createGroup(token, user_id, ids_array, "location", user_id,
                     "email", "", true, name.getText().toString(), desc.getText().toString());
         });
 
@@ -105,65 +111,32 @@ public class GroupCreationActivity extends AppCompatActivity {
             token = sharedPreferences.getString("token", "none");
             user_id = sharedPreferences.getString("user_id", "none");
 
-            profilesInfo(token);
+            profilesInfo();
         } catch (GeneralSecurityException | IOException e) { e.printStackTrace(); }
 
-
-        /*TODO: - creare una recycle view con checkbox e search bar che usi le get di tutti i profili
-                  (https://www.youtube.com/watch?v=CTvzoVtKoJ8&ab_channel=yoursTRULY)
-        *       - programmare il pulsante switch che cambi la visibility e modificarlo
-        *       - programmare il pulsante create group
-        *
-        *
-        * */
-        /*INFO dello switch DA MODIFICARE*/
-        /*TextView description = findViewById(R.id.description_text);
-        visibility = view.findViewById(R.id.visibility_text);
-        Button changeVisibility = view.findViewById(R.id.change_visibility_button);
-
-        description.setText(extras.getString("description"));
-        visibility.setText(current_visibility?"Public group":"Private group");
-        changeVisibility.setOnClickListener(view2 -> {
-            current_visibility = !current_visibility;
-            editGroup(token, group_id, user_id, current_visibility, extras.getString("name"), extras.getString("description"), extras.getString("location"), extras.getString("background"), extras.getString("contact_type"));
-            visibility.setText(current_visibility?"Public group":"Private group");
-        });*/
     }
 
 
-    private void editGroup(String token, String id, String user_id, Boolean visible, String name, String description, String location, String background, String contact_type) {
-        compositeDisposable.add(myAPI.editGroup(token, id, user_id, visible, name, description, location, background, contact_type)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> { }, t -> Log.d("ERROR ",  t.getMessage())
-                ));
-    }
-
-
-    private void initProfliesRecycler(){
+    private void initProfliesRecycler() {
         RecyclerView profilesRecyclerView = findViewById(R.id.profilesRecycler);
-        adapter = new AllProfilesRecycleAdapter(mProfileName, mProfileEmail, mProfileId);
+        try {
+            adapter = new AllProfilesRecycleAdapter(mProfileInfo);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         profilesRecyclerView.addItemDecoration(new DividerItemDecoration(profilesRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
         profilesRecyclerView.setAdapter(adapter);
         profilesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        ids=adapter.getSelectedIds();
     }
 
 
-    private void profilesInfo(String token) {
+    private void profilesInfo() {
         compositeDisposable.add(myAPI.profilesInfo(token,"visibility", null, true)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
-                    JSONArray arr = new JSONArray(s);
-                    for(int i = 0; i<arr.length();i++) {
-                        JSONObject obj = arr.getJSONObject(i);
-                        mProfileName.add(obj.getString("given_name") + obj.getString("family_name"));
-                        mProfileEmail.add(obj.getString("email"));
-                        mProfileId.add(obj.getString("user_id"));
-                    }
+                    mProfileInfo = new JSONArray(s);
                     initProfliesRecycler();
                 }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );

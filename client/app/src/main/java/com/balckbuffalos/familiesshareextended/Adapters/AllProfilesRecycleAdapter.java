@@ -2,6 +2,7 @@ package com.balckbuffalos.familiesshareextended.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.balckbuffalos.familiesshareextended.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,20 +28,19 @@ import java.util.Locale;
 
 public class AllProfilesRecycleAdapter extends RecyclerView.Adapter<AllProfilesRecycleAdapter.ViewHolder> implements Filterable {
 
-    private final ArrayList<String> mProfileName;
-    private final ArrayList<String> mProfileNameAll;
-    private final ArrayList<String> mProfileEmail;
-    private final ArrayList<String> mProfileId;
+    private JSONArray mProfileInfo;
+    private JSONArray mProfileInfoAll;
     private final ArrayList<String> ids=new ArrayList<>();
 
     //private final Context mContext;
 
-    public AllProfilesRecycleAdapter(/*Context mContext,*/ArrayList<String> mProfileName, ArrayList<String> mProfileEmail, ArrayList<String> mProfileId) {
-        this.mProfileName = mProfileName;
-        this.mProfileEmail = mProfileEmail;
-        this.mProfileNameAll=new ArrayList<>(mProfileName);
+    public AllProfilesRecycleAdapter(/*Context mContext,*/JSONArray mProfileInfo) throws JSONException {
+        this.mProfileInfoAll=new JSONArray();
+        this.mProfileInfo=mProfileInfo;
         //this.mContext = mContext;
-        this.mProfileId = mProfileId;
+        for (int i = 0; i < mProfileInfo.length(); i++) {
+            this.mProfileInfoAll.put(mProfileInfo.getJSONObject(i));
+        }
     }
 
     @NonNull
@@ -48,23 +52,33 @@ public class AllProfilesRecycleAdapter extends RecyclerView.Adapter<AllProfilesR
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.profileName.setText(mProfileName.get(position));
-        holder.profileEmail.setText(mProfileEmail.get(position));
-        holder.profileIcon.setImageResource(R.drawable.user_icon);
-        String tmp_id=mProfileId.get(position);
 
-        holder.checkBox.setOnClickListener(new View.OnClickListener() {
-            final String id=tmp_id;
+        try{
+            JSONObject tmp=mProfileInfo.getJSONObject(position);
+            String name_surname=tmp.getString("given_name")+tmp.getString("family_name");
 
-            @Override
-            public void onClick(View v) {
-                if (holder.checkBox.isChecked()){
-                    ids.add(id);
-                }else {
-                    ids.remove(id);
+            holder.profileName.setText(name_surname);
+            holder.profileEmail.setText(tmp.getString("email"));
+            holder.profileIcon.setImageResource(R.drawable.user_icon);
+            String tmp_id = tmp.getString("user_id");
+
+            holder.checkBox.setOnClickListener(new View.OnClickListener() {
+                final String id=tmp_id;
+
+                @Override
+                public void onClick(View v) {
+                    if (holder.checkBox.isChecked()){
+                        ids.add(id);
+                    }else {
+                        ids.remove(id);
+                    }
                 }
-            }
-        });
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public ArrayList<String> getSelectedIds(){
@@ -73,7 +87,7 @@ public class AllProfilesRecycleAdapter extends RecyclerView.Adapter<AllProfilesR
 
     @Override
     public int getItemCount() {
-        return mProfileName.size();
+        return mProfileInfo.length();
     }
 
     @Override
@@ -86,20 +100,28 @@ public class AllProfilesRecycleAdapter extends RecyclerView.Adapter<AllProfilesR
         //run on background thread
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<String> filteredList=new ArrayList<>(mProfileNameAll);
+            FilterResults filterResults=null;
+            try {
+                JSONArray filteredArray = new JSONArray();
 
-            if (constraint.toString().isEmpty()){
-                filteredList.addAll(mProfileNameAll);
-            }else{
-                for(String profile : mProfileNameAll){
-                    if(profile.toLowerCase(Locale.ROOT).contains(constraint.toString().toLowerCase(Locale.ROOT))){
-                        filteredList.add(profile);
+                if (constraint.toString().isEmpty()) {
+                    for (int i = 0; i < mProfileInfoAll.length(); i++) {
+                        filteredArray.put(mProfileInfoAll.getJSONObject(i));
+                    }
+                } else {
+                    for (int i = 0; i < mProfileInfoAll.length(); i++) {
+                        JSONObject profile=(JSONObject) mProfileInfoAll.get(i);
+                        if (profile.getString("given_name").toLowerCase(Locale.ROOT).contains(constraint.toString().toLowerCase(Locale.ROOT))) {
+                            filteredArray.put(profile);
+                        }
                     }
                 }
-            }
 
-            FilterResults filterResults=new FilterResults();
-            filterResults.values=filteredList;
+                filterResults = new FilterResults();
+                filterResults.values = filteredArray;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
             return filterResults;
         }
@@ -108,8 +130,15 @@ public class AllProfilesRecycleAdapter extends RecyclerView.Adapter<AllProfilesR
         @SuppressLint("NotifyDataSetChanged")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            mProfileName.clear();
-            mProfileName.addAll((Collection<? extends String>) results.values);
+            mProfileInfo=new JSONArray();
+            try {
+                for (int i = 0; i < ((JSONArray) results.values).length(); i++) {
+                    mProfileInfo.put(((JSONArray)results.values).getJSONObject(i));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             notifyDataSetChanged();
         }
     };
