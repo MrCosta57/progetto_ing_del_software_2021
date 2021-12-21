@@ -32,13 +32,13 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
 public class ActivitiesCreationActivity extends AppCompatActivity implements StepperLayout.StepperListener {
-    INodeJS myAPI;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
-    EditText edt_title, edt_description, edt_position;
-    DatePicker startDate, endDate;
-    TimePicker startTime, endTime;
-    SwitchMaterial switch_green_pass;
-    String token,group_id,user_id;
+    private INodeJS myAPI;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private EditText edt_title, edt_description, edt_position;
+    private DatePicker startDate, endDate;
+    private TimePicker startTime, endTime;
+    private SwitchMaterial switch_green_pass;
+    private String token,group_id,user_id;
     //ActivitiesCreationFragmentAdapter adapter = new ActivitiesCreationFragmentAdapter(getSupportFragmentManager(), this);
     @ColorInt
     private int color;
