@@ -38,19 +38,19 @@ import retrofit2.Retrofit;
 
 public class ActivitiesGroupFragment extends Fragment {
 
-    INodeJS myAPI;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private INodeJS myAPI;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    FloatingActionButton createActivity;
+    private FloatingActionButton createActivity;
     private final ArrayList<String> mDate = new ArrayList<>();
     private final ArrayList<String> mName = new ArrayList<>();
     private final ArrayList<Integer> mNAdult = new ArrayList<>();
     private final ArrayList<Integer> mNChildren = new ArrayList<>();
     private final ArrayList<Boolean> mGreenPass = new ArrayList<>();
 
-    String group_id, token, user_id;
+    private String group_id, token, user_id;
 
-    View view;
+    private View view;
 
     public ActivitiesGroupFragment() {}
 

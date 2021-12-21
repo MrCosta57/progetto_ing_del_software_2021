@@ -65,6 +65,7 @@ public interface INodeJS {
                                       @Field("description") String description,
                                       @Field("position") String position,
                                       @Field("color") @ColorInt int color,
+                                      @Field("green_pass") boolean green_pass,
                                       @Field("startDate") Date startDate,
                                       @Field("startHour") int startHour,
                                       @Field("startMinute") int startMinute,

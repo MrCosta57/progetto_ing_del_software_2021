@@ -36,19 +36,19 @@ import retrofit2.http.Field;
 
 public class GroupActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    INodeJS myAPI;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
-    String group_id, token, user_id;
+    private INodeJS myAPI;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private String group_id, token, user_id;
 
-    ActivitiesGroupFragment activitiesGroupFragment = new ActivitiesGroupFragment();
-    CabinetGroupFragment cabinetGroupFragment = new CabinetGroupFragment();
-    InfoGroupFragment infoGroupFragment = new InfoGroupFragment();
-    MarketGroupFragment marketGroupFragment = new MarketGroupFragment();
-    MembersGroupFragment membersGroupFragment = new MembersGroupFragment();
-    Bundle bundle = new Bundle();
+    private ActivitiesGroupFragment activitiesGroupFragment = new ActivitiesGroupFragment();
+    private CabinetGroupFragment cabinetGroupFragment = new CabinetGroupFragment();
+    private InfoGroupFragment infoGroupFragment = new InfoGroupFragment();
+    private MarketGroupFragment marketGroupFragment = new MarketGroupFragment();
+    private MembersGroupFragment membersGroupFragment = new MembersGroupFragment();
+    private Bundle bundle = new Bundle();
 
-    MaterialToolbar toolbar;
-    BottomNavigationView bottomNavigationView;
+    private MaterialToolbar toolbar;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
