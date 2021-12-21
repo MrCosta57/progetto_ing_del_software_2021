@@ -107,6 +107,10 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
             return;
         }
 
+        Log.d("CIAOOOO", "BELLOOO" + "token: " + token + " \ngroupid:  " + group_id + "\nuserid: " + user_id + "\nedttitle: " + edt_title.getText().toString() + "\nedt_description " + edt_description.getText().toString()
+        + "\nedtposition: " + edt_position.getText().toString() + "\ncolor: " + color + "\ngreenpass: " + green_pass + "\ndatainizio: " + data_inizio + "\norainizio: " + ora_inizio + "\nminutoinizio: " + minuto_inizio + "\ndatafine: " + data_fine + "\norafine: "
+        + ora_fine + "\nminutofine: " + minuto_fine);
+
         createActivity(token, group_id, user_id, edt_title.getText().toString(), edt_description.getText().toString(), edt_position.getText().toString(), color, green_pass,
                 data_inizio, ora_inizio, minuto_inizio, data_fine, ora_fine, minuto_fine);
     }
