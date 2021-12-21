@@ -47,6 +47,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -146,15 +147,10 @@ public class CabinetGroupFragment extends Fragment {
             Uri selectedFile = resultData.getData();
             File file = FileUtils.getFile(getActivity(), selectedFile);
 
-            if (file.exists()) {
-                Log.d("ESPLODI", "SI");
-            } else {
-                Log.d("MUORI", "SAS");
-            }
             ContentResolver cR = getActivity().getContentResolver();
 
             RequestBody requestFile = RequestBody.create(MediaType.parse(cR.getType(selectedFile)), file);
-            Log.d("FILE PATH", file.getAbsolutePath());
+
             MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file",file.getName(),requestFile);
             addFile(token, group_id, user_id, description, multipartBody);
 
@@ -163,7 +159,7 @@ public class CabinetGroupFragment extends Fragment {
 
     @SuppressLint("QueryPermissionsNeeded")
     private void performFileSearch() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
 

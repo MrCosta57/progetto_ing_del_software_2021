@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import java.io.File;
 
@@ -167,7 +168,6 @@ public class FileUtils {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
                 final String type = split[0];
-
                 Uri contentUri = null;
                 if ("image".equals(type)) {
                     contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
@@ -181,8 +181,7 @@ public class FileUtils {
                 final String[] selectionArgs = new String[]{
                         split[1]
                 };
-
-                return getDataColumn(context, contentUri, selection, selectionArgs);
+                return getDataColumn(context, contentUri, null, null);
             }
         }
         // MediaStore (and general)
