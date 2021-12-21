@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +21,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -40,12 +40,15 @@ import com.balckbuffalos.familiesshareextended.Adapters.GroupRecycleAdapter;
 import com.balckbuffalos.familiesshareextended.R;
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
+import com.balckbuffalos.familiesshareextended.Utility.FileUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -63,7 +66,7 @@ public class CabinetGroupFragment extends Fragment {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private String group_id, token, user_id;
 
-    private Uri uri;
+    private static final int REQUEST_CHOOSER = 1234;
     private String description = "";
 
     private final ArrayList<String> mFileId = new ArrayList<>();
@@ -119,7 +122,8 @@ public class CabinetGroupFragment extends Fragment {
         alertDialogBuilder.setCancelable(false).setPositiveButton("LOAD FILE", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 description = input.getText().toString();
-                performFileSearch("LOAD FILE");
+                // Create the ACTION_GET_CONTENT Intent
+                performFileSearch();
             }
         });
 
@@ -135,71 +139,42 @@ public class CabinetGroupFragment extends Fragment {
         alertDialog.show();
     }
 
-
-
-
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent resultData) {
-        if (requestCode == 0 && resultCode == Activity.RESULT_OK)
-        {
-            if (resultData != null && resultData.getData() != null) {
-                uri = resultData.getData();
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK && null != resultData) {
 
-                File file = new File(getPath(uri));
-                ContentResolver cR = getActivity().getContentResolver();
+            Uri selectedFile = resultData.getData();
+            File file = FileUtils.getFile(getActivity(), selectedFile);
 
-                RequestBody requestFile = RequestBody.create(MediaType.parse(cR.getType(uri)), file);
-                Log.d("FILENAME", file.getName());
-                MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file",file.getName(),requestFile);
-                addFile(token, group_id, user_id, description, multipartBody);
+            if (file.exists()) {
+                Log.d("ESPLODI", "SI");
             } else {
-                Log.d("TEST","File uri not found {}");
+                Log.d("MUORI", "SAS");
             }
-        }
-        else {
-            Log.d("TEST","User cancelled file browsing {}");
-        }
-    }
+            ContentResolver cR = getActivity().getContentResolver();
 
-    public String getPath(Uri uri) {
+            RequestBody requestFile = RequestBody.create(MediaType.parse(cR.getType(selectedFile)), file);
+            Log.d("FILE PATH", file.getAbsolutePath());
+            MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file",file.getName(),requestFile);
+            addFile(token, group_id, user_id, description, multipartBody);
 
-        String path = null;
-        String[] projection = { MediaStore.Files.FileColumns.DATA };
-        Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
-
-        if(cursor == null){
-            path = uri.getPath();
         }
-        else{
-            cursor.moveToFirst();
-            int column_index = cursor.getColumnIndexOrThrow(projection[0]);
-            path = cursor.getString(column_index);
-            cursor.close();
-        }
-
-        return (path == null || path.isEmpty())?uri.getPath():path;
     }
 
     @SuppressLint("QueryPermissionsNeeded")
-    private void performFileSearch(String messageTitle) {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+    private void performFileSearch() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
-        /*String[] mimeTypes = new String[]{"application/x-binary,application/octet-stream"};
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);*/
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
 
-        startActivityForResult(Intent.createChooser(intent, messageTitle), 0);
+        try {
+            startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), 0);
+        } catch (android.content.ActivityNotFoundException ex) {
+            // Potentially direct the user to the Market with a Dialog
+            Toast.makeText(getActivity(),"Please install a File Manager", Toast.LENGTH_SHORT).show();
+        }
 
     }
-
-
-
-
-
-
 
     private void initFileRecycler(){
         RecyclerView fileRecyclerView = view.findViewById(R.id.file_recycler);
