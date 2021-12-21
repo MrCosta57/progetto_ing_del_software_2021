@@ -40,10 +40,10 @@ import retrofit2.Retrofit;
 
 public class HomePageActivity extends AppCompatActivity {
 
-    INodeJS myAPI;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private INodeJS myAPI;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    MaterialToolbar toolbar;
+    private MaterialToolbar toolbar;
 
     private final ArrayList<String> mGroupId = new ArrayList<>();
     private final ArrayList<String> mGroupName = new ArrayList<>();

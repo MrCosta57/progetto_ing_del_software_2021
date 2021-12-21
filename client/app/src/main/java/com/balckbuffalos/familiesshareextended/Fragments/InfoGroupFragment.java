@@ -21,9 +21,9 @@ import retrofit2.Retrofit;
 
 public class InfoGroupFragment extends Fragment {
 
-    INodeJS myAPI;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
-    String group_id, token, user_id;
+    private INodeJS myAPI;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private String group_id, token, user_id;
 
     private TextView visibility;
     private boolean current_visibility;

@@ -59,12 +59,12 @@ import retrofit2.Retrofit;
 
 public class CabinetGroupFragment extends Fragment {
 
-    INodeJS myAPI;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
-    String group_id, token, user_id;
+    private INodeJS myAPI;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private String group_id, token, user_id;
 
-    Uri uri;
-    String description = "";
+    private Uri uri;
+    private String description = "";
 
     private final ArrayList<String> mFileId = new ArrayList<>();
     private final ArrayList<String> mMemberName = new ArrayList<>();
@@ -72,7 +72,7 @@ public class CabinetGroupFragment extends Fragment {
     private final ArrayList<String> mDate = new ArrayList<>();
     private final ArrayList<String> mFileType = new ArrayList<>();
 
-    View view;
+    private View view;
 
     public CabinetGroupFragment() { }
 
