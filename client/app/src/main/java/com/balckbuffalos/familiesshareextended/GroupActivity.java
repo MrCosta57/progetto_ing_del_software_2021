@@ -125,26 +125,28 @@ public class GroupActivity extends AppCompatActivity implements BottomNavigation
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
                     JSONObject obj = new JSONObject(s);
+
+                    groupSettings(token,group_id,user_id, obj);
+
+                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+        );
+    }
+    private void groupSettings(String token, String id, String user_id, JSONObject obj) {
+        compositeDisposable.add(myAPI.groupSettings(token, id, user_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                    JSONObject obj2 = new JSONObject(s);
+                    bundle.putBoolean("visible", obj2.getBoolean("visible"));
                     bundle.putString("description", obj.getString("description"));
                     bundle.putString("name", obj.getString("name"));
                     bundle.putString("location", obj.getString("location"));
                     bundle.putString("background", obj.getString("background"));
                     bundle.putString("contact_type", obj.getString("contact_type"));
                     toolbar.setTitle(obj.getString("name"));
-                    groupSettings(token,group_id,user_id);
-
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
-        );
-    }
-    private void groupSettings(String token, String id, String user_id) {
-        compositeDisposable.add(myAPI.groupSettings(token, id, user_id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> {
-                    JSONObject obj = new JSONObject(s);
-                    bundle.putBoolean("visible", obj.getBoolean("visible"));
 
                     bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
                     bottomNavigationView.setSelectedItemId(R.id.page_activities);
                 }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );

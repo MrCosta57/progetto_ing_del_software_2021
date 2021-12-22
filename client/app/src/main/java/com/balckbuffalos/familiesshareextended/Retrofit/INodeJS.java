@@ -14,6 +14,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -147,4 +148,10 @@ public interface INodeJS {
                                @Query("user_id") String user_id,
                                @Query("description") String description,
                                @Part MultipartBody.Part file);
+
+    @DELETE("cabinet/{group_id}/{file_id}")
+    Observable<String> deleteFile(@Header("Authorization") String token,
+                                               @Path("group_id") String group_id,
+                                               @Path("file_id") String file_id,
+                                               @Query("user_id") String user_id);
 }

@@ -16,6 +16,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -75,6 +80,7 @@ public class CabinetGroupFragment extends Fragment {
     private final ArrayList<String> mDescription = new ArrayList<>();
     private final ArrayList<String> mDate = new ArrayList<>();
     private final ArrayList<String> mFileType = new ArrayList<>();
+    private final ArrayList<String> mCreatorId = new ArrayList<>();
 
     private View view;
 
@@ -113,8 +119,6 @@ public class CabinetGroupFragment extends Fragment {
 
     private void showPopup(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity()).setTitle("Load File");
-        @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.popup_insert_file, null);
-
 
         final EditText input = new EditText (getActivity());
         input.setHint("description");
@@ -124,7 +128,8 @@ public class CabinetGroupFragment extends Fragment {
             public void onClick(DialogInterface dialog, int id) {
                 description = input.getText().toString();
                 // Create the ACTION_GET_CONTENT Intent
-                performFileSearch();
+                openFileDialog();
+
             }
         });
 
@@ -140,41 +145,40 @@ public class CabinetGroupFragment extends Fragment {
         alertDialog.show();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, final Intent resultData) {
-        if (requestCode == 0 && resultCode == Activity.RESULT_OK && null != resultData) {
+    ActivityResultLauncher<Intent> sActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if(result.getResultCode() == Activity.RESULT_OK)
+                    {
+                        Intent data = result.getData();
+                        Uri uri = data.getData();
+                        File file = new File(uri.getPath());
+                        if(!file.exists())
+                            Log.d("TEST", "non trova il file");
 
-            Uri selectedFile = resultData.getData();
-            File file = FileUtils.getFile(getActivity(), selectedFile);
+                        ContentResolver cR = getActivity().getContentResolver();
 
-            ContentResolver cR = getActivity().getContentResolver();
+                        RequestBody requestFile = RequestBody.create(MediaType.parse(cR.getType(uri)), file);
 
-            RequestBody requestFile = RequestBody.create(MediaType.parse(cR.getType(selectedFile)), file);
+                        MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file",file.getName(),requestFile);
+                        addFile(token, group_id, user_id, description, multipartBody);
+                    }
+                }
+            }
+    );
 
-            MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file",file.getName(),requestFile);
-            addFile(token, group_id, user_id, description, multipartBody);
-
-        }
-    }
-
-    @SuppressLint("QueryPermissionsNeeded")
-    private void performFileSearch() {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.setType("*/*");
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-
-        try {
-            startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), 0);
-        } catch (android.content.ActivityNotFoundException ex) {
-            // Potentially direct the user to the Market with a Dialog
-            Toast.makeText(getActivity(),"Please install a File Manager", Toast.LENGTH_SHORT).show();
-        }
-
+    public void openFileDialog() {
+        Intent data = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        data.setType("*/*");
+        data = Intent.createChooser(data, "Choose a file");
+        sActivityResultLauncher.launch(data);
     }
 
     private void initFileRecycler(){
         RecyclerView fileRecyclerView = view.findViewById(R.id.file_recycler);
-        FileRecycleAdapter adapter = new FileRecycleAdapter(getActivity(), mFileId, mMemberName, mDescription, mDate, mFileType, group_id, user_id, token);
+        FileRecycleAdapter adapter = new FileRecycleAdapter(getActivity(), mFileId, mMemberName, mDescription, mDate, mFileType, mCreatorId, group_id, user_id, token);
         fileRecyclerView.addItemDecoration(new DividerItemDecoration(fileRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
         fileRecyclerView.setAdapter(adapter);
@@ -196,6 +200,7 @@ public class CabinetGroupFragment extends Fragment {
                         mDate.add(obj.getString("date").substring(0,10));
                         mFileType.add(obj.getString("contentType"));
                         mMemberName.add(obj.getString("creator_name"));
+                        mCreatorId.add(obj.getString("creator_id"));
                     }
                     initFileRecycler();
                 }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
@@ -212,6 +217,7 @@ public class CabinetGroupFragment extends Fragment {
                     mDescription.clear();
                     mDate.clear();
                     mFileType.clear();
+                    mCreatorId.clear();
                     fileList(token, group_id, user_id);
                 }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
