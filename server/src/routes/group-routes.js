@@ -1132,7 +1132,15 @@ router.post('/:id/activities', async (req, res, next) => {  //Usato req.query !!
   const user_id = req.query.user_id
   const group_id = req.params.id
   try {
-    const { activity, events } = req.body
+    let { activity, events } = req.body
+    if (typeof(activity) === "string")
+      activity = JSON.parse(activity)
+    if (typeof(events) === "string")
+      events = JSON.parse(events)    
+    events.forEach(event => {
+      event.start.date = null
+      event.end.date = null
+    })
     const member = await Member.findOne({
       group_id,
       user_id,
@@ -1154,15 +1162,20 @@ router.post('/:id/activities', async (req, res, next) => {  //Usato req.query !!
     activity.activity_id = activity_id
     const group = await Group.findOne({ group_id })
     activity.group_name = group.name
+    console.log("\n-------------------------\n" +activity+"\n-----------------------------------------------")
     events.forEach(event => { event.extendedProperties.shared.activityId = activity_id })
     await Promise.all(
-      events.map(event =>
+      events.map(event => {
+        console.log("\n--------\n" +event)
         calendar.events.insert({
           calendarId: group.calendar_id,
           resource: event
         })
+        console.log("\nHo Inserito TUtto-----------------------------\n\n")
+      }
       )
     )
+    console.log("\nInizio creazione attività-----------------------------\n\n")
     await Activity.create(activity)
     if (member.admin) {
       await nh.newActivityNotification(group_id, user_id)

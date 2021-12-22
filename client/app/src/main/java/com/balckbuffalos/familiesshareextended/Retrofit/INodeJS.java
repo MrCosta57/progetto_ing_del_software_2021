@@ -2,6 +2,10 @@ package com.balckbuffalos.familiesshareextended.Retrofit;
 
 import androidx.annotation.ColorInt;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONStringer;
+
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -61,17 +65,8 @@ public interface INodeJS {
     Observable<String> createActivity(@Header("Authorization") String token,
                                       @Path("id") String group_id,
                                       @Query("user_id") String user_id,
-                                      @Field("title") String title,
-                                      @Field("description") String description,
-                                      @Field("position") String position,
-                                      @Field("color") @ColorInt int color,
-                                      @Field("green_pass") boolean green_pass,
-                                      @Field("startDate") Date startDate,
-                                      @Field("startHour") int startHour,
-                                      @Field("startMinute") int startMinute,
-                                      @Field("endDate") Date endDate,
-                                      @Field("endHour") int endHour,
-                                      @Field("endMinute") int endMinute);
+                                      @Field("activity") JSONObject activity,
+                                      @Field("events") JSONArray events);
 
     @GET("groups/{id}/activities")
     Observable<String> activityList(@Header("Authorization") String token,
