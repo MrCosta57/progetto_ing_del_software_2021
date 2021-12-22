@@ -142,6 +142,7 @@ router.get("/:id", async (req, res) => {
         date: doc.uploadDate,
         contentType: doc.contentType,
         creator_name: user_info.given_name + " " + user_info.family_name,
+        creator_id: creator_id,
         description: doc.metadata.description
       });
     }

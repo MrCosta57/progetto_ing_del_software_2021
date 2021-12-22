@@ -105,15 +105,13 @@ public class ActivitiesGroupFragment extends Fragment {
                     for(int i = 0; i<arr.length();i++)
                     {
                         JSONObject obj = arr.getJSONObject(i);
-                        mName.add(obj.getString("name"));
-                        mGreenPass.add(obj.getBoolean("greenpass_isrequired"));
 
-                        timeslotsActivity(token, group_id, obj.getString("activity_id"), user_id);
+                        timeslotsActivity(token, group_id, obj.getString("activity_id"), user_id, obj.getString("name"), obj.getBoolean("greenpass_isrequired"));
                     }
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage())
-        ));
+                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+        );
     }
-    private void timeslotsActivity(String token, String group_id, String activity_id, String user_id) {
+    private void timeslotsActivity(String token, String group_id, String activity_id, String user_id, String name, Boolean green_pass_is_required) {
         compositeDisposable.add(myAPI.timeslotsActivity(token, group_id, activity_id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -138,10 +136,13 @@ public class ActivitiesGroupFragment extends Fragment {
                             prop = obj.getJSONObject("extendedProperties").getJSONObject("shared");
                         }
                         if((myDate.after(calendar.getTime())) || (i == arr.length()-1)) {
-                            mDate.add(insertDate);
 
+                            mName.add(name);
+                            mGreenPass.add(green_pass_is_required);
+                            mDate.add(insertDate);
                             mNAdult.add(prop.getString("children").equals("[]") ? 0 : prop.getString("children").split(",").length);
                             mNChildren.add(prop.getString("parents").equals("[]") ? 0 : prop.getString("parents").split(",").length);
+
                             initActivityRecycler();
                             break;
                         }
@@ -149,7 +150,11 @@ public class ActivitiesGroupFragment extends Fragment {
 
                 }, t -> {
                     if(Objects.requireNonNull(t.getMessage()).contains("404")) {
+                        mName.add(name);
+                        mGreenPass.add(green_pass_is_required);
                         mDate.add("N/D");
+                        mNAdult.add(0);
+                        mNChildren.add(0);
                         initActivityRecycler();
                     }
                     else

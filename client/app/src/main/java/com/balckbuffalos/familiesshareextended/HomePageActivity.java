@@ -117,30 +117,27 @@ public class HomePageActivity extends AppCompatActivity {
                     {
                         JSONObject obj = arr.getJSONObject(i);
                         String group_id = obj.getString("group_id");
-                        mGroupId.add(group_id);
-                        mNotifications.add(obj.getBoolean("has_notifications"));
 
-                        groupSettings(token, group_id, user_id);
+                        groupSettings(token, group_id, user_id, obj.getBoolean("has_notifications"));
                         activityList(token,group_id,user_id);
                     }
                 }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
     }
 
-    private void groupSettings(String token, String id, String user_id) {
+    private void groupSettings(String token, String id, String user_id, Boolean has_notifications) {
         compositeDisposable.add(myAPI.groupSettings(token, id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
                     JSONObject obj = new JSONObject(s);
-                    mVisible.add(obj.getBoolean("open"));
 
-                    groupInfo(token, id, user_id);
+                    groupInfo(token, id, user_id,has_notifications,obj.getBoolean("open"));
                 }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
     }
 
-    private void groupInfo(String token, String group_id, String user_id) {
+    private void groupInfo(String token, String group_id, String user_id, Boolean has_notifications, Boolean visible) {
         compositeDisposable.add(myAPI.groupInfo(token, group_id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -148,6 +145,9 @@ public class HomePageActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject(s);
                     mGroupName.add(obj.getString("name"));
                     mMembers.add(obj.getString("members"));
+                    mGroupId.add(group_id);
+                    mNotifications.add(has_notifications);
+                    mVisible.add(visible);
                     initGroupRecycler();
                 }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
@@ -162,15 +162,13 @@ public class HomePageActivity extends AppCompatActivity {
                     for(int i = 0; i<arr.length();i++)
                     {
                         JSONObject obj = arr.getJSONObject(i);
-                        mName.add(obj.getString("name"));
-                        mGreenPass.add(obj.getBoolean("greenpass_isrequired"));
 
-                        timeslotsActivity(token, group_id, obj.getString("activity_id"), user_id);
+                        timeslotsActivity(token, group_id, obj.getString("activity_id"), user_id, obj.getString("name"), obj.getBoolean("greenpass_isrequired"));
                     }
                 }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
     }
-    private void timeslotsActivity(String token, String group_id, String activity_id, String user_id) {
+    private void timeslotsActivity(String token, String group_id, String activity_id, String user_id, String name, Boolean green_pass_is_required) {
         compositeDisposable.add(myAPI.timeslotsActivity(token, group_id, activity_id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -195,10 +193,13 @@ public class HomePageActivity extends AppCompatActivity {
                             prop = obj.getJSONObject("extendedProperties").getJSONObject("shared");
                         }
                         if((myDate.after(calendar.getTime())) || (i == arr.length()-1)) {
-                            mDate.add(insertDate);
 
+                            mName.add(name);
+                            mGreenPass.add(green_pass_is_required);
+                            mDate.add(insertDate);
                             mNAdult.add(prop.getString("children").equals("[]") ? 0 : prop.getString("children").split(",").length);
                             mNChildren.add(prop.getString("parents").equals("[]") ? 0 : prop.getString("parents").split(",").length);
+
                             initActivityRecycler();
                             break;
                         }
@@ -206,7 +207,11 @@ public class HomePageActivity extends AppCompatActivity {
 
                 }, t -> {
                     if(Objects.requireNonNull(t.getMessage()).contains("404")) {
+                        mName.add(name);
+                        mGreenPass.add(green_pass_is_required);
                         mDate.add("N/D");
+                        mNAdult.add(0);
+                        mNChildren.add(0);
                         initActivityRecycler();
                     }
                     else
