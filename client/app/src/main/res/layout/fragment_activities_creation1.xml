@@ -157,7 +157,7 @@
         app:layout_constraintTop_toBottomOf="@+id/pick_color_button" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switch_green_pass"
+        android:id="@+id/switch_green_pass_cert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"

@@ -66,8 +66,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/groupsRecycler"
-        android:layout_width="379dp"
-        android:layout_height="182dp"
+        android:layout_width="392dp"
+        android:layout_height="230dp"
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,8 +87,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/activityRecycler"
-        android:layout_width="380dp"
-        android:layout_height="227dp"
+        android:layout_width="396dp"
+        android:layout_height="230dp"
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
