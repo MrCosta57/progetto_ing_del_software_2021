@@ -123,9 +123,9 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
             JSONObject extendedProperties = new JSONObject();
             JSONObject sharedProperties = new JSONObject();
 
-            startTime.put("dateTime", (data_inizio.getYear() + 1900) + "-" + data_inizio.getMonth() + "-" + data_inizio.getDate() + "T" + ora_inizio + ":" + (minuto_inizio<10?"0":"") + minuto_inizio + ".000Z");
+            startTime.put("dateTime", (data_inizio.getYear() + 1900) + "-" + data_inizio.getMonth() + "-" + data_inizio.getDate() + "T" + ora_inizio + ":" + (minuto_inizio<10?"0":"") + minuto_inizio + ":00.000Z");
             startTime.put("date", null);
-            endTime.put("dateTime", (data_fine.getYear() + 1900) + "-" + data_fine.getMonth() + "-" + data_fine.getDate() + "T" + ora_fine + ":" + (minuto_fine<10?"0":"") + minuto_fine + ".000Z");
+            endTime.put("dateTime", (data_fine.getYear() + 1900) + "-" + data_fine.getMonth() + "-" + data_fine.getDate() + "T" + ora_fine + ":" + (minuto_fine<10?"0":"") + minuto_fine + ":00.000Z");
             endTime.put("date", null);
 
             sharedProperties.put("requiredParents", 1);
