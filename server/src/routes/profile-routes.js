@@ -103,5 +103,32 @@ router.post('/change_greenpass_available', async (req, res, next) => {  //Usato 
   }
 })
 
+router.post('/change_positivity_state', async (req, res, next) => {  //Usato req.query !!!
+  if (!req.query.user_id) { return res.status(401).send('Not authorized') }
+  try {
+    const user_id = req.query.user_id
+    const positivity = req.query.positivity
+    const profile = await Profile.findOne({ user_id: user_id })
+    if (profile.suspended) {
+      await Profile.updateOne({ user_id }, { suspended: false })
+      const usersChildren = await Parent.find({ parent_id: user_id })
+      const childIds = usersChildren.map(usersChildren.child_id)
+      await Child.updateMany({ child_id: { $in: childIds } }, { suspended: false })
+  }
+  const token = await jwt.sign({ user_id, positivity }, process.env.SERVER_SECRET)
+  const response = {
+    id: user_id,
+    positivity,
+    token
+  }
+  profile.positivity = req.query.positivity
+  await profile.save()
+  res.json(response)
+  } catch (error) {
+    next(error)
+  }
+})
+
+
 
 module.exports = router

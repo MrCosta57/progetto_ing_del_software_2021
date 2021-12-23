@@ -36,13 +36,13 @@ import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity {
 
-    INodeJS myAPI;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private INodeJS myAPI;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    Button btn_login;
-    TextView sign_up;
-    EditText edt_mail, edt_password;
-    MaterialToolbar toolbar;
+    private Button btn_login;
+    private TextView sign_up;
+    private EditText edt_mail, edt_password;
+    private MaterialToolbar toolbar;
 
     @Override
     protected void onStop() {

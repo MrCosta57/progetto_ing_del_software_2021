@@ -27,12 +27,12 @@ import retrofit2.Retrofit;
 
 public class SignUpActivity extends AppCompatActivity implements StepperLayout.StepperListener {
 
-    INodeJS myAPI;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private INodeJS myAPI;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    EditText edt_name, edt_surname, edt_mail, edt_password, edt_confirm_password, edt_children_name, edt_children_surname, edt_gender, edt_allergy;
-    SwitchMaterial add_child;
-    DatePicker birthdate;
+    private EditText edt_name, edt_surname, edt_mail, edt_password, edt_confirm_password, edt_children_name, edt_children_surname, edt_gender, edt_allergy;
+    private SwitchMaterial add_child;
+    private DatePicker birthdate;
 
     @Override
     protected void onStop() { super.onStop(); }

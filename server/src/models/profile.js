@@ -40,6 +40,11 @@ const profileSchema = new mongoose.Schema(
       type: Boolean,
       required: true
     },
+    is_positive: {
+      type: Boolean,
+      required: true, 
+      default: false,
+    },
     visible: {
       type: Boolean,
       required: true

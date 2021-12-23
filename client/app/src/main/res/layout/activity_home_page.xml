@@ -56,18 +56,18 @@
         android:id="@+id/TextGroups"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="32dp"
         android:text="@string/my_groups"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.164"
+        app:layout_constraintHorizontal_bias="0.053"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/groupsRecycler"
-        android:layout_width="410dp"
-        android:layout_height="wrap_content"
+        android:layout_width="392dp"
+        android:layout_height="230dp"
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,14 +81,14 @@
         android:text="@string/my_activities"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.164"
+        app:layout_constraintHorizontal_bias="0.057"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/groupsRecycler" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/activityRecycler"
-        android:layout_width="416dp"
-        android:layout_height="wrap_content"
+        android:layout_width="396dp"
+        android:layout_height="230dp"
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

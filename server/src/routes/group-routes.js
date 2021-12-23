@@ -240,7 +240,8 @@ router.post('/', async (req, res, next) => {
       user_id: invite_id,
       admin: false,
       group_accepted: true,
-      user_accepted: false
+      user_accepted: false,
+      has_notifications: false
     })
   })
   try {
@@ -1131,7 +1132,15 @@ router.post('/:id/activities', async (req, res, next) => {  //Usato req.query !!
   const user_id = req.query.user_id
   const group_id = req.params.id
   try {
-    const { activity, events } = req.body
+    let { activity, events } = req.body
+    if (typeof(activity) === "string")
+      activity = JSON.parse(activity)
+    if (typeof(events) === "string")
+      events = JSON.parse(events)    
+    events.forEach(event => {
+      event.start.date = null
+      event.end.date = null
+    })
     const member = await Member.findOne({
       group_id,
       user_id,
@@ -1148,20 +1157,35 @@ router.post('/:id/activities', async (req, res, next) => {  //Usato req.query !!
     if (activity.greenpass_isrequired && !profile.greenpass_available) {
       return res.status(400).send('Greenpass Required But Not Available')
     }
+
+    /*
+     Cerco se esiste almeno un elemento che ha il valore is_positive a true
+    Faccio il controllo se allNegative contiene almeno un elemento allora ritorno 200 ma con alert 
+    */ 
+    const allNegative = await Profile.find({is_positive: true});
+    if(allNegative.length > 0){
+      return res.status(400).send('One or more elements are positive');
+    }
+
     const activity_id = objectid()
     activity.status = member.admin ? 'accepted' : 'pending'
     activity.activity_id = activity_id
     const group = await Group.findOne({ group_id })
     activity.group_name = group.name
+    console.log("\n-------------------------\n" +activity+"\n-----------------------------------------------")
     events.forEach(event => { event.extendedProperties.shared.activityId = activity_id })
     await Promise.all(
-      events.map(event =>
+      events.map(event => {
+        console.log("\n--------\n" +event)
         calendar.events.insert({
           calendarId: group.calendar_id,
           resource: event
         })
+        console.log("\nHo Inserito TUtto-----------------------------\n\n")
+      }
       )
     )
+    console.log("\nInizio creazione attività-----------------------------\n\n")
     await Activity.create(activity)
     if (member.admin) {
       await nh.newActivityNotification(group_id, user_id)

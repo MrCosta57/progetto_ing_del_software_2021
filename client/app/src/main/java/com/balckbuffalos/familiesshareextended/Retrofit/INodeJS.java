@@ -2,6 +2,10 @@ package com.balckbuffalos.familiesshareextended.Retrofit;
 
 import androidx.annotation.ColorInt;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONStringer;
+
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -10,6 +14,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -77,16 +82,8 @@ public interface INodeJS {
     Observable<String> createActivity(@Header("Authorization") String token,
                                       @Path("id") String group_id,
                                       @Query("user_id") String user_id,
-                                      @Field("title") String title,
-                                      @Field("description") String description,
-                                      @Field("position") String position,
-                                      @Field("color") @ColorInt int color,
-                                      @Field("startDate") Date startDate,
-                                      @Field("startHour") int startHour,
-                                      @Field("startMinute") int startMinute,
-                                      @Field("endDate") Date endDate,
-                                      @Field("endHour") int endHour,
-                                      @Field("endMinute") int endMinute);
+                                      @Field("activity") JSONObject activity,
+                                      @Field("events") JSONArray events);
 
     @GET("groups/{id}/activities")
     Observable<String> activityList(@Header("Authorization") String token,
@@ -167,4 +164,10 @@ public interface INodeJS {
                                @Query("user_id") String user_id,
                                @Query("description") String description,
                                @Part MultipartBody.Part file);
+
+    @DELETE("cabinet/{group_id}/{file_id}")
+    Observable<String> deleteFile(@Header("Authorization") String token,
+                                               @Path("group_id") String group_id,
+                                               @Path("file_id") String file_id,
+                                               @Query("user_id") String user_id);
 }

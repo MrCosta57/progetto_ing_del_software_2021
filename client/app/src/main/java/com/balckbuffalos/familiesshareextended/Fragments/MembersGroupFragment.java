@@ -29,14 +29,14 @@ import retrofit2.Retrofit;
 
 public class MembersGroupFragment extends Fragment {
 
-    INodeJS myAPI;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private INodeJS myAPI;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final ArrayList<String> mMemberName = new ArrayList<>();
     private final ArrayList<Boolean> mMemberRole = new ArrayList<>();
 
-    View view;
-    String group_id, token, user_id;
+    private View view;
+    private String group_id, token, user_id;
 
     public MembersGroupFragment() {}
 

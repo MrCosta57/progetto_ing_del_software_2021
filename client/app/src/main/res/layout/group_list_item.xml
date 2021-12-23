@@ -4,62 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent_layout"
     android:layout_width="match_parent"
-    android:layout_height="120dp">
+    android:layout_height="110dp">
 
     <ImageView
         android:id="@+id/group_icon"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="77dp"
+        android:layout_height="78dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="16dp"
         android:contentDescription="@string/groupicon"
         tools:ignore="ImageContrastCheck"
         tools:srcCompat="@drawable/group_icon" />
 
     <TextView
         android:id="@+id/group_name"
-        android:layout_width="wrap_content"
+        android:layout_width="243dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="145dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="105dp"
+        android:layout_marginTop="11dp"
         android:text="@string/group_id"
         android:textSize="20sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/n_member"
-        android:layout_width="wrap_content"
+        android:layout_width="244dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="145dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginStart="105dp"
+        android:layout_marginTop="45dp"
         android:text="@string/n_member"
         android:textSize="18sp" />
 
     <TextView
         android:id="@+id/group_info"
-        android:layout_width="wrap_content"
+        android:layout_width="243dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="144dp"
-        android:layout_marginTop="90dp"
+        android:layout_marginStart="106dp"
+        android:layout_marginTop="74dp"
         android:text="@string/info"
         android:textSize="18sp" />
 
     <ImageView
         android:id="@+id/bell_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="37dp"
+        android:layout_height="30dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="359dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginStart="360dp"
+        android:layout_marginTop="12dp"
         android:contentDescription="@string/bell_icon"
         app:srcCompat="@drawable/bell_icon"
         tools:ignore="ImageContrastCheck" />

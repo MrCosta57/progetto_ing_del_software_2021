@@ -16,17 +16,16 @@ import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 import com.stepstone.stepper.viewmodel.StepViewModel;
 
 public class ActivitiesCreationFragmentAdapter extends AbstractFragmentStepAdapter {
-    //public ActivitiesCreation1Fragment step = new ActivitiesCreation1Fragment();
+    private ActivitiesCreation1Fragment step = new ActivitiesCreation1Fragment();
+    private ActivitiesCreation2Fragment step2 = new ActivitiesCreation2Fragment();
+    private ActivitiesCreation3Fragment step3 = new ActivitiesCreation3Fragment();
+
     public ActivitiesCreationFragmentAdapter(@NonNull FragmentManager fm, @NonNull Context context) {
         super(fm, context);
     }
 
     @Override
     public Step createStep(int position) {
-        final ActivitiesCreation1Fragment step = new ActivitiesCreation1Fragment();
-        final ActivitiesCreation2Fragment step2 = new ActivitiesCreation2Fragment();
-        final ActivitiesCreation3Fragment step3 = new ActivitiesCreation3Fragment();
-
         Bundle b = new Bundle();
 
         b.putInt("CURRENT_STEP_POSITION_KEY", position);
@@ -44,6 +43,18 @@ public class ActivitiesCreationFragmentAdapter extends AbstractFragmentStepAdapt
         } else {
             return null;
         }
+    }
+
+    public ActivitiesCreation1Fragment getStep() {
+        return step;
+    }
+
+    public ActivitiesCreation2Fragment getStep2() {
+        return step2;
+    }
+
+    public ActivitiesCreation3Fragment getStep3() {
+        return step3;
     }
 
     @Override
