@@ -45,7 +45,9 @@ public class ActivitiesCreation2Fragment extends Fragment implements Step {
         startDate.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                activityStartDate = new Date(year, monthOfYear, dayOfMonth);
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, monthOfYear, dayOfMonth);
+                activityStartDate = calendar.getTime();
             }
         });
 

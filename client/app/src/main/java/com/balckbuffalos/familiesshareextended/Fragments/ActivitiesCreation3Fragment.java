@@ -45,7 +45,9 @@ public class ActivitiesCreation3Fragment extends Fragment implements Step {
         endDate.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                activityEndDate = new Date(year, monthOfYear, dayOfMonth);
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, monthOfYear, dayOfMonth);
+                activityEndDate = calendar.getTime();
             }
         });
 
