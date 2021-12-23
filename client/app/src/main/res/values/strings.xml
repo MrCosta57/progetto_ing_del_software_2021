@@ -77,4 +77,14 @@
     <string name="download">DOWNLOAD</string>
     <string name="description_icon">description icon</string>
     <string name="insert_file">INSERT FILE</string>
+    <string name="title_activity_info_user">InfoUserActivity</string>
+    <string name="user_circle_icon">user_circle_icon</string>
+    <string name="string_user_circle_icon">user_circle_icon</string>
+    <string name="user_personal_info">Personal info</string>
+    <string name="user_greenpass">Greenpass</string>
+    <string name="user_positivity">Positivity</string>
+    <string name="user_positive">I tested positive for Covid</string>
+    <string name="user_change_greenpass">Change greenpass state:</string>
+    <string name="user_greenpass_state">Not available</string>
+    <string name="user_children">Children</string>
 </resources>

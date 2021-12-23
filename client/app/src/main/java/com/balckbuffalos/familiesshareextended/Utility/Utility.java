@@ -14,6 +14,7 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
 import com.balckbuffalos.familiesshareextended.HomePageActivity;
+import com.balckbuffalos.familiesshareextended.InfoUserActivity;
 import com.balckbuffalos.familiesshareextended.LoginActivity;
 import com.balckbuffalos.familiesshareextended.R;
 
@@ -54,10 +55,10 @@ public class Utility {
                         }
                         return true;
                     case R.id.profile_menu:
-                        /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
-                           Intent myIntent = new Intent(ctx, ProfileActivity.class);
+                        TODO: if(!(token.equals("none")||user_id.equals("none"))) {
+                           Intent myIntent = new Intent(ctx, InfoUserActivity.class);
                            ctx.startActivity(myIntent);
-                        }*/
+                        }
                         return true;
                     case R.id.create_group_menu:
                         /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {

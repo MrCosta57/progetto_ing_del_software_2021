@@ -28,6 +28,11 @@
         android:requestLegacyExternalStorage="true"
         tools:ignore="AllowBackup">
         <activity
+            android:name=".InfoUserActivity"
+            android:exported="true"
+            android:label="@string/title_activity_info_user"
+            android:theme="@style/Theme.FamiliesShareExtended.NoActionBar" />
+        <activity
             android:name=".ActivitiesCreationActivity"
             android:exported="false" />
         <activity

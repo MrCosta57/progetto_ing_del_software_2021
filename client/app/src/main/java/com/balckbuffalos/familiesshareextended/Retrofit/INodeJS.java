@@ -56,6 +56,22 @@ public interface INodeJS {
                                  @Path("id") String id,
                                  @Query("user_id") String user_id);
 
+
+    @POST("profiles/change_greenpass_available")
+    @FormUrlEncoded
+    Observable<String> changeGreenpassState(@Header("Authorization") String token,
+                                            @Field("user_id") String user_id,
+                                            @Query("greenpass_available") Boolean greenpass_available);
+
+
+    /*@POST("profiles/change_positivity")
+    @FormUrlEncoded
+    Observable<String> changePositivity(@Header("Authorization") String token,
+                                        @Query("user_id") String user_id,
+                                        @Field("is_positive") Boolean is_positive);*/
+
+
+
     @POST("groups/{id}/activities")
     @FormUrlEncoded
     Observable<String> createActivity(@Header("Authorization") String token,

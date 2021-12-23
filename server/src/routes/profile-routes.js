@@ -77,9 +77,10 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/change_greenpass_available', async (req, res, next) => {  //Usato req.query !!!
-  if (!req.query.user_id) { return res.status(401).send('Not authorized') }
+  if (!req.user_id) { return res.status(401).send('Not authorized') }
   try {
-    const user_id = req.query.user_id
+    console.log("User_id: " + req.user_id + ", greenpass_available: " + req.query.greenpass_available)
+    const user_id = req.user_id
     const greenpass_available = req.query.greenpass_available
     const profile = await Profile.findOne({ user_id: user_id })
     if (profile.suspended) {
