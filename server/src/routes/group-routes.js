@@ -1162,7 +1162,7 @@ router.post('/:id/activities', async (req, res, next) => {  //Usato req.query !!
      Cerco se esiste almeno un elemento che ha il valore is_positive a true
     Faccio il controllo se allNegative contiene almeno un elemento allora ritorno 200 ma con alert 
     */ 
-    const allNegative = await User.find({is_positive: true});
+    const allNegative = await Profile.find({is_positive: true});
     if(allNegative.length > 0){
       return res.status(400).send('One or more elements are positive');
     }
