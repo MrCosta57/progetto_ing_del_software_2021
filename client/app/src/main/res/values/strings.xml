@@ -94,4 +94,9 @@
     <string name="activity_info_group_name">Activity Info Group Name</string>
     <string name="activity_info_description">Activity Info Description</string>
     <string name="activity_info_location">Activity Info Location</string>
+    <string name="empty_directory">Empty Directory</string>
+    <string name="storage_removed">Storage was removed or unmounted.</string>
+    <string name="choose_file">Select a file</string>
+    <string name="error_selecting_file">Error selecting File</string>
+    <string name="internal_storage">Internal storage</string>
 </resources>

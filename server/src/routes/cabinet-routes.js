@@ -191,16 +191,7 @@ router.get("/:group_id/:file_id", async (req, res) => {
     });
 
     let downloadStream = bucket.openDownloadStream(ObjectID(file_id));
-    let file = await cursor.next();
-    console.log(file)
-    res.set('Content-Type', file.contentType);
-    res.set('Content-Disposition', 'attachment; filename="' + file.filename + '"');
-    readstream.on('errror', function(err) {
-      res.end();
-    });
-    readstream.pipe(res);
-    return res.status(204).send();
-
+    
     downloadStream.on("data", function (data) {
       return res.status(200).write(data);
     });
