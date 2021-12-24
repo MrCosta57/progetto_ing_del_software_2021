@@ -88,4 +88,9 @@
     <string name="user_change_greenpass">Change greenpass state:</string>
     <string name="user_greenpass_state">Not available</string>
     <string name="user_children">Children</string>
+    <string name="empty_directory">Empty Directory</string>
+    <string name="storage_removed">Storage was removed or unmounted.</string>
+    <string name="choose_file">Select a file</string>
+    <string name="error_selecting_file">Error selecting File</string>
+    <string name="internal_storage">Internal storage</string>
 </resources>

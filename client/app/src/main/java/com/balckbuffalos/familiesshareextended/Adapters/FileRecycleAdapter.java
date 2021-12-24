@@ -144,6 +144,7 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void deleteFile(String token, String group_id, String user_id, String file_id, int position) {
         compositeDisposable.add(myAPI.deleteFile(token, group_id, file_id, user_id)
                 .subscribeOn(Schedulers.io())

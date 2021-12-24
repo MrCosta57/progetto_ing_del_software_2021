@@ -1,5 +1,6 @@
 package com.balckbuffalos.familiesshareextended.Fragments;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,6 +23,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -72,7 +75,6 @@ public class CabinetGroupFragment extends Fragment {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private String group_id, token, user_id;
 
-    private static final int REQUEST_CHOOSER = 1234;
     private String description = "";
 
     private final ArrayList<String> mFileId = new ArrayList<>();
@@ -94,6 +96,9 @@ public class CabinetGroupFragment extends Fragment {
 
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
+
+        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
 
         Bundle extras = this.getArguments();
 
@@ -152,15 +157,13 @@ public class CabinetGroupFragment extends Fragment {
                 public void onActivityResult(ActivityResult result) {
                     if(result.getResultCode() == Activity.RESULT_OK)
                     {
-                        Intent data = result.getData();
-                        Uri uri = data.getData();
-                        File file = new File(uri.getPath());
-                        if(!file.exists())
-                            Log.d("TEST", "non trova il file");
+                        assert result.getData() != null;
+                        Uri uri = result.getData().getData();
+                        File file = FileUtils.getFile(getActivity(), uri);
 
-                        ContentResolver cR = getActivity().getContentResolver();
-
-                        RequestBody requestFile = RequestBody.create(MediaType.parse(cR.getType(uri)), file);
+                        RequestBody requestFile = RequestBody.create(
+                                MediaType.parse(getActivity().getContentResolver().getType(uri)),
+                                file);
 
                         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file",file.getName(),requestFile);
                         addFile(token, group_id, user_id, description, multipartBody);
@@ -170,7 +173,7 @@ public class CabinetGroupFragment extends Fragment {
     );
 
     public void openFileDialog() {
-        Intent data = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        Intent data = new Intent(Intent.ACTION_GET_CONTENT);
         data.setType("*/*");
         data = Intent.createChooser(data, "Choose a file");
         sActivityResultLauncher.launch(data);
