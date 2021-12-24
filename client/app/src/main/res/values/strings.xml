@@ -88,4 +88,10 @@
     <string name="user_change_greenpass">Change greenpass state:</string>
     <string name="user_greenpass_state">Not available</string>
     <string name="user_children">Children</string>
+    <string name="group_name">Group name</string>
+    <string name="location">Location</string>
+    <string name="activity_info_name">Activity Info Name</string>
+    <string name="activity_info_group_name">Activity Info Group Name</string>
+    <string name="activity_info_description">Activity Info Description</string>
+    <string name="activity_info_location">Activity Info Location</string>
 </resources>

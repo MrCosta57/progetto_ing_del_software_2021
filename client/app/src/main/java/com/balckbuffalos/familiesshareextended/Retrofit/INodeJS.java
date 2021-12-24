@@ -148,13 +148,13 @@ public interface INodeJS {
 
     @GET("groups/{groupId}/activities/{activityId}/timeslots")
     Observable<String> timeslotsActivity(@Header("Authorization") String token,
-                                 @Path("groupId") String group_id,
-                                 @Path("activityId") String activity_id,
-                                 @Query("user_id") String user_id);
+                                         @Path("groupId") String group_id,
+                                         @Path("activityId") String activity_id,
+                                         @Query("user_id") String user_id);
     @GET("cabinet/{id}")
     Observable<String> listFiles(@Header("Authorization") String token,
-                                         @Path("id") String id,
-                                         @Query("user_id") String user_id);
+                                 @Path("id") String id,
+                                 @Query("user_id") String user_id);
 
     @GET("cabinet/{group_id}/{file_id}")
     @Streaming
