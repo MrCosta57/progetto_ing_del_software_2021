@@ -69,11 +69,11 @@ public interface INodeJS {
                                             @Query("greenpass_available") Boolean greenpass_available);
 
 
-    /*@POST("profiles/change_positivity")
+    @POST("profiles/change_is_positive_state")
     @FormUrlEncoded
     Observable<String> changePositivity(@Header("Authorization") String token,
-                                        @Query("user_id") String user_id,
-                                        @Field("is_positive") Boolean is_positive);*/
+                                        @Field("user_id") String user_id,
+                                        @Query("is_positive") Boolean is_positive);
 
 
 
