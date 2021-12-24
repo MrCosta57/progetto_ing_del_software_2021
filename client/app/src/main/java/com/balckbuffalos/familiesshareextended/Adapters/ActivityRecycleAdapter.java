@@ -2,6 +2,7 @@ package com.balckbuffalos.familiesshareextended.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.balckbuffalos.familiesshareextended.ActivitiesInfoActivity;
 import com.balckbuffalos.familiesshareextended.R;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 
 public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycleAdapter.ViewHolder>{
+    private final ArrayList<String> mActivityId;
+    private final ArrayList<String> mGroupId;
     private final ArrayList<String> mDate;
     private final ArrayList<String> mName;
     private final ArrayList<Integer> mNAdult;
@@ -26,7 +30,9 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
 
     private final Context mContext;
 
-    public ActivityRecycleAdapter(Context mContext, ArrayList<String> mDate, ArrayList<String> mName, ArrayList<Integer> mNAdult, ArrayList<Integer> mNChildren, ArrayList<Boolean> mGreenPass) {
+    public ActivityRecycleAdapter(Context mContext, ArrayList<String> mActivityId, ArrayList<String> mGroupId, ArrayList<String> mDate, ArrayList<String> mName, ArrayList<Integer> mNAdult, ArrayList<Integer> mNChildren, ArrayList<Boolean> mGreenPass) {
+        this.mActivityId = mActivityId;
+        this.mGroupId = mGroupId;
         this.mDate = mDate;
         this.mName = mName;
         this.mNAdult = mNAdult;
@@ -68,7 +74,10 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
         }
 
         holder.parent_layout.setOnClickListener(v -> {
-            //TODO: manda alla schermata del gruppo relativo a mGroupID(position)
+            Intent myIntent = new Intent(mContext, ActivitiesInfoActivity.class);
+            myIntent.putExtra("group_id", mGroupId.get(position));
+            myIntent.putExtra("activity_id", mActivityId.get(position));
+            mContext.startActivity(myIntent);
         });
     }
 

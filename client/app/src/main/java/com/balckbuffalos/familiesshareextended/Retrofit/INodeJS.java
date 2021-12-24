@@ -112,8 +112,14 @@ public interface INodeJS {
 
     @GET("groups/{id}")
     Observable<String> groupInfo(@Header("Authorization") String token,
-                                   @Path("id") String group_id,
-                                   @Query("user_id") String user_id);
+                                 @Path("id") String group_id,
+                                 @Query("user_id") String user_id);
+
+    @GET("groups/{group_id}/activities/{activity_id}")
+    Observable<String> activityInfo(@Header("Authorization") String token,
+                                    @Path("group_id") String group_id,
+                                    @Path("activity_id") String activity_id,
+                                    @Query("user_id") String user_id);
 
     @PATCH("groups/{id}")
     @FormUrlEncoded
