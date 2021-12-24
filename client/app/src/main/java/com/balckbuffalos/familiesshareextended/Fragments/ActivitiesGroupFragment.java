@@ -42,6 +42,8 @@ public class ActivitiesGroupFragment extends Fragment {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private FloatingActionButton createActivity;
+    private final ArrayList<String> mActivityId = new ArrayList<>();
+    private final ArrayList<String> mGroupId = new ArrayList<>();
     private final ArrayList<String> mDate = new ArrayList<>();
     private final ArrayList<String> mName = new ArrayList<>();
     private final ArrayList<Integer> mNAdult = new ArrayList<>();
@@ -88,7 +90,7 @@ public class ActivitiesGroupFragment extends Fragment {
 
     private void initActivityRecycler(){
         RecyclerView activityRecyclerView = view.findViewById(R.id.activityRecycler);
-        ActivityRecycleAdapter adapter = new ActivityRecycleAdapter(getActivity(), mDate, mName, mNAdult, mNChildren, mGreenPass);
+        ActivityRecycleAdapter adapter = new ActivityRecycleAdapter(getActivity(), mActivityId, mGroupId, mDate, mName, mNAdult, mNChildren, mGreenPass);
         activityRecyclerView.addItemDecoration(new DividerItemDecoration(activityRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
         activityRecyclerView.setAdapter(adapter);

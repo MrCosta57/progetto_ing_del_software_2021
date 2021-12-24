@@ -51,6 +51,7 @@ public class HomePageActivity extends AppCompatActivity {
     private final ArrayList<Boolean> mVisible = new ArrayList<>();
     private final ArrayList<Boolean> mNotifications = new ArrayList<>();
 
+    private final ArrayList<String> mActivityId = new ArrayList<>();
     private final ArrayList<String> mDate = new ArrayList<>();
     private final ArrayList<String> mName = new ArrayList<>();
     private final ArrayList<Integer> mNAdult = new ArrayList<>();
@@ -99,7 +100,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     private void initActivityRecycler(){
         RecyclerView activityRecyclerView = findViewById(R.id.activityRecycler);
-        ActivityRecycleAdapter adapter = new ActivityRecycleAdapter(this, mDate, mName, mNAdult, mNChildren, mGreenPass);
+        ActivityRecycleAdapter adapter = new ActivityRecycleAdapter(this, mActivityId, mGroupId, mDate, mName, mNAdult, mNChildren, mGreenPass);
         activityRecyclerView.addItemDecoration(new DividerItemDecoration(activityRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
         activityRecyclerView.setAdapter(adapter);
@@ -193,7 +194,7 @@ public class HomePageActivity extends AppCompatActivity {
                             prop = obj.getJSONObject("extendedProperties").getJSONObject("shared");
                         }
                         if((myDate.after(calendar.getTime())) || (i == arr.length()-1)) {
-
+                            mActivityId.add(activity_id);
                             mName.add(name);
                             mGreenPass.add(green_pass_is_required);
                             mDate.add(insertDate);

@@ -4,9 +4,10 @@
     package="com.balckbuffalos.familiesshareextended">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
 
     <queries>
@@ -21,11 +22,11 @@
         android:allowBackup="true"
         android:icon="@drawable/families_share_logo"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/families_share_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.FamiliesShareExtended"
         android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true"
         tools:ignore="AllowBackup">
         <activity
             android:name=".ActivitiesCreationActivity"
@@ -35,6 +36,9 @@
             android:exported="false" />
         <activity
             android:name=".GroupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActivitiesInfoActivity"
             android:exported="false" />
         <activity
             android:name=".SplashScreenActivity"

@@ -1172,20 +1172,16 @@ router.post('/:id/activities', async (req, res, next) => {  //Usato req.query !!
     activity.activity_id = activity_id
     const group = await Group.findOne({ group_id })
     activity.group_name = group.name
-    console.log("\n-------------------------\n" +activity+"\n-----------------------------------------------")
     events.forEach(event => { event.extendedProperties.shared.activityId = activity_id })
     await Promise.all(
       events.map(event => {
-        console.log("\n--------\n" +event)
         calendar.events.insert({
           calendarId: group.calendar_id,
           resource: event
         })
-        console.log("\nHo Inserito TUtto-----------------------------\n\n")
       }
       )
     )
-    console.log("\nInizio creazione attività-----------------------------\n\n")
     await Activity.create(activity)
     if (member.admin) {
       await nh.newActivityNotification(group_id, user_id)
