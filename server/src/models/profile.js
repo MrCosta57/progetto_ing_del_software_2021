@@ -38,7 +38,14 @@ const profileSchema = new mongoose.Schema(
     /* The users have to specify whether they have a valid GREEN PASS certification */
     greenpass_available: {
       type: Boolean,
-      required: true
+      required: true,
+      default: false
+    },
+    /*Controls the positivity for Covid*/
+    is_positive: {
+      type: Boolean,
+      required: true, 
+      default: false
     },
     visible: {
       type: Boolean,
