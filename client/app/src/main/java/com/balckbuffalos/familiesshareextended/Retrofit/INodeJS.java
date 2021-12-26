@@ -69,11 +69,11 @@ public interface INodeJS {
                                             @Query("greenpass_available") Boolean greenpass_available);
 
 
-    /*@POST("profiles/change_positivity")
+    @POST("profiles/change_is_positive_state")
     @FormUrlEncoded
     Observable<String> changePositivity(@Header("Authorization") String token,
-                                        @Query("user_id") String user_id,
-                                        @Field("is_positive") Boolean is_positive);*/
+                                        @Field("user_id") String user_id,
+                                        @Query("is_positive") Boolean is_positive);
 
 
 
@@ -112,8 +112,14 @@ public interface INodeJS {
 
     @GET("groups/{id}")
     Observable<String> groupInfo(@Header("Authorization") String token,
-                                   @Path("id") String group_id,
-                                   @Query("user_id") String user_id);
+                                 @Path("id") String group_id,
+                                 @Query("user_id") String user_id);
+
+    @GET("groups/{group_id}/activities/{activity_id}")
+    Observable<String> activityInfo(@Header("Authorization") String token,
+                                    @Path("group_id") String group_id,
+                                    @Path("activity_id") String activity_id,
+                                    @Query("user_id") String user_id);
 
     @PATCH("groups/{id}")
     @FormUrlEncoded
@@ -142,13 +148,13 @@ public interface INodeJS {
 
     @GET("groups/{groupId}/activities/{activityId}/timeslots")
     Observable<String> timeslotsActivity(@Header("Authorization") String token,
-                                 @Path("groupId") String group_id,
-                                 @Path("activityId") String activity_id,
-                                 @Query("user_id") String user_id);
+                                         @Path("groupId") String group_id,
+                                         @Path("activityId") String activity_id,
+                                         @Query("user_id") String user_id);
     @GET("cabinet/{id}")
     Observable<String> listFiles(@Header("Authorization") String token,
-                                         @Path("id") String id,
-                                         @Query("user_id") String user_id);
+                                 @Path("id") String id,
+                                 @Query("user_id") String user_id);
 
     @GET("cabinet/{group_id}/{file_id}")
     @Streaming
