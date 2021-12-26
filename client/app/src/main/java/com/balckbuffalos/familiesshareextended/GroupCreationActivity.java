@@ -13,25 +13,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.balckbuffalos.familiesshareextended.Adapters.AllProfilesRecycleAdapter;
-import com.balckbuffalos.familiesshareextended.Adapters.MemberRecycleAdapter;
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.Console;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -40,8 +34,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
-import retrofit2.http.Field;
-import retrofit2.http.Query;
 
 public class GroupCreationActivity extends AppCompatActivity {
     private INodeJS myAPI;
@@ -70,7 +62,7 @@ public class GroupCreationActivity extends AppCompatActivity {
             showMenu(v, R.menu.top_app_bar, this, getApplicationContext());});
 
 
-        createButton=findViewById(R.id.create_button);
+        createButton=findViewById(R.id.create_group_btn);
         TextView name=findViewById(R.id.group_name_text);
         TextView desc=findViewById(R.id.group_description_text);
 
