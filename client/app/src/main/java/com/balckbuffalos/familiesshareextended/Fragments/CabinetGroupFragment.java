@@ -92,13 +92,13 @@ public class CabinetGroupFragment extends Fragment {
     }
 
     private void showPopup(){
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity()).setTitle("Load File");
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity()).setTitle("Select File");
 
         final EditText input = new EditText (getActivity());
         input.setHint("description");
         alertDialogBuilder.setView(input);
 
-        alertDialogBuilder.setCancelable(false).setPositiveButton("LOAD FILE", (dialog, id) -> {
+        alertDialogBuilder.setCancelable(false).setPositiveButton("SELECT FILE", (dialog, id) -> {
             description = input.getText().toString();
             openFileDialog();
 

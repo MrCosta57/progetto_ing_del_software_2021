@@ -53,13 +53,16 @@ public class HomePageActivity extends AppCompatActivity {
 
     private final ArrayList<String> mActivityId = new ArrayList<>();
     private final ArrayList<String> mActivityGroupId = new ArrayList<>();
+    private final ArrayList<String> mCreatorId = new ArrayList<>();
     private final ArrayList<String> mDate = new ArrayList<>();
     private final ArrayList<String> mName = new ArrayList<>();
     private final ArrayList<Integer> mNAdult = new ArrayList<>();
     private final ArrayList<Integer> mNChildren = new ArrayList<>();
     private final ArrayList<Boolean> mGreenPass = new ArrayList<>();
 
-    ActivityRecycleAdapter adapter;
+    private ActivityRecycleAdapter adapter;
+    private String token;
+    private String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +86,8 @@ public class HomePageActivity extends AppCompatActivity {
                     EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                     EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             );
-            String token = sharedPreferences.getString("token", "none");
-            String user_id = sharedPreferences.getString("user_id", "none");
+            token = sharedPreferences.getString("token", "none");
+            user_id = sharedPreferences.getString("user_id", "none");
             groupList(token,user_id,user_id);
         } catch (GeneralSecurityException | IOException e) { e.printStackTrace(); }
 
@@ -103,7 +106,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     private void initActivityRecycler(){
         RecyclerView activityRecyclerView = findViewById(R.id.activityRecycler);
-        adapter = new ActivityRecycleAdapter(this, mActivityId, mActivityGroupId, mDate, mName, mNAdult, mNChildren, mGreenPass);
+        adapter = new ActivityRecycleAdapter(this, mActivityId, mActivityGroupId, mCreatorId, mDate, mName, mNAdult, mNChildren, mGreenPass, user_id, token);
         activityRecyclerView.addItemDecoration(new DividerItemDecoration(activityRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
         activityRecyclerView.setAdapter(adapter);
@@ -167,12 +170,12 @@ public class HomePageActivity extends AppCompatActivity {
                     {
                         JSONObject obj = arr.getJSONObject(i);
 
-                        timeslotsActivity(token, group_id, obj.getString("activity_id"), user_id, obj.getString("name"), obj.getBoolean("greenpass_isrequired"));
+                        timeslotsActivity(token, group_id, obj.getString("activity_id"), obj.getString("creator_id"), user_id, obj.getString("name"), obj.getBoolean("greenpass_isrequired"));
                     }
                 }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
     }
-    private void timeslotsActivity(String token, String group_id, String activity_id, String user_id, String name, Boolean green_pass_is_required) {
+    private void timeslotsActivity(String token, String group_id, String activity_id, String creator_id, String user_id, String name, Boolean green_pass_is_required) {
         compositeDisposable.add(myAPI.timeslotsActivity(token, group_id, activity_id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -199,6 +202,7 @@ public class HomePageActivity extends AppCompatActivity {
                         if((myDate.after(calendar.getTime())) || (i == arr.length()-1)) {
                             mActivityId.add(activity_id);
                             mActivityGroupId.add(group_id);
+                            mCreatorId.add(creator_id);
                             mName.add(name);
                             mGreenPass.add(green_pass_is_required);
                             mDate.add(insertDate);
@@ -214,6 +218,7 @@ public class HomePageActivity extends AppCompatActivity {
                     if(Objects.requireNonNull(t.getMessage()).contains("404")) {
                         mActivityId.add(activity_id);
                         mActivityGroupId.add(group_id);
+                        mCreatorId.add(creator_id);
                         mName.add(name);
                         mGreenPass.add(green_pass_is_required);
                         mDate.add("N/D");

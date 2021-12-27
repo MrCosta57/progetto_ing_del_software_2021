@@ -43,12 +43,14 @@ public class ActivitiesGroupFragment extends Fragment {
 
     private FloatingActionButton createActivity;
     private final ArrayList<String> mActivityId = new ArrayList<>();
-    private final ArrayList<String> mGroupId = new ArrayList<>();
+    private final ArrayList<String> mActivityGroupId = new ArrayList<>();
+    private final ArrayList<String> mCreatorId = new ArrayList<>();
     private final ArrayList<String> mDate = new ArrayList<>();
     private final ArrayList<String> mName = new ArrayList<>();
     private final ArrayList<Integer> mNAdult = new ArrayList<>();
     private final ArrayList<Integer> mNChildren = new ArrayList<>();
     private final ArrayList<Boolean> mGreenPass = new ArrayList<>();
+
 
     private String group_id, token, user_id;
 
@@ -81,6 +83,14 @@ public class ActivitiesGroupFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        mActivityId.clear();
+        mActivityGroupId.clear();
+        mCreatorId.clear();
+        mDate.clear();
+        mName.clear();
+        mNAdult.clear();
+        mNChildren.clear();
+        mGreenPass.clear();
         activityList(token, group_id, user_id);
 
         return view;
@@ -88,7 +98,7 @@ public class ActivitiesGroupFragment extends Fragment {
 
     private void initActivityRecycler(){
         RecyclerView activityRecyclerView = view.findViewById(R.id.activityRecycler);
-        ActivityRecycleAdapter adapter = new ActivityRecycleAdapter(getActivity(), mActivityId, mGroupId, mDate, mName, mNAdult, mNChildren, mGreenPass);
+        ActivityRecycleAdapter adapter = new ActivityRecycleAdapter(getActivity(), mActivityId, mActivityGroupId, mCreatorId, mDate, mName, mNAdult, mNChildren, mGreenPass, user_id, token);
         activityRecyclerView.addItemDecoration(new DividerItemDecoration(activityRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
         activityRecyclerView.setAdapter(adapter);
@@ -106,12 +116,12 @@ public class ActivitiesGroupFragment extends Fragment {
                     {
                         JSONObject obj = arr.getJSONObject(i);
 
-                        timeslotsActivity(token, group_id, obj.getString("activity_id"), user_id, obj.getString("name"), obj.getBoolean("greenpass_isrequired"));
+                        timeslotsActivity(token, group_id, obj.getString("activity_id"), obj.getString("creator_id"), user_id, obj.getString("name"), obj.getBoolean("greenpass_isrequired"));
                     }
                 }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
     }
-    private void timeslotsActivity(String token, String group_id, String activity_id, String user_id, String name, Boolean green_pass_is_required) {
+    private void timeslotsActivity(String token, String group_id, String activity_id, String creator_id, String user_id, String name, Boolean green_pass_is_required) {
         compositeDisposable.add(myAPI.timeslotsActivity(token, group_id, activity_id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -120,22 +130,25 @@ public class ActivitiesGroupFragment extends Fragment {
                     Date maxDate = null;
                     String insertDate = "";
                     JSONObject prop = null;
-
-                    for (int i = 0; i < arr.length(); i++) {
+                    Log.d("TIMESOLOT ACTIITY:", activity_id + " lunghezza:" + String.valueOf(arr.length()));
+                    for(int i = 0; i<arr.length();i++)
+                    {
                         JSONObject obj = arr.getJSONObject(i);
-                        String date = obj.getJSONObject("start").getString("dateTime") + obj.getJSONObject("end").getString("dateTime");
+                        String date = obj.getJSONObject("start").getString("dateTime")+obj.getJSONObject("end").getString("dateTime");
 
                         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY);
-                        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Rome"), Locale.ITALY);
-                        Date myDate = dateFormat.parse(date.substring(28, 30) + "/" + date.substring(25, 27) + "/" + date.substring(20, 24));
+                        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Rome"),Locale.ITALY);
+                        Date myDate = dateFormat.parse(date.substring(28,30)+"/"+date.substring(25,27)+"/"+date.substring(20,24));
                         assert myDate != null;
-                        if ((maxDate == null) || (maxDate.before(myDate))) {
+                        if((maxDate == null) || (maxDate.before(myDate))){
                             maxDate = myDate;
                             insertDate = date;
                             prop = obj.getJSONObject("extendedProperties").getJSONObject("shared");
                         }
-                        if ((myDate.after(calendar.getTime())) || (i == arr.length() - 1)) {
+                        if((myDate.after(calendar.getTime())) || (i == arr.length()-1)) {
                             mActivityId.add(activity_id);
+                            mActivityGroupId.add(group_id);
+                            mCreatorId.add(creator_id);
                             mName.add(name);
                             mGreenPass.add(green_pass_is_required);
                             mDate.add(insertDate);
@@ -148,15 +161,18 @@ public class ActivitiesGroupFragment extends Fragment {
                     }
 
                 }, t -> {
-                    if (Objects.requireNonNull(t.getMessage()).contains("404")) {
+                    if(Objects.requireNonNull(t.getMessage()).contains("404")) {
                         mActivityId.add(activity_id);
+                        mActivityGroupId.add(group_id);
+                        mCreatorId.add(creator_id);
                         mName.add(name);
                         mGreenPass.add(green_pass_is_required);
                         mDate.add("N/D");
                         mNAdult.add(0);
                         mNChildren.add(0);
                         initActivityRecycler();
-                    } else
+                    }
+                    else
                         Log.d("HTTP REQUEST ERROR: ", t.getMessage());
                 })
         );

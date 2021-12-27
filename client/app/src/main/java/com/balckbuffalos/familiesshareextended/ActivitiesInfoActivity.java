@@ -121,9 +121,6 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                 .subscribe(s -> {
                     /* Since we generate only one event when creating an activity, we can assume that s always contains a single element */
                     JSONArray arr = new JSONArray(s);
-                    //Date maxDate = null;
-                    //String insertDate = "";
-                    //JSONObject prop = null;
                     Log.d("AODNAOIFNAIO","AOFIAOF" + " " + s.toString() +" \n\n" + arr.length());
 
                     JSONObject event = arr.getJSONObject(0);
@@ -157,31 +154,6 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                     tv_endTime.setText(endTime);
                     tv_nAdults.setText(nAdults);
                     tv_nChildren.setText(nChildren);
-                    /*for (int i = 0; i < arr.length(); i++) {
-                        JSONObject obj = arr.getJSONObject(i);
-                        String date = obj.getJSONObject("start").getString("dateTime") + obj.getJSONObject("end").getString("dateTime");
-
-                        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY);
-                        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Rome"), Locale.ITALY);
-                        Date myDate = dateFormat.parse(date.substring(28, 30) + "/" + date.substring(25, 27) + "/" + date.substring(20, 24));
-                        assert myDate != null;
-                        if ((maxDate == null) || (maxDate.before(myDate))) {
-                            maxDate = myDate;
-                            insertDate = date;
-                            prop = obj.getJSONObject("extendedProperties").getJSONObject("shared");
-                        }
-                        if ((myDate.after(calendar.getTime())) || (i == arr.length() - 1)) {
-                            mActivityId.add(activity_id);
-                            mName.add(name);
-                            mGreenPass.add(green_pass_is_required);
-                            mDate.add(insertDate);
-                            mNAdult.add(prop.getString("children").equals("[]") ? 0 : prop.getString("children").split(",").length);
-                            mNChildren.add(prop.getString("parents").equals("[]") ? 0 : prop.getString("parents").split(",").length);
-
-                            initActivityRecycler();
-                            break;
-                        }
-                    }*/
                 }, t -> Log.d("HTTP REQUEST ERROR ACTIVITYSLOTS: ", t.getMessage()))
         );
     }
