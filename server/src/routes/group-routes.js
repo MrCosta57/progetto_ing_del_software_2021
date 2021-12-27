@@ -178,8 +178,8 @@ router.post('/', async (req, res, next) => {
   } = req.body
   if (
     !(
-      invite_ids &&
-      description &&
+      /*invite_ids &&
+      description &&*/
       location &&
       name &&
       contact_type &&
@@ -234,7 +234,16 @@ router.post('/', async (req, res, next) => {
       has_notifications: false
     }
   ]
-  invite_ids.forEach(invite_id => {
+
+  let fixed_invite_ids=[];
+  if (invite_ids){
+    if (typeof(invite_ids) === 'string')
+      fixed_invite_ids.push(invite_ids);
+    else
+      fixed_invite_ids.push(...invite_ids);
+  }  
+  
+  fixed_invite_ids.forEach(invite_id => {
     members.push({
       group_id,
       user_id: invite_id,

@@ -25,6 +25,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -73,7 +74,7 @@ public class GroupCreationActivity extends AppCompatActivity {
             ids_array=ids.toArray(ids_array);
 
             createGroup(token, user_id, ids_array, "location", user_id,
-                    "email", "", true, name.getText().toString(), desc.getText().toString());
+                    "email", "email", true, name.getText().toString(), desc.getText().toString());
         });
 
 
@@ -128,7 +129,15 @@ public class GroupCreationActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
-                    mProfileInfo = new JSONArray(s);
+                    JSONArray tmp_profiles=new JSONArray(s);
+
+                    mProfileInfo = new JSONArray();
+                    for (int i = 0; i < tmp_profiles.length(); i++) {
+                        JSONObject tmp=tmp_profiles.getJSONObject(i);
+                        if (!tmp.getString("user_id").equals(user_id))
+                            mProfileInfo.put(tmp);
+                    }
+
                     initProfliesRecycler();
                 }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
         );
