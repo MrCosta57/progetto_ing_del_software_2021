@@ -91,7 +91,7 @@
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     <Button
-        android:id="@+id/create_button"
+        android:id="@+id/create_group_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/create_a_group"
