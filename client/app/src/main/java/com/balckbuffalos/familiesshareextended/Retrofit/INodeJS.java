@@ -133,6 +133,22 @@ public interface INodeJS {
                                  @Field("background") String background,
                                  @Field("contact_type") String contact_type);
 
+    @PATCH("groups/{group_id}/activities/{activity_id}/timeslots/{timeslot_id}")
+    @FormUrlEncoded
+    Observable<String> editPartecipants(@Header("Authorization") String token,
+                                        @Path("group_id") String group_id,
+                                        @Path("activity_id") String activity_id,
+                                        @Path("timeslot_id") String timeslot_id,
+                                        @Query("user_id") String user_id,
+                                        @Field("adminChanges") Boolean adminChanges,
+                                        @Field("summary") String summary,
+                                        @Field("description") String description,
+                                        @Field("location") String location,
+                                        @Field("start") String start,
+                                        @Field("end") String end,
+                                        @Field("extendedProperties") JSONObject extendedProperties,
+                                        @Field("notifyUsers") Boolean notifyUsers);
+
     @POST("groups/")
     @FormUrlEncoded
     Observable<String> createGroup(@Header("Authorization") String token,
@@ -145,6 +161,11 @@ public interface INodeJS {
                                    @Field("visible") Boolean visible,
                                    @Field("name") String name,
                                    @Field("description") String description);
+
+    @GET("users/{id}/children")
+    Observable<Response<ResponseBody>> getChildren(@Header("Authorization") String token,
+                                                   @Path("id") String id,
+                                                   @Query("user_id") String user_id);
 
     @GET("groups/{groupId}/activities/{activityId}/timeslots")
     Observable<String> timeslotsActivity(@Header("Authorization") String token,

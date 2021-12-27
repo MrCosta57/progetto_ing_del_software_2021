@@ -315,6 +315,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_info_n_children_text" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_activity_info_partecipate_child"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:minHeight="48dp"
+        android:showText="false"
+        android:text="@string/will_your_child_participate"
+        android:textColor="#6E6C6C"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch_activity_info_partecipate" />
+
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
