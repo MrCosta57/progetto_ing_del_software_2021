@@ -99,4 +99,5 @@
     <string name="choose_file">Select a file</string>
     <string name="error_selecting_file">Error selecting File</string>
     <string name="internal_storage">Internal storage</string>
+    <string name="would_you_like_to_participate">Would you like to participate?</string>
 </resources>

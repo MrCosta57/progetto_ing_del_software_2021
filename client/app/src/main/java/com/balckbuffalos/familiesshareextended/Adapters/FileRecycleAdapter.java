@@ -2,7 +2,6 @@ package com.balckbuffalos.familiesshareextended.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
@@ -13,44 +12,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.balckbuffalos.familiesshareextended.GroupActivity;
-import com.balckbuffalos.familiesshareextended.HomePageActivity;
 import com.balckbuffalos.familiesshareextended.R;
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
-import com.balckbuffalos.familiesshareextended.SplashScreenActivity;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.reactivestreams.Subscriber;
-
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
-import okio.BufferedSink;
-import okio.Okio;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter.ViewHolder>{
@@ -104,12 +79,9 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
         if(creator_id.equals(user_id))
             holder.trash_image.setVisibility(View.VISIBLE);
 
-        holder.trash_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(creator_id.equals(user_id))
-                    deleteFile(token, group_id, user_id, file_id, pos);
-            }
+        holder.trash_image.setOnClickListener(view -> {
+            if(creator_id.equals(user_id))
+                deleteFile(token, group_id, user_id, file_id, pos);
         });
 
         if(mFileType.get(position).contains("audio"))
@@ -119,9 +91,7 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
         else
             holder.file_image.setImageResource(R.drawable.file_icon);
 
-        holder.download.setOnClickListener(v -> {
-            getFile(token, group_id, user_id, file_id);
-        });
+        holder.download.setOnClickListener(v -> getFile(token, group_id, user_id, file_id));
     }
 
     @Override
@@ -161,61 +131,70 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
         );
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void getFile(String token, String group_id, String user_id, String file_id) {
-        myAPI.getFile(token, group_id, file_id, user_id)
-                .flatMap(new Function<Response<ResponseBody>, ObservableSource<File>>() {
-                    @Override
-                    public ObservableSource<File> apply(@NonNull Response<ResponseBody> responseBodyResponse) throws Exception {
-                        return Observable.create(new ObservableOnSubscribe<File>() {
-                            @Override
-                            public void subscribe(@NonNull ObservableEmitter<File> emitter) throws Exception {
-                                try {
-                                    // you can access headers of response
-                                    String header = responseBodyResponse.headers().get("Content-Disposition");
-                                    // this is specific case, it's up to you how you want to save your file
-                                    // if you are not downloading file from direct link, you might be lucky to obtain file name from header
-                                    String fileName = header.replace("attachment; filename=", "");
-                                    // will create file in global Music directory, can be any other directory, just don't forget to handle permissions
-                                    File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsoluteFile(), fileName);
-
-                                    BufferedSink sink = Okio.buffer(Okio.sink(file));
-                                    // you can access body of response
-                                    assert responseBodyResponse.body() != null;
-                                    sink.writeAll(responseBodyResponse.body().source());
-                                    sink.close();
-                                    emitter.onNext(file);
-                                    emitter.onComplete();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                    emitter.onError(e);
-                                }
-                            }
-                        });
-                    }
-                })
+        compositeDisposable.add(myAPI.getFile(token, group_id, file_id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<File>() {
-                               @Override
-                               public void onSubscribe(@NonNull Disposable d) {
+                .subscribe(s -> {
+                    new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        assert s.body() != null;
+                        boolean writtenToDisk = writeResponseBodyToDisk(s.body());
 
-                               }
+                        Log.d("DOWNLOAD INFO", "file download was a success? " + writtenToDisk);
+                        return null;
+                    }
+                }.execute();},t->Log.d("ERROR", t.getMessage())));
+    }
 
-                               @Override
-                               public void onNext(@NonNull File file) {
-                                   Log.d("downloadZipFile", "File downloaded to " + file.getAbsolutePath());
-                               }
+    private boolean writeResponseBodyToDisk(ResponseBody body) {
+        try {
+            File futureStudioIconFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "Future Studio Icon.png");
 
-                               @Override
-                               public void onError(@NonNull Throwable e) {
-                                   e.printStackTrace();
-                                   Log.d("downloadZipFile", "Error " + e.getMessage());
-                               }
+            InputStream inputStream = null;
+            OutputStream outputStream = null;
 
-                               @Override
-                               public void onComplete() {
-                                   Log.d("downloadZipFile", "onCompleted");
-                               }
-                           });
+            try {
+                byte[] fileReader = new byte[4096];
+
+                long fileSize = body.contentLength();
+                long fileSizeDownloaded = 0;
+
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(futureStudioIconFile);
+
+                while (true) {
+                    int read = inputStream.read(fileReader);
+
+                    if (read == -1) {
+                        break;
+                    }
+
+                    outputStream.write(fileReader, 0, read);
+
+                    fileSizeDownloaded += read;
+
+                    Log.d("DOWNLOAD INFO", "file download: " + fileSizeDownloaded + " of " + fileSize);
+                }
+
+                outputStream.flush();
+
+                return true;
+            } catch (IOException e) {
+                return false;
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            }
+        } catch (IOException e) {
+            return false;
+        }
     }
 }

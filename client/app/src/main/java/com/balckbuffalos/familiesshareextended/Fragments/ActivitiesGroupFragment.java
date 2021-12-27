@@ -59,10 +59,8 @@ public class ActivitiesGroupFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_activities_group, container, false);
 
-        //Init API
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
 
@@ -123,22 +121,21 @@ public class ActivitiesGroupFragment extends Fragment {
                     String insertDate = "";
                     JSONObject prop = null;
 
-                    for(int i = 0; i<arr.length();i++)
-                    {
+                    for (int i = 0; i < arr.length(); i++) {
                         JSONObject obj = arr.getJSONObject(i);
-                        String date = obj.getJSONObject("start").getString("dateTime")+obj.getJSONObject("end").getString("dateTime");
+                        String date = obj.getJSONObject("start").getString("dateTime") + obj.getJSONObject("end").getString("dateTime");
 
                         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY);
-                        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Rome"),Locale.ITALY);
-                        Date myDate = dateFormat.parse(date.substring(28,30)+"/"+date.substring(25,27)+"/"+date.substring(20,24));
+                        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Rome"), Locale.ITALY);
+                        Date myDate = dateFormat.parse(date.substring(28, 30) + "/" + date.substring(25, 27) + "/" + date.substring(20, 24));
                         assert myDate != null;
-                        if((maxDate == null) || (maxDate.before(myDate))){
+                        if ((maxDate == null) || (maxDate.before(myDate))) {
                             maxDate = myDate;
                             insertDate = date;
                             prop = obj.getJSONObject("extendedProperties").getJSONObject("shared");
                         }
-                        if((myDate.after(calendar.getTime())) || (i == arr.length()-1)) {
-
+                        if ((myDate.after(calendar.getTime())) || (i == arr.length() - 1)) {
+                            mActivityId.add(activity_id);
                             mName.add(name);
                             mGreenPass.add(green_pass_is_required);
                             mDate.add(insertDate);
@@ -151,15 +148,15 @@ public class ActivitiesGroupFragment extends Fragment {
                     }
 
                 }, t -> {
-                    if(Objects.requireNonNull(t.getMessage()).contains("404")) {
+                    if (Objects.requireNonNull(t.getMessage()).contains("404")) {
+                        mActivityId.add(activity_id);
                         mName.add(name);
                         mGreenPass.add(green_pass_is_required);
                         mDate.add("N/D");
                         mNAdult.add(0);
                         mNChildren.add(0);
                         initActivityRecycler();
-                    }
-                    else
+                    } else
                         Log.d("HTTP REQUEST ERROR: ", t.getMessage());
                 })
         );

@@ -1,66 +1,36 @@
 package com.balckbuffalos.familiesshareextended.Fragments;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.balckbuffalos.familiesshareextended.Adapters.ActivityRecycleAdapter;
 import com.balckbuffalos.familiesshareextended.Adapters.FileRecycleAdapter;
-import com.balckbuffalos.familiesshareextended.Adapters.GroupRecycleAdapter;
 import com.balckbuffalos.familiesshareextended.R;
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
 import com.balckbuffalos.familiesshareextended.Utility.FileUtils;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Objects;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -72,7 +42,7 @@ import retrofit2.Retrofit;
 public class CabinetGroupFragment extends Fragment {
 
     private INodeJS myAPI;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private String group_id, token, user_id;
 
     private String description = "";
@@ -97,21 +67,20 @@ public class CabinetGroupFragment extends Fragment {
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
 
-        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+        if(ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+
+        if(ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
 
         Bundle extras = this.getArguments();
 
+        assert extras != null;
         group_id = extras.getString("group_id");
         token = extras.getString("token");
         user_id = extras.getString("user_id");
 
-        view.findViewById(R.id.floating_file_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopup();
-            }
-        });
+        view.findViewById(R.id.floating_file_button).setOnClickListener(view -> showPopup());
 
         mFileId.clear();
         mMemberName.clear();
@@ -129,19 +98,13 @@ public class CabinetGroupFragment extends Fragment {
         input.setHint("description");
         alertDialogBuilder.setView(input);
 
-        alertDialogBuilder.setCancelable(false).setPositiveButton("LOAD FILE", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                description = input.getText().toString();
-                // Create the ACTION_GET_CONTENT Intent
-                openFileDialog();
+        alertDialogBuilder.setCancelable(false).setPositiveButton("LOAD FILE", (dialog, id) -> {
+            description = input.getText().toString();
+            openFileDialog();
 
-            }
         });
 
-        alertDialogBuilder.setCancelable(false).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-            }
-        });
+        alertDialogBuilder.setCancelable(false).setNegativeButton("CANCEL", (dialog, id) -> { });
 
         // create alert dialog
         AlertDialog alertDialog = alertDialogBuilder.create();
@@ -162,7 +125,7 @@ public class CabinetGroupFragment extends Fragment {
                         File file = FileUtils.getFile(getActivity(), uri);
 
                         RequestBody requestFile = RequestBody.create(
-                                MediaType.parse(getActivity().getContentResolver().getType(uri)),
+                                MediaType.parse(requireActivity().getContentResolver().getType(uri)),
                                 file);
 
                         MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file",file.getName(),requestFile);

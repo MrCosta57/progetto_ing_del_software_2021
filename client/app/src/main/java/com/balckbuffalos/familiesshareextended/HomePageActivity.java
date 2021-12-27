@@ -52,11 +52,14 @@ public class HomePageActivity extends AppCompatActivity {
     private final ArrayList<Boolean> mNotifications = new ArrayList<>();
 
     private final ArrayList<String> mActivityId = new ArrayList<>();
+    private final ArrayList<String> mActivityGroupId = new ArrayList<>();
     private final ArrayList<String> mDate = new ArrayList<>();
     private final ArrayList<String> mName = new ArrayList<>();
     private final ArrayList<Integer> mNAdult = new ArrayList<>();
     private final ArrayList<Integer> mNChildren = new ArrayList<>();
     private final ArrayList<Boolean> mGreenPass = new ArrayList<>();
+
+    ActivityRecycleAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +103,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     private void initActivityRecycler(){
         RecyclerView activityRecyclerView = findViewById(R.id.activityRecycler);
-        ActivityRecycleAdapter adapter = new ActivityRecycleAdapter(this, mActivityId, mGroupId, mDate, mName, mNAdult, mNChildren, mGreenPass);
+        adapter = new ActivityRecycleAdapter(this, mActivityId, mActivityGroupId, mDate, mName, mNAdult, mNChildren, mGreenPass);
         activityRecyclerView.addItemDecoration(new DividerItemDecoration(activityRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
         activityRecyclerView.setAdapter(adapter);
@@ -178,7 +181,7 @@ public class HomePageActivity extends AppCompatActivity {
                     Date maxDate = null;
                     String insertDate = "";
                     JSONObject prop = null;
-
+                    Log.d("TIMESOLOT ACTIITY:", activity_id + " lunghezza:" + String.valueOf(arr.length()));
                     for(int i = 0; i<arr.length();i++)
                     {
                         JSONObject obj = arr.getJSONObject(i);
@@ -195,6 +198,7 @@ public class HomePageActivity extends AppCompatActivity {
                         }
                         if((myDate.after(calendar.getTime())) || (i == arr.length()-1)) {
                             mActivityId.add(activity_id);
+                            mActivityGroupId.add(group_id);
                             mName.add(name);
                             mGreenPass.add(green_pass_is_required);
                             mDate.add(insertDate);
@@ -208,6 +212,8 @@ public class HomePageActivity extends AppCompatActivity {
 
                 }, t -> {
                     if(Objects.requireNonNull(t.getMessage()).contains("404")) {
+                        mActivityId.add(activity_id);
+                        mActivityGroupId.add(group_id);
                         mName.add(name);
                         mGreenPass.add(green_pass_is_required);
                         mDate.add("N/D");

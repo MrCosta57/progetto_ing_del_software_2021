@@ -174,7 +174,9 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
                             myIntent.putExtra("group_id", group_id);
                             ActivitiesCreationActivity.this.startActivity(myIntent);
                         },
-                        t -> {Toast.makeText(ActivitiesCreationActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show();
+                        t -> {
+                    Log.d("ERRORE", t.toString());
+                    Toast.makeText(ActivitiesCreationActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show();
                         Intent myIntent = new Intent(ActivitiesCreationActivity.this, GroupActivity.class);
                         myIntent.putExtra("group_id", group_id);
                         ActivitiesCreationActivity.this.startActivity(myIntent);

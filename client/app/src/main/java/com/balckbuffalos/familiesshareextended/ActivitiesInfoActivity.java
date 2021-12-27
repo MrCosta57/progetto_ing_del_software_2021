@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import com.balckbuffalos.familiesshareextended.Fragments.ActivitiesGroupFragment
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -40,9 +42,10 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
     private INodeJS myAPI;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private String group_id, token, user_id, activity_id;
-
+    private SwitchMaterial switch_activity_partecipate;
     private ActivitiesGroupFragment activitiesGroupFragment = new ActivitiesGroupFragment();
     private Bundle bundle = new Bundle();
+    private boolean will_partecipate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,13 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
             token = sharedPreferences.getString("token", "none");
             user_id = sharedPreferences.getString("user_id", "none");
         } catch (GeneralSecurityException | IOException e) { e.printStackTrace(); }
+
+        switch_activity_partecipate= findViewById(R.id.switch_activity_info_partecipate);
+        switch_activity_partecipate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                will_partecipate = isChecked;
+            }
+        });
 
         activityInfo(token,group_id,user_id,activity_id);
     }
@@ -105,16 +115,49 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
     }
 
     private void timeslotsActivity(String token, String group_id, String activity_id, String user_id) {
-       /* compositeDisposable.add(myAPI.timeslotsActivity(token, group_id, activity_id, user_id)
+        compositeDisposable.add(myAPI.timeslotsActivity(token, group_id, activity_id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
+                    /* Since we generate only one event when creating an activity, we can assume that s always contains a single element */
                     JSONArray arr = new JSONArray(s);
-                    Date maxDate = null;
-                    String insertDate = "";
-                    JSONObject prop = null;
+                    //Date maxDate = null;
+                    //String insertDate = "";
+                    //JSONObject prop = null;
+                    Log.d("AODNAOIFNAIO","AOFIAOF" + " " + s.toString() +" \n\n" + arr.length());
 
-                    for (int i = 0; i < arr.length(); i++) {
+                    JSONObject event = arr.getJSONObject(0);
+                    String startDateTime = event.getJSONObject("start").getString("dateTime");
+                    String endDateTime = event.getJSONObject("end").getString("dateTime");
+                    String startDay = startDateTime.substring(8,10);
+                    String startMonth = startDateTime.substring(5,7);
+                    String startTime = startDateTime.substring(11,13) + ":" + startDateTime.substring(14,16);
+                    String endDay = endDateTime.substring(8,10);
+                    String endMonth = endDateTime.substring(5,7);
+                    String endTime = endDateTime.substring(11,13) + ":" + endDateTime.substring(14,16);
+
+                    JSONObject prop = event.getJSONObject("extendedProperties").getJSONObject("shared");
+                    String nChildren = prop.getString("children").equals("[]") ? "0" : String.valueOf(prop.getString("children").split(",").length);
+                    String nAdults = prop.getString("parents").equals("[]") ? "0" : String.valueOf(prop.getString("parents").split(",").length);
+
+                    TextView tv_startDay = findViewById(R.id.activity_info_day_text);
+                    TextView tv_startMonth = findViewById(R.id.month_text);
+                    TextView tv_endDay = findViewById(R.id.activity_info_day_text2);
+                    TextView tv_endMonth = findViewById(R.id.month_text2);
+                    TextView tv_startTime = findViewById(R.id.activity_info_hours_text);
+                    TextView tv_endTime = findViewById(R.id.activity_info_hours_text2);
+                    TextView tv_nAdults = findViewById(R.id.activity_info_n_adult_text);
+                    TextView tv_nChildren = findViewById(R.id.activity_info_n_children_text);
+
+                    tv_startDay.setText(startDay);
+                    tv_startMonth.setText(startMonth);
+                    tv_endDay.setText(endDay);
+                    tv_endMonth.setText(endMonth);
+                    tv_startTime.setText(startTime);
+                    tv_endTime.setText(endTime);
+                    tv_nAdults.setText(nAdults);
+                    tv_nChildren.setText(nChildren);
+                    /*for (int i = 0; i < arr.length(); i++) {
                         JSONObject obj = arr.getJSONObject(i);
                         String date = obj.getJSONObject("start").getString("dateTime") + obj.getJSONObject("end").getString("dateTime");
 
@@ -138,8 +181,8 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                             initActivityRecycler();
                             break;
                         }
-                    }
+                    }*/
                 }, t -> Log.d("HTTP REQUEST ERROR ACTIVITYSLOTS: ", t.getMessage()))
-        );*/
+        );
     }
 }
