@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent_layout"
     android:layout_width="match_parent"
-    android:layout_height="150dp">
+    android:layout_height="140dp">
 
     <ImageView
         android:id="@+id/file_icon"
@@ -12,8 +12,8 @@
         android:layout_height="91dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="27dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="24dp"
         android:contentDescription="@string/groupicon"
         tools:ignore="ImageContrastCheck"
         tools:srcCompat="@drawable/file_icon" />
@@ -24,20 +24,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="158dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="12dp"
         android:text="@string/member_name"
         android:textSize="17sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="235dp"
+        android:layout_height="45dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="42dp"
         android:text="@string/description"
         android:textSize="18sp" />
 
@@ -47,8 +47,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="292dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="284dp"
+        android:layout_marginTop="11dp"
         android:text="@string/gg_mm_aaaa"
         android:textSize="18sp" />
 
@@ -58,8 +58,8 @@
         android:layout_height="25dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="123dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginStart="98dp"
+        android:layout_marginTop="11dp"
         android:contentDescription="@string/member_icon"
         app:srcCompat="@drawable/user_icon" />
 
@@ -69,8 +69,8 @@
         android:layout_height="25dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="370dp"
-        android:layout_marginTop="61dp"
+        android:layout_marginStart="373dp"
+        android:layout_marginTop="63dp"
         android:contentDescription="@string/member_icon"
         android:visibility="invisible"
         app:srcCompat="@drawable/trash_bin_icon" />
@@ -81,19 +81,19 @@
         android:layout_height="25dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="122dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="98dp"
+        android:layout_marginTop="42dp"
         android:contentDescription="@string/description_icon"
         app:srcCompat="@drawable/description_icon" />
 
     <Button
         android:id="@+id/download_button"
-        android:layout_width="145dp"
-        android:layout_height="48dp"
+        android:layout_width="139dp"
+        android:layout_height="36dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="141dp"
-        android:layout_marginTop="98dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="96dp"
         android:text="@string/download"
         tools:ignore="TextContrastCheck" />
 </RelativeLayout>

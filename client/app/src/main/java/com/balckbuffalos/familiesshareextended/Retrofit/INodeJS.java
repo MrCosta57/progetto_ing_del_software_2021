@@ -197,4 +197,10 @@ public interface INodeJS {
                                                @Path("group_id") String group_id,
                                                @Path("file_id") String file_id,
                                                @Query("user_id") String user_id);
+
+    @DELETE("groups/{group_id}/activities/{activity_id}")
+    Observable<String> deleteActivity(@Header("Authorization") String token,
+                                  @Path("group_id") String group_id,
+                                  @Path("activity_id") String activity_id,
+                                  @Query("user_id") String user_id);
 }
