@@ -72,7 +72,6 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
         return new ViewHolder(view);
     }
 
-    @SuppressLint({"SetTextI18n", "ResourceAsColor"})
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if(mDate.get(position).equals("N/D")) {
@@ -116,7 +115,7 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
         });
 
         if(mHasPositive.get(position)) {
-            holder.parent_layout.setBackgroundColor(R.color.red);
+            holder.parent_layout.setBackgroundColor(0xFFC62828);
         }
     }
 
