@@ -887,7 +887,7 @@ router.post('/:id/framily', (req, res) => {
   // })
 })
 
-router.get('/:id/children', (req, res, next) => {
+router.get('/:id/children', (req, res, next) => { //Usato req.query!!!
   if (!req.query.user_id) { return res.status(401).send('Unauthorized') }
   const { id } = req.params
   Parent.find({ parent_id: id }).then(children => {
