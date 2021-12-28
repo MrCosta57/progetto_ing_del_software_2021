@@ -888,12 +888,13 @@ router.post('/:id/framily', (req, res) => {
 })
 
 router.get('/:id/children', (req, res, next) => {
-  if (!req.user_id) { return res.status(401).send('Unauthorized') }
+  if (!req.query.user_id) { return res.status(401).send('Unauthorized') }
   const { id } = req.params
   Parent.find({ parent_id: id }).then(children => {
     if (children.length === 0) {
       return res.status(404).send('User has no children')
     }
+    console.log(children)
     res.json(children)
   }).catch(next)
 })

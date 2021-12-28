@@ -102,4 +102,5 @@
     <string name="would_you_like_to_participate">Would you like to participate?</string>
     <string name="will_your_child_participate">Will your child participate?</string>
     <string name="to_str">to</string>
+    <string name="day_month_sep">/</string>
 </resources>

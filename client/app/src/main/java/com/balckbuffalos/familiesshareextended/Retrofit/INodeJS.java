@@ -163,9 +163,9 @@ public interface INodeJS {
                                    @Field("description") String description);
 
     @GET("users/{id}/children")
-    Observable<Response<ResponseBody>> getChildren(@Header("Authorization") String token,
-                                                   @Path("id") String id,
-                                                   @Query("user_id") String user_id);
+    Observable<String> getChildren(@Header("Authorization") String token,
+                                   @Path("id") String id,
+                                   @Query("user_id") String user_id);
 
     @GET("groups/{groupId}/activities/{activityId}/timeslots")
     Observable<String> timeslotsActivity(@Header("Authorization") String token,

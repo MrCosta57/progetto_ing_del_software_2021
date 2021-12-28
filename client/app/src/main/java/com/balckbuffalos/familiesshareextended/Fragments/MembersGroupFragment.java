@@ -75,6 +75,7 @@ public class MembersGroupFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
+                    Log.d("LEGGO S","S " + s);
                     JSONArray arr = new JSONArray(s);
                     String[] ids = new String[arr.length()];
                     for(int i = 0; i<arr.length();i++)

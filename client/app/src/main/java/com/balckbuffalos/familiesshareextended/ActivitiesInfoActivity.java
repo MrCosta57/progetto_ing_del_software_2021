@@ -1,5 +1,7 @@
 package com.balckbuffalos.familiesshareextended;
 
+import static com.balckbuffalos.familiesshareextended.Utility.Utility.showMenu;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import com.balckbuffalos.familiesshareextended.Fragments.ActivitiesGroupFragment;
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -45,10 +48,11 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
 
     private INodeJS myAPI;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private String group_id, token, user_id, activity_id, timeslot_id, summary, description, location, start, end;
+    private String group_id, token, user_id, child_id, activity_id, timeslot_id, summary, description, location, start, end;
     private JSONObject extprop;
     private SwitchMaterial switch_activity_partecipate, switch_activity_info_partecipate_child;
     private ActivitiesGroupFragment activitiesGroupFragment = new ActivitiesGroupFragment();
+    private MaterialToolbar toolbar;
     private Bundle bundle = new Bundle();
 
     @Override
@@ -63,6 +67,10 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
 
+        toolbar = findViewById(R.id.topAppBar);
+        toolbar.setOnClickListener (v->{
+            showMenu(v, R.menu.top_app_bar, this, getApplicationContext());});
+
         try {
             String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
             SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(
@@ -76,6 +84,8 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
             user_id = sharedPreferences.getString("user_id", "none");
         } catch (GeneralSecurityException | IOException e) { e.printStackTrace(); }
 
+        getChildId();
+
         switch_activity_partecipate = findViewById(R.id.switch_activity_info_partecipate);
         switch_activity_partecipate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -83,21 +93,28 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                 try {
                     JSONObject prop = extprop.getJSONObject("shared");
                     Log.d("LEGGO PROP","PROP : " + prop.toString());
-                    String[] oldParents = prop.getString("parents").split(",");
+                    String[] oldParents = prop.getString("parents").substring(1,prop.getString("parents").length()-1).split(","); //"[adaoidada,awafawf,segr4g]"
+                    for(String s : oldParents) {
+                        Log.d("oLDPARENTS", "OLPARENTS " + s); // s = "[habibfwaifbawiubf]"
+                    }
+                    start = start.substring(0,16) + ":00:000Z";
+                    end = end.substring(0,16) + ":00:000Z";
 
                     if (isChecked) {
                         if (!contains(oldParents, user_id)) {
                             String[] newParentsArr = add(oldParents, user_id);
-                            String newParents = "[" + String.join(",", newParentsArr) + "]";
+                            String newParents = "[\"" + String.join("\",\"", newParentsArr) + "\"]";
                             prop.put("parents", newParents);
                             Log.d("LEGGO newParents","newParents : " + newParents);
                             Log.d("LEGGO extprop","extprop : " + extprop.toString());
+                            Log.d("LEGGO TUTTO","\ngroup_id " + group_id + "\nactivity_id " + activity_id + "\ntimeslot_id " + timeslot_id + "\nuser_id " + user_id+
+                                    "\nsummary " + summary +"\ndescription " + description + "\nlocation " + location + "\nstart " + start + "\nend " + end);
                             editPartecipants(token, group_id, activity_id, timeslot_id, user_id, false, summary, description, location, start, end, extprop, false);
                         }
                     } else {
                         if (contains(oldParents, user_id)) {
                             String[] newParentsArr = remove(oldParents, user_id);
-                            String newParents = "[" + String.join(",", newParentsArr) + "]";
+                            String newParents = "[\"" + String.join("\",\"", newParentsArr) + "\"]";
                             prop.put("parents", newParents);
                             Log.d("LEGGO newParents","newParents : " + newParents);
                             Log.d("LEGGO extprop","extprop : " + extprop.toString());
@@ -112,26 +129,28 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
         switch_activity_info_partecipate_child.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                compositeDisposable.add(myAPI.getChildren(token, user_id, user_id)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(s -> {
-                            Log.d("LEGGO s","s : " + s.toString());
-                            /* For our application, we assume that every parent always has one child */
-                            JSONArray children = new JSONArray(s);
-                            Log.d("LEGGO CHILDREN","CHILDREN : " + children.toString());
-                            JSONObject child = children.getJSONObject(0);
-                            Log.d("LEGGO child","child : " + child.toString());
-
-                            String child_id = child.getString("child_id");
-
-                            editChildrenPartecipants(child_id, isChecked);
-                        }, t -> Log.d("HTTP REQUEST ERROR getChildren: ", t.getMessage()))
-                );
+                editChildrenPartecipants(child_id, isChecked);
             }
         });
+    }
 
-        activityInfo(token,group_id,user_id,activity_id);
+    private void getChildId() {
+        compositeDisposable.add(myAPI.getChildren(token, user_id, user_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                    Log.d("LEGGO s","s : " + s);
+                    /* For our application, we assume that every parent always has one child */
+                    JSONArray children = new JSONArray(s);
+                    //Log.d("LEGGO CHILDREN","CHILDREN : " + children.toString());
+                    JSONObject child = children.getJSONObject(0);
+                    Log.d("LEGGO child","child : " + child.toString());
+
+                    child_id = child.getString("child_id");
+
+                    activityInfo(token,group_id,user_id,activity_id);
+                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+        );
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -139,19 +158,23 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
         try {
             JSONObject prop = extprop.getJSONObject("shared");
             Log.d("LEGGO prop2","prop2 : " + prop.toString());
-            String[] oldChildren = prop.getString("children").split(",");
+            String[] oldChildren = prop.getString("children").substring(1,prop.getString("children").length()-1).split(","); //"[adaoidada,awafawf,segr4g]"
+            start = start.substring(0,16) + ":00:000Z";
+            end = end.substring(0,16) + ":00:000Z";
 
             if (isChecked) {
                 if (!contains(oldChildren, child_id)) {
                     String[] newChildrenArr = add(oldChildren, child_id);
-                    String newChildren = "[" + String.join(",", newChildrenArr) + "]";
+                    String newChildren = "[\"" + String.join("\",\"", newChildrenArr) + "\"]";
                     prop.put("children", newChildren);
+                    Log.d("LEGGO TUTTO","\ngroup_id " + group_id + "\nactivity_id " + activity_id + "\ntimeslot_id " + timeslot_id + "\nuser_id " + user_id+
+                            "\nsummary " + summary +"\ndescription " + description + "\nlocation " + location + "\nstart " + start + "\nend " + end);
                     editPartecipants(token, group_id, activity_id, timeslot_id, user_id, false, summary, description, location, start, end, extprop, false);
                 }
             } else {
                 if (contains(oldChildren, child_id)) {
                     String[] newChildrenArr = remove(oldChildren, child_id);
-                    String newChildren = "[" + String.join(",", newChildrenArr) + "]";
+                    String newChildren = "[\"" + String.join("\",\"", newChildrenArr) + "\"]";
                     prop.put("children", newChildren);
                     editPartecipants(token, group_id, activity_id, timeslot_id, user_id, false, summary, description, location, start, end, extprop, false);
                 }
@@ -184,7 +207,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
         String[] res = new String[v.length];
         int j = 0;
         for (int i = 0; i < v.length; i++) {
-            if (!(v[i].equals("") || v[i].equals(" ") || v[i].equals("[]"))){
+            if (!(v[i].equals("") || v[i].equals(" ") || v[i].equals("[]"))){// || v[i].equals("['']") || v[i].equals("[' ']") || v[i].equals("' '") || v[i].equals("''"))){
                 res[j] = v[i];
                 j++;
             }
@@ -268,6 +291,18 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                     JSONObject prop = event.getJSONObject("extendedProperties").getJSONObject("shared");
                     String nChildren = prop.getString("children").equals("[]") ? "0" : String.valueOf(prop.getString("children").split(",").length);
                     String nAdults = prop.getString("parents").equals("[]") ? "0" : String.valueOf(prop.getString("parents").split(",").length);
+
+                    switch_activity_partecipate = findViewById(R.id.switch_activity_info_partecipate);
+                    String[] oldParents = prop.getString("parents").substring(1,prop.getString("parents").length()-1).split(","); //"[adaoidada,awafawf,segr4g]"
+                    if (contains(oldParents, user_id)) {
+                        switch_activity_partecipate.setChecked(true);
+                    }
+
+                    switch_activity_info_partecipate_child = findViewById(R.id.switch_activity_info_partecipate_child);
+                    String[] oldChildren = prop.getString("children").substring(1,prop.getString("children").length()-1).split(","); //"[adaoidada,awafawf,segr4g]"
+                    if (contains(oldChildren, child_id)) {
+                        switch_activity_info_partecipate_child.setChecked(true);
+                    }
 
                     TextView tv_startDay = findViewById(R.id.activity_info_day_text);
                     TextView tv_startMonth = findViewById(R.id.month_text);
