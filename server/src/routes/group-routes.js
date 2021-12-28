@@ -1594,8 +1594,11 @@ router.patch(
       })
       const oldParents = JSON.parse(event.data.extendedProperties.shared.parents)
       const oldChildren = JSON.parse(event.data.extendedProperties.shared.children)
-      const parents = JSON.parse(extendedProperties.shared.parents)
-      const children = JSON.parse(extendedProperties.shared.children)
+      console.log("\n\n" + typeof(extendedProperties) + "\n" + extendedProperties + "\n\n")
+      console.log("\n\n" + JSON.parse(extendedProperties).shared + "\n\n")
+      console.log("\n\n" + JSON.parse(extendedProperties).shared.parents + "\n\n")
+      const parents = JSON.parse(JSON.parse(extendedProperties).shared.parents)
+      const children = JSON.parse(JSON.parse(extendedProperties).shared.children)
       if (!member.admin) {
         if (parents.includes(req.user_id)) {
           extendedProperties.shared.parents = JSON.stringify([...new Set([...oldParents, req.user_id])])

@@ -1,11 +1,13 @@
 package com.balckbuffalos.familiesshareextended;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,11 +23,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.DateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -41,11 +45,11 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
 
     private INodeJS myAPI;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private String group_id, token, user_id, activity_id;
-    private SwitchMaterial switch_activity_partecipate;
+    private String group_id, token, user_id, activity_id, timeslot_id, summary, description, location, start, end;
+    private JSONObject extprop;
+    private SwitchMaterial switch_activity_partecipate, switch_activity_info_partecipate_child;
     private ActivitiesGroupFragment activitiesGroupFragment = new ActivitiesGroupFragment();
     private Bundle bundle = new Bundle();
-    private boolean will_partecipate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,14 +76,132 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
             user_id = sharedPreferences.getString("user_id", "none");
         } catch (GeneralSecurityException | IOException e) { e.printStackTrace(); }
 
-        switch_activity_partecipate= findViewById(R.id.switch_activity_info_partecipate);
+        switch_activity_partecipate = findViewById(R.id.switch_activity_info_partecipate);
         switch_activity_partecipate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                will_partecipate = isChecked;
+                try {
+                    JSONObject prop = extprop.getJSONObject("shared");
+                    Log.d("LEGGO PROP","PROP : " + prop.toString());
+                    String[] oldParents = prop.getString("parents").split(",");
+
+                    if (isChecked) {
+                        if (!contains(oldParents, user_id)) {
+                            String[] newParentsArr = add(oldParents, user_id);
+                            String newParents = "[" + String.join(",", newParentsArr) + "]";
+                            prop.put("parents", newParents);
+                            Log.d("LEGGO newParents","newParents : " + newParents);
+                            Log.d("LEGGO extprop","extprop : " + extprop.toString());
+                            editPartecipants(token, group_id, activity_id, timeslot_id, user_id, false, summary, description, location, start, end, extprop, false);
+                        }
+                    } else {
+                        if (contains(oldParents, user_id)) {
+                            String[] newParentsArr = remove(oldParents, user_id);
+                            String newParents = "[" + String.join(",", newParentsArr) + "]";
+                            prop.put("parents", newParents);
+                            Log.d("LEGGO newParents","newParents : " + newParents);
+                            Log.d("LEGGO extprop","extprop : " + extprop.toString());
+                            editPartecipants(token, group_id, activity_id, timeslot_id, user_id, false, summary, description, location, start, end, extprop, false);
+                        }
+                    }
+                } catch (JSONException e) { e.printStackTrace(); }
+            }
+        });
+
+        switch_activity_info_partecipate_child = findViewById(R.id.switch_activity_info_partecipate_child);
+        switch_activity_info_partecipate_child.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                compositeDisposable.add(myAPI.getChildren(token, user_id, user_id)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(s -> {
+                            Log.d("LEGGO s","s : " + s.toString());
+                            /* For our application, we assume that every parent always has one child */
+                            JSONArray children = new JSONArray(s);
+                            Log.d("LEGGO CHILDREN","CHILDREN : " + children.toString());
+                            JSONObject child = children.getJSONObject(0);
+                            Log.d("LEGGO child","child : " + child.toString());
+
+                            String child_id = child.getString("child_id");
+
+                            editChildrenPartecipants(child_id, isChecked);
+                        }, t -> Log.d("HTTP REQUEST ERROR getChildren: ", t.getMessage()))
+                );
             }
         });
 
         activityInfo(token,group_id,user_id,activity_id);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void editChildrenPartecipants(String child_id, boolean isChecked) {
+        try {
+            JSONObject prop = extprop.getJSONObject("shared");
+            Log.d("LEGGO prop2","prop2 : " + prop.toString());
+            String[] oldChildren = prop.getString("children").split(",");
+
+            if (isChecked) {
+                if (!contains(oldChildren, child_id)) {
+                    String[] newChildrenArr = add(oldChildren, child_id);
+                    String newChildren = "[" + String.join(",", newChildrenArr) + "]";
+                    prop.put("children", newChildren);
+                    editPartecipants(token, group_id, activity_id, timeslot_id, user_id, false, summary, description, location, start, end, extprop, false);
+                }
+            } else {
+                if (contains(oldChildren, child_id)) {
+                    String[] newChildrenArr = remove(oldChildren, child_id);
+                    String newChildren = "[" + String.join(",", newChildrenArr) + "]";
+                    prop.put("children", newChildren);
+                    editPartecipants(token, group_id, activity_id, timeslot_id, user_id, false, summary, description, location, start, end, extprop, false);
+                }
+            }
+        } catch (JSONException e) { e.printStackTrace(); }
+    }
+
+    private boolean contains(String[] v, String id) {
+        for (String s : v) {
+            if (s.equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String[] remove(String[] v, String id) {
+        String[] res = new String[v.length-1];
+        int j = 0;
+        for (String s : v) {
+            if (!s.equals(id)) {
+                res[j] = s;
+                j++;
+            }
+        }
+        return res;
+    }
+
+    private String[] add(String[] v, String id) {
+        String[] res = new String[v.length];
+        int j = 0;
+        for (int i = 0; i < v.length; i++) {
+            if (!(v[i].equals("") || v[i].equals(" ") || v[i].equals("[]"))){
+                res[j] = v[i];
+                j++;
+            }
+        }
+        res[res.length-1] = id;
+        Log.d("LEGGO res","res : " + Arrays.toString(res));
+        return res;
+    }
+
+    private void editPartecipants(String token, String group_id, String activity_id, String timeslot_id, String user_id, Boolean adminChanges, String summary, String description, String location, String start, String end, JSONObject extprop, Boolean notifyUsers) {
+        compositeDisposable.add(myAPI.editPartecipants(token, group_id, activity_id, timeslot_id, user_id,adminChanges, summary, description, location, start, end, extprop, notifyUsers)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+
+                }, t -> Log.d("HTTP REQUEST ERROR addPartecipantParent: ", t.getMessage()))
+        );
     }
 
     @SuppressLint("SetTextI18n")
@@ -89,6 +211,10 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
                     JSONObject obj = new JSONObject(s);
+
+                    description = obj.getString("description");
+                    location = obj.getString("location");
+
                     TextView activityName = findViewById(R.id.activity_info_name);
                     TextView activityGroup = findViewById(R.id.activity_info_group_name);
                     TextView activityDescription = findViewById(R.id.activity_info_description);
@@ -98,8 +224,8 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
 
                     activityName.setText(obj.getString("name"));
                     activityGroup.setText(obj.getString("group_name"));
-                    activityDescription.setText(obj.getString("description"));
-                    activityLocation.setText(obj.getString("location"));
+                    activityDescription.setText(description);
+                    activityLocation.setText(location);
 
                     if ((obj.getBoolean("greenpass_isrequired"))) {
                         green_pass_icon.setVisibility(View.VISIBLE);
@@ -121,11 +247,16 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                 .subscribe(s -> {
                     /* Since we generate only one event when creating an activity, we can assume that s always contains a single element */
                     JSONArray arr = new JSONArray(s);
-                    Log.d("AODNAOIFNAIO","AOFIAOF" + " " + s.toString() +" \n\n" + arr.length());
 
                     JSONObject event = arr.getJSONObject(0);
-                    String startDateTime = event.getJSONObject("start").getString("dateTime");
-                    String endDateTime = event.getJSONObject("end").getString("dateTime");
+
+                    timeslot_id = event.getString("id");
+                    summary = event.getString("summary");
+                    start = event.getJSONObject("start").getString("dateTime");
+                    end = event.getJSONObject("end").getString("dateTime");
+
+                    String startDateTime = start;
+                    String endDateTime = end;
                     String startDay = startDateTime.substring(8,10);
                     String startMonth = startDateTime.substring(5,7);
                     String startTime = startDateTime.substring(11,13) + ":" + startDateTime.substring(14,16);
@@ -133,6 +264,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                     String endMonth = endDateTime.substring(5,7);
                     String endTime = endDateTime.substring(11,13) + ":" + endDateTime.substring(14,16);
 
+                    extprop = event.getJSONObject("extendedProperties");
                     JSONObject prop = event.getJSONObject("extendedProperties").getJSONObject("shared");
                     String nChildren = prop.getString("children").equals("[]") ? "0" : String.valueOf(prop.getString("children").split(",").length);
                     String nAdults = prop.getString("parents").equals("[]") ? "0" : String.valueOf(prop.getString("parents").split(",").length);
