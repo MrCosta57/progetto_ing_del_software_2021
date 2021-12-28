@@ -50,6 +50,7 @@ public class ActivitiesGroupFragment extends Fragment {
     private final ArrayList<Integer> mNAdult = new ArrayList<>();
     private final ArrayList<Integer> mNChildren = new ArrayList<>();
     private final ArrayList<Boolean> mGreenPass = new ArrayList<>();
+    private final ArrayList<Boolean> mHasPositive = new ArrayList<>();
 
 
     private String group_id, token, user_id;
@@ -98,7 +99,7 @@ public class ActivitiesGroupFragment extends Fragment {
 
     private void initActivityRecycler(){
         RecyclerView activityRecyclerView = view.findViewById(R.id.activityRecycler);
-        ActivityRecycleAdapter adapter = new ActivityRecycleAdapter(getActivity(), mActivityId, mActivityGroupId, mCreatorId, mDate, mName, mNAdult, mNChildren, mGreenPass, user_id, token);
+        ActivityRecycleAdapter adapter = new ActivityRecycleAdapter(getActivity(), mActivityId, mActivityGroupId, mCreatorId, mDate, mName, mNAdult, mNChildren, mGreenPass, user_id, token, mHasPositive);
         activityRecyclerView.addItemDecoration(new DividerItemDecoration(activityRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
         activityRecyclerView.setAdapter(adapter);
@@ -115,13 +116,13 @@ public class ActivitiesGroupFragment extends Fragment {
                     for(int i = 0; i<arr.length();i++)
                     {
                         JSONObject obj = arr.getJSONObject(i);
-
-                        timeslotsActivity(token, group_id, obj.getString("activity_id"), obj.getString("creator_id"), user_id, obj.getString("name"), obj.getBoolean("greenpass_isrequired"));
+                        JSONObject info = obj.getJSONObject("activity_info");
+                        timeslotsActivity(token, group_id, info.getString("activity_id"), info.getString("creator_id"), user_id, info.getString("name"), info.getBoolean("greenpass_isrequired"), obj.getBoolean("has_positive"));
                     }
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP ACTIVITIES REQUEST ERROR", t.getMessage()))
         );
     }
-    private void timeslotsActivity(String token, String group_id, String activity_id, String creator_id, String user_id, String name, Boolean green_pass_is_required) {
+    private void timeslotsActivity(String token, String group_id, String activity_id, String creator_id, String user_id, String name, Boolean green_pass_is_required, Boolean has_positive) {
         compositeDisposable.add(myAPI.timeslotsActivity(token, group_id, activity_id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -130,7 +131,7 @@ public class ActivitiesGroupFragment extends Fragment {
                     Date maxDate = null;
                     String insertDate = "";
                     JSONObject prop = null;
-                    Log.d("TIMESOLOT ACTIITY:", activity_id + " lunghezza:" + String.valueOf(arr.length()));
+                    Log.d("TIMESOLOT ACTIITY", activity_id + " lunghezza:" + String.valueOf(arr.length()));
                     for(int i = 0; i<arr.length();i++)
                     {
                         JSONObject obj = arr.getJSONObject(i);
@@ -152,8 +153,9 @@ public class ActivitiesGroupFragment extends Fragment {
                             mName.add(name);
                             mGreenPass.add(green_pass_is_required);
                             mDate.add(insertDate);
-                            mNAdult.add(prop.getString("children").equals("[]") ? 0 : prop.getString("children").split(",").length);
-                            mNChildren.add(prop.getString("parents").equals("[]") ? 0 : prop.getString("parents").split(",").length);
+                            mNAdult.add(prop.getString("parents").equals("[]") ? 0 : prop.getString("children").split(",").length);
+                            mNChildren.add(prop.getString("children").equals("[]") ? 0 : prop.getString("parents").split(",").length);
+                            mHasPositive.add(has_positive);
 
                             initActivityRecycler();
                             break;
@@ -170,10 +172,11 @@ public class ActivitiesGroupFragment extends Fragment {
                         mDate.add("N/D");
                         mNAdult.add(0);
                         mNChildren.add(0);
+                        mHasPositive.add(has_positive);
                         initActivityRecycler();
                     }
                     else
-                        Log.d("HTTP REQUEST ERROR: ", t.getMessage());
+                        Log.d("HTTP TIMESLOTS REQUEST ERROR", t.getMessage());
                 })
         );
     }
