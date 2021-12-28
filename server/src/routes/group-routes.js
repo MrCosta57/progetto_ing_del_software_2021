@@ -249,7 +249,7 @@ router.post('/', async (req, res, next) => {
       user_id: invite_id,
       admin: false,
       group_accepted: true,
-      user_accepted: false,
+      user_accepted: true,
       has_notifications: false
     })
   })
