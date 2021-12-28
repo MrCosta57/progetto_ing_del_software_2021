@@ -1254,7 +1254,7 @@ router.get('/:id/activities', (req, res, next) => {  //Usato req.query !!!
                     has_positive=true;
                     break;
                 }
-                tracingArray.push({activity_id: activity.activity_id, has_positive: has_positive});
+                tracingArray.push({activity_info: activity, has_positive: has_positive});
                 has_positive=false;
               }
 
