@@ -1229,8 +1229,39 @@ router.get('/:id/activities', (req, res, next) => {  //Usato req.query !!!
             if (!profile.greenpass_available) {
               activities = activities.filter((activity) => { return !activity.greenpass_isrequired })
             }
-            res.json(activities)
-          })          
+            
+            return activities;
+          }).then(async function (activities) {
+
+            let group=await Group.findOne({group_id: group_id});
+            let tracingArray=[];
+
+            for(let activity of activities){
+              let resp = await calendar.events.list({
+                calendarId: group.calendar_id,
+                sharedExtendedProperty: `activityId=${activity.activity_id}`
+              })
+
+              let items=resp.data.items;
+              for (let item of items){
+                let parent_ids_str=item.extendedProperties.shared.parents;
+                let parent_ids_vett=parent_ids_str.substring(1, parent_ids_str.length-1).split(",");
+                let has_positive=false;
+
+                for(let parent_id of parent_ids_vett){
+                  let info=await Profile.findOne({user_id: parent_id});
+                  if (info.is_positive)
+                    has_positive=true;
+                    break;
+                }
+                tracingArray.push({activity_id: activity.activity_id, has_positive: has_positive});
+                has_positive=false;
+              }
+
+            }
+
+            res.json(tracingArray);
+          })     
         })
     })
     .catch(next)
