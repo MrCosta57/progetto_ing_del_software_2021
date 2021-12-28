@@ -1245,7 +1245,8 @@ router.get('/:id/activities', (req, res, next) => {  //Usato req.query !!!
               let items=resp.data.items;
               for (let item of items){
                 let parent_ids_str=item.extendedProperties.shared.parents;
-                let parent_ids_vett=parent_ids_str.substring(1, parent_ids_str.length-1).split(",");
+                let parent_ids_vett=JSON.parse(parent_ids_str);
+            
                 let has_positive=false;
 
                 for(let parent_id of parent_ids_vett){
