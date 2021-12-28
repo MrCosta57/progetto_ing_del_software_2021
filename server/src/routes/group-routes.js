@@ -1281,8 +1281,8 @@ router.patch('/:id/activities/:activityId', async (req, res, next) => {
   }
 })
 
-router.delete('/:groupId/activities/:activityId', async (req, res, next) => {
-  if (!req.user_id) {
+router.delete('/:groupId/activities/:activityId', async (req, res, next) => { //Usato req.query!!!
+  if (!req.query.user_id) {
     return res.status(401).send('Not authenticated')
   }
   try {
@@ -1533,7 +1533,7 @@ router.patch(
       if (!member) {
         return res.status(401).send('Unauthorized')
       }
-      const {
+      var {
         adminChanges,
         summary,
         description,
@@ -1561,13 +1561,13 @@ router.patch(
         calendarId: group.calendar_id,
         eventId: req.params.timeslotId
       })
-      const oldParents = JSON.parse(event.data.extendedProperties.shared.parents)
+      const oldParents = JSON.parse(event.data.extendedProperties.shared.parents) 
       const oldChildren = JSON.parse(event.data.extendedProperties.shared.children)
       console.log("\n\n" + typeof(extendedProperties) + "\n" + extendedProperties + "\n\n")
       console.log("\n\n" + JSON.parse(extendedProperties).shared + "\n\n")
       console.log("\n\n" + JSON.parse(extendedProperties).shared.parents + "\n\n")
-      const parents = JSON.parse(JSON.parse(extendedProperties).shared.parents)
-      const children = JSON.parse(JSON.parse(extendedProperties).shared.children)
+      const parents = JSON.parse(extendedProperties).shared.parents
+      const children = JSON.parse(extendedProperties).shared.children
       if (!member.admin) {
         if (parents.includes(req.user_id)) {
           extendedProperties.shared.parents = JSON.stringify([...new Set([...oldParents, req.user_id])])
@@ -1598,34 +1598,44 @@ router.patch(
           }
         }
       }
-      const externals = JSON.parse(extendedProperties.shared.externals || '[]')
+      const externals = JSON.parse(extendedProperties).shared.externals || '[]'
       const volunteersReq =
-        (parents.length + externals.length) >= extendedProperties.shared.requiredParents
+        (parents.length + externals.length) >= JSON.parse(extendedProperties).shared.requiredParents
       const childrenReq =
-        children.length >= extendedProperties.shared.requiredChildren
-      if (event.data.extendedProperties.shared.status !== extendedProperties.shared.status) {
-        nh.timeslotStatusChangeNotification(summary, extendedProperties.shared.status, oldParents, group_id, activity_id, timeslot_id)
+        children.length >= JSON.parse(extendedProperties).shared.requiredChildren
+      if (event.data.extendedProperties.shared.status !== JSON.parse(extendedProperties).shared.status) {
+        nh.timeslotStatusChangeNotification(summary, JSON.parse(extendedProperties).shared.status, oldParents, group_id, activity_id, timeslot_id)
       }
       if (notifyUsers) {
-        extendedProperties.shared.parents = JSON.stringify([])
-        extendedProperties.shared.children = JSON.stringify([])
-        extendedProperties.shared.externals = JSON.stringify([])
+        JSON.parse(extendedProperties).shared.parents = JSON.stringify([])
+        JSON.parse(extendedProperties).shared.children = JSON.stringify([])
+        JSON.parse(extendedProperties).shared.externals = JSON.stringify([])
         await nh.timeslotMajorChangeNotification(summary, oldParents, group_id, activity_id, timeslot_id)
       } else if (volunteersReq && childrenReq) {
         await nh.timeslotRequirementsNotification(summary, parents, group_id, activity_id, timeslot_id)
       }
-      if (JSON.parse(extendedProperties.shared.children).length > 37) {
-        extendedProperties.shared.children = JSON.stringify(JSON.parse(extendedProperties.shared.children).slice(0, 36))
+      if (JSON.parse(extendedProperties).shared.children.length > 37) {
+        JSON.parse(extendedProperties).shared.children = JSON.stringify(JSON.parse(extendedProperties).shared.children.slice(0, 36))
       }
-      if (JSON.parse(extendedProperties.shared.parents).length > 37) {
-        extendedProperties.shared.parents = JSON.stringify(JSON.parse(extendedProperties.shared.parents).slice(0, 36))
+      if (JSON.parse(extendedProperties).shared.parents.length > 37) {
+        JSON.parse(extendedProperties).shared.parents = JSON.stringify(JSON.parse(extendedProperties).shared.parents.slice(0, 36))
+      }
+      console.log("\n\nsummary " + summary + "\ndescription " + description + "\nlocation " + location + "\nstart " + start + "\nend " + end + "\nextendedProp " + extendedProperties)
+      extendedProperties = JSON.parse(extendedProperties)
+      let startObj = {
+        dateTime: start,
+        date: null
+      }
+      let endObj = {
+        dateTime: end,
+        date: null
       }
       const timeslotPatch = {
         summary,
         description,
         location,
-        start,
-        end,
+        startObj,
+        endObj,
         extendedProperties
       }
       await calendar.events.patch({
@@ -1702,8 +1712,8 @@ router.post(
 
 router.delete(
   '/:groupId/activities/:activityId/timeslots/:timeslotId',
-  async (req, res, next) => {
-    if (!req.user_id) {
+  async (req, res, next) => { // Usato req.query!!!
+    if (!req.query.user_id) {
       return res.status(401).send('Not authenticated')
     }
     const { groupId: group_id, activityId: activity_id } = req.params
