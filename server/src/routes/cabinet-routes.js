@@ -277,7 +277,7 @@ router.post('/:group_id/read_notifications', async (req, res, next) => {  //Usat
 
     member.has_cabinet_notifications = false;
     await member.save();
-
+    res.status(200).send("Read notifications done");
   } catch (error) {
     next(error)
   }
