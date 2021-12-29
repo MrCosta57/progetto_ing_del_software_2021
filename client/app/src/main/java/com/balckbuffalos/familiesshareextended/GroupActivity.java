@@ -104,8 +104,8 @@ public class GroupActivity extends AppCompatActivity implements BottomNavigation
                 getSupportFragmentManager().beginTransaction().replace(R.id.fr_container, activitiesGroupFragment).commit();
                 return true;
             case R.id.page_cabinet:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fr_container, cabinetGroupFragment).commit();
                 readNotifications(token, group_id, user_id);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fr_container, cabinetGroupFragment).commit();
                 return true;
             case R.id.page_info:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fr_container, infoGroupFragment).commit();

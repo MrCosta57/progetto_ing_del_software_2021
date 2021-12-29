@@ -193,7 +193,6 @@ public interface INodeJS {
                                @Part MultipartBody.Part file);
 
     @POST("cabinet/{id}/read_notifications")
-    @FormUrlEncoded
     Observable<String> readNotifications(@Header("Authorization") String token,
                                          @Path("id") String id,
                                          @Query("user_id") String user_id);

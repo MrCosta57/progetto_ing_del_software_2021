@@ -58,7 +58,7 @@ public class InfoGroupFragment extends Fragment {
         changeVisibility.setOnClickListener(view2 -> {
             current_visibility = !current_visibility;
             editGroup(token, group_id, user_id, current_visibility, extras.getString("name"), extras.getString("description"), extras.getString("location"), extras.getString("background"), extras.getString("contact_type"));
-            visibility.setText(current_visibility?"Public group":"Private group");
+
         });
 
         return view;
@@ -68,7 +68,7 @@ public class InfoGroupFragment extends Fragment {
         compositeDisposable.add(myAPI.editGroup(token, id, user_id, visible, name, description, location, background, contact_type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> { }, t -> Log.d("ERROR ",  t.getMessage())
+                .subscribe(s -> { visibility.setText(current_visibility?"Public group":"Private group");}, t -> Log.d("ERROR ",  t.getMessage())
                 ));
     }
 }
