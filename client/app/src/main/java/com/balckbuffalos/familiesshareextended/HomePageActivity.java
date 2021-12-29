@@ -207,8 +207,8 @@ public class HomePageActivity extends AppCompatActivity {
                             mName.add(name);
                             mGreenPass.add(green_pass_is_required);
                             mDate.add(insertDate);
-                            mNAdult.add(prop.getString("parents").equals("[]") ? 0 : prop.getString("children").split(",").length);
-                            mNChildren.add(prop.getString("children").equals("[]") ? 0 : prop.getString("parents").split(",").length);
+                            mNAdult.add(prop.getString("parents").equals("[]") ? 0 : prop.getString("parents").split(",").length);
+                            mNChildren.add(prop.getString("children").equals("[]") ? 0 : prop.getString("children").split(",").length);
                             mHasPositive.add(has_positive);
 
                             initActivityRecycler();

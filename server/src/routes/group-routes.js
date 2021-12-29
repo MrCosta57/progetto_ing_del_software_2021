@@ -1595,16 +1595,13 @@ router.patch(
       })
       const oldParents = JSON.parse(event.data.extendedProperties.shared.parents) 
       const oldChildren = JSON.parse(event.data.extendedProperties.shared.children)
-      console.log("\n\n" + typeof(extendedProperties) + "\n" + extendedProperties + "\n\n")
-      console.log("\n\n" + JSON.parse(extendedProperties).shared + "\n\n")
-      console.log("\n\n" + JSON.parse(extendedProperties).shared.parents + "\n\n")
       const parents = JSON.parse(extendedProperties).shared.parents
       const children = JSON.parse(extendedProperties).shared.children
       if (!member.admin) {
         if (parents.includes(req.user_id)) {
-          extendedProperties.shared.parents = JSON.stringify([...new Set([...oldParents, req.user_id])])
+          JSON.parse(extendedProperties).shared.parents = JSON.stringify([...new Set([...oldParents, req.user_id])])
         } else {
-          extendedProperties.shared.parents = JSON.stringify(oldParents.filter(u => u !== req.user_id))
+          JSON.parse(extendedProperties).shared.parents = JSON.stringify(oldParents.filter(u => u !== req.user_id))
         }
         myChildren.forEach(c => {
           if (children.includes(c) && !oldChildren.includes(c)) {
@@ -1613,7 +1610,7 @@ router.patch(
             oldChildren.splice(oldChildren.indexOf(c), 1)
           }
         })
-        extendedProperties.shared.children = JSON.stringify(oldChildren)
+        JSON.parse(extendedProperties).shared.children = JSON.stringify(oldChildren)
       } else {
         if (adminChanges) {
           if (Object.keys(adminChanges).length > 0) {
@@ -1652,7 +1649,6 @@ router.patch(
       if (JSON.parse(extendedProperties).shared.parents.length > 37) {
         JSON.parse(extendedProperties).shared.parents = JSON.stringify(JSON.parse(extendedProperties).shared.parents.slice(0, 36))
       }
-      console.log("\n\nsummary " + summary + "\ndescription " + description + "\nlocation " + location + "\nstart " + start + "\nend " + end + "\nextendedProp " + extendedProperties)
       extendedProperties = JSON.parse(extendedProperties)
       let startObj = {
         dateTime: start,
