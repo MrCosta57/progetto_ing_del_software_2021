@@ -126,7 +126,7 @@ public class HomePageActivity extends AppCompatActivity {
                         JSONObject obj = arr.getJSONObject(i);
                         String group_id = obj.getString("group_id");
 
-                        groupSettings(token, group_id, user_id, obj.getBoolean("has_notifications"));
+                        groupSettings(token, group_id, user_id, obj.getBoolean("has_cabinet_notifications"));
                         activityList(token,group_id,user_id);
                     }
                 }, t -> Log.d("HTTP GROUP LIST REQUEST ERROR: ", t.getMessage()))
