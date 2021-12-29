@@ -61,6 +61,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
+            android:paddingBottom="3dp"
             android:text="@string/message_green_pass_icon"
             android:textAlignment="textStart"
             android:textColor="#FFFFFF"
@@ -177,13 +178,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="25dp"
         android:text="@string/_3"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.557"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider4" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_info_clock_icon" />
 
     <ImageView
         android:id="@+id/activity_info_clock_icon2"
@@ -234,12 +235,12 @@
         android:layout_height="24dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="25dp"
         android:contentDescription="@string/adult_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.421"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider4"
+        app:layout_constraintTop_toBottomOf="@+id/activity_info_hours_text"
         app:srcCompat="@drawable/couple_icon"
         tools:ignore="ImageContrastCheck" />
 
