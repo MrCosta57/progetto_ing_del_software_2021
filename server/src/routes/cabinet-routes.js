@@ -256,12 +256,10 @@ router.delete('/:group_id/:file_id', async (req, res, next) => {
 });
 
 
-router.post('/change_has_cabinet_notifications', async (req, res, next) => {  //Usato req.query !!!
+router.post('/:group_id/read_notifications', async (req, res, next) => {  //Usato req.query !!!
   
   const user_id = req.user_id;
-  const group_id = req.query.group_id;
-  const has_cabinet_notifications = req.query.has_cabinet_notifications;
-  console.log("ciao");
+  const group_id = req.params.group_id;
 
   try {
     if (!user_id) {
@@ -277,20 +275,8 @@ router.post('/change_has_cabinet_notifications', async (req, res, next) => {  //
       return res.status(401).send('Unauthorized')
     }
 
-    if (has_cabinet_notifications != true && has_cabinet_notifications != false)
-      return res.status(401).send('No query value passed');
-
-
-    const token = await jwt.sign({ user_id, has_cabinet_notifications }, process.env.SERVER_SECRET)
-    const response = {
-      id: user_id,
-      has_cabinet_notifications,
-      token
-    }
-
-    member.has_cabinet_notifications = has_cabinet_notifications;
+    member.has_cabinet_notifications = false;
     await member.save();
-    res.json(response)
 
   } catch (error) {
     next(error)
