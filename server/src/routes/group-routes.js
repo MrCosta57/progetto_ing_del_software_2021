@@ -1595,9 +1595,6 @@ router.patch(
       })
       const oldParents = JSON.parse(event.data.extendedProperties.shared.parents) 
       const oldChildren = JSON.parse(event.data.extendedProperties.shared.children)
-      console.log("\n\n" + typeof(extendedProperties) + "\n" + extendedProperties + "\n\n")
-      console.log("\n\n" + JSON.parse(extendedProperties).shared + "\n\n")
-      console.log("\n\n" + JSON.parse(extendedProperties).shared.parents + "\n\n")
       const parents = JSON.parse(extendedProperties).shared.parents
       const children = JSON.parse(extendedProperties).shared.children
       if (!member.admin) {
@@ -1652,7 +1649,6 @@ router.patch(
       if (JSON.parse(extendedProperties).shared.parents.length > 37) {
         JSON.parse(extendedProperties).shared.parents = JSON.stringify(JSON.parse(extendedProperties).shared.parents.slice(0, 36))
       }
-      console.log("\n\nsummary " + summary + "\ndescription " + description + "\nlocation " + location + "\nstart " + start + "\nend " + end + "\nextendedProp " + extendedProperties)
       extendedProperties = JSON.parse(extendedProperties)
       let startObj = {
         dateTime: start,
