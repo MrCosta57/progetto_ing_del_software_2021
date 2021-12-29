@@ -22,7 +22,7 @@ const memberSchema = new mongoose.Schema({
     required: true
   },
   /* Used to specify whether the user has at leat one new notification from a certain group */
-  has_notifications: {
+  has_cabinet_notifications: {
     type: Boolean,
     required: true
   }

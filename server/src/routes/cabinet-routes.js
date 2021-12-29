@@ -1,6 +1,3 @@
-/* By Black Buffalos */
-//https://ozenero.com/nodejs-use-mongoose-to-save-files-images-to-mongodb
-
 require('dotenv').config();
 const config = require('config');
 const db_config = process.env[config.get('dbConfig.host')];
@@ -9,6 +6,7 @@ const multer = require("multer");
 const { GridFsStorage } = require("multer-gridfs-storage");
 const express = require('express')
 const router = new express.Router()
+const jwt = require('jsonwebtoken')
 
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
@@ -81,6 +79,8 @@ router.post("/:id", async (req, res, next) => {
       });
     }
 
+    await Member.updateMany({ group_id: group_id, user_id: { $ne: creator_id } }, { $set: { has_cabinet_notifications: true } });
+
     return res.send({
       message: "File has been uploaded.",
     });
@@ -132,7 +132,7 @@ router.get("/:id", async (req, res) => {
     }
 
     let fileInfos = [];
-    for(let doc; await cursor.hasNext();){
+    for (let doc; await cursor.hasNext();) {
       doc = await cursor.next()
       const creator_id = doc.metadata.creator_id
       const user_info = await Profile.findOne({ user_id: creator_id })
@@ -148,7 +148,7 @@ router.get("/:id", async (req, res) => {
     }
 
     return res.status(200).send(fileInfos);
-    
+
   } catch (error) {
     next(error);
   }
@@ -179,7 +179,7 @@ router.get("/:group_id/:file_id", async (req, res) => {
     const database = mongoClient.db(db_config.split("/").pop()); //extract the database name from string
     const files = database.collection(bucket_name + ".files");
     const cursor = files.find({ _id: ObjectID(file_id) });
-    
+
     if ((await cursor.count()) === 0) {
       return res.status(500).send({
         message: "No files found!",
@@ -191,7 +191,7 @@ router.get("/:group_id/:file_id", async (req, res) => {
     });
 
     let downloadStream = bucket.openDownloadStream(ObjectID(file_id));
-    
+
     downloadStream.on("data", function (data) {
       return res.status(200).write(data);
     });
@@ -251,6 +251,49 @@ router.delete('/:group_id/:file_id', async (req, res, next) => {
 
   } catch (error) {
     next(error);
+  }
+
+});
+
+
+router.post('/change_has_cabinet_notifications', async (req, res, next) => {  //Usato req.query !!!
+  
+  const user_id = req.user_id;
+  const group_id = req.query.group_id;
+  const has_cabinet_notifications = req.query.has_cabinet_notifications;
+  console.log("ciao");
+
+  try {
+    if (!user_id) {
+      return res.status(401).send('Not authenticated')
+    }
+    const member = await Member.findOne({
+      group_id: group_id,
+      user_id: user_id,
+      group_accepted: true,
+      user_accepted: true
+    })
+    if (!member) {
+      return res.status(401).send('Unauthorized')
+    }
+
+    if (has_cabinet_notifications != true && has_cabinet_notifications != false)
+      return res.status(401).send('No query value passed');
+
+
+    const token = await jwt.sign({ user_id, has_cabinet_notifications }, process.env.SERVER_SECRET)
+    const response = {
+      id: user_id,
+      has_cabinet_notifications,
+      token
+    }
+
+    member.has_cabinet_notifications = has_cabinet_notifications;
+    await member.save();
+    res.json(response)
+
+  } catch (error) {
+    next(error)
   }
 
 });
