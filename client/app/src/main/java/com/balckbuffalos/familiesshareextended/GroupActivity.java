@@ -105,6 +105,7 @@ public class GroupActivity extends AppCompatActivity implements BottomNavigation
                 return true;
             case R.id.page_cabinet:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fr_container, cabinetGroupFragment).commit();
+                readNotifications(token, group_id, user_id);
                 return true;
             case R.id.page_info:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fr_container, infoGroupFragment).commit();
@@ -117,6 +118,17 @@ public class GroupActivity extends AppCompatActivity implements BottomNavigation
                 return true;
         }
         return false;
+    }
+
+    private void readNotifications(String token, String group_id, String user_id) {
+        compositeDisposable.add(myAPI.readNotifications(token, group_id, user_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                    Log.d("READ NOTIFICATIONS", s);
+
+                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+        );
     }
 
     private void groupInfo(String token, String group_id, String user_id) {
