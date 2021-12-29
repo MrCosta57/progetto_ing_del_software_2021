@@ -1602,9 +1602,9 @@ router.patch(
       const children = JSON.parse(extendedProperties).shared.children
       if (!member.admin) {
         if (parents.includes(req.user_id)) {
-          extendedProperties.shared.parents = JSON.stringify([...new Set([...oldParents, req.user_id])])
+          JSON.parse(extendedProperties).shared.parents = JSON.stringify([...new Set([...oldParents, req.user_id])])
         } else {
-          extendedProperties.shared.parents = JSON.stringify(oldParents.filter(u => u !== req.user_id))
+          JSON.parse(extendedProperties).shared.parents = JSON.stringify(oldParents.filter(u => u !== req.user_id))
         }
         myChildren.forEach(c => {
           if (children.includes(c) && !oldChildren.includes(c)) {
@@ -1613,7 +1613,7 @@ router.patch(
             oldChildren.splice(oldChildren.indexOf(c), 1)
           }
         })
-        extendedProperties.shared.children = JSON.stringify(oldChildren)
+        JSON.parse(extendedProperties).shared.children = JSON.stringify(oldChildren)
       } else {
         if (adminChanges) {
           if (Object.keys(adminChanges).length > 0) {
