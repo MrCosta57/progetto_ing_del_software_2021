@@ -174,4 +174,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description_title5" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/childrenRecyclerView"
+        android:layout_width="409dp"
+        android:layout_height="246dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description_title4" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="180dp"
+        android:layout_marginTop="12dp"
+        android:contentDescription="@string/edit"
+        app:layout_constraintStart_toEndOf="@+id/description_title2"
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar3"
+        app:srcCompat="@drawable/description_icon" />
+
+    <TextView
+        android:id="@+id/textViewEditing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/edit"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -88,6 +88,8 @@
     <string name="user_change_greenpass">Change greenpass state:</string>
     <string name="user_greenpass_state">Not available</string>
     <string name="user_children">Children</string>
+    <string name="children_name">Children name</string>
+    <string name="children_birthdate">Children birthdate</string>
     <string name="group_name">Group name</string>
     <string name="location">Location</string>
     <string name="activity_info_name">Activity Info Name</string>
@@ -103,4 +105,6 @@
     <string name="will_your_child_participate">Will your child participate?</string>
     <string name="to_str">to</string>
     <string name="day_month_sep">/</string>
+    <string name="edit">Edit</string>
+    <string name="insert_the_new_value">Insert the new value</string>
 </resources>

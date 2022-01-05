@@ -19,7 +19,7 @@
         tools:srcCompat="@drawable/group_icon" />
 
     <TextView
-        android:id="@+id/group_name"
+        android:id="@+id/edit_user_input"
         android:layout_width="243dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"

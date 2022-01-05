@@ -64,8 +64,8 @@ public class GroupCreationActivity extends AppCompatActivity {
 
 
         createButton=findViewById(R.id.create_group_btn);
-        TextView name=findViewById(R.id.group_name_text);
-        TextView desc=findViewById(R.id.group_description_text);
+        TextView name=findViewById(R.id.edit_user_text);
+        TextView desc=findViewById(R.id.user_family_text);
 
 
         createButton.setOnClickListener((v)->{

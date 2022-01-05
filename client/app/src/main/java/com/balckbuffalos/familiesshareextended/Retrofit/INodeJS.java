@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.util.Date;
 
 import io.reactivex.Observable;
+import kotlin.jvm.JvmMultifileClass;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -51,17 +52,6 @@ public interface INodeJS {
                                    @Query("ids") String[] ids,
                                    @Query("visible") Boolean visible);
 
-    @GET("users/{id}/groups")
-    Observable<String> groupList(@Header("Authorization") String token,
-                                 @Path("id") String id,
-                                 @Query("user_id") String user_id);
-
-    @GET("groups/{id}/settings")
-    Observable<String> groupSettings(@Header("Authorization") String token,
-                                 @Path("id") String id,
-                                 @Query("user_id") String user_id);
-
-
     @POST("profiles/change_greenpass_available")
     @FormUrlEncoded
     Observable<String> changeGreenpassState(@Header("Authorization") String token,
@@ -75,7 +65,40 @@ public interface INodeJS {
                                         @Field("user_id") String user_id,
                                         @Query("is_positive") Boolean is_positive);
 
+    @PATCH("users/{id}/profile")
+    @FormUrlEncoded
+    Observable<String> editUser(@Header("Authorization") String token,
+                                 @Path("id") String user_id,
+                                 @Field("given_name") String given_name,
+                                 @Field("family_name") String family_name,
+                                 @Field("email") String email,
+                                 @Field("phone") String phone,
+                                 @Field("phone_type") String phone_type,
+                                 @Field("visible") Boolean visible,
+                                 @Field("street") String street,
+                                 @Field("number") String number,
+                                 @Field("city") String city,
+                                 @Field("description") String description,
+                                 @Field("contact_option") String contact_option);
 
+    @GET("users/{id}/children")
+    Observable<String> childrenList(@Header("Authorization") String token,
+                                 @Path("id") String id,
+                                 @Query("user_id") String user_id);
+
+    @GET("children/")
+    Observable<String> childrenInfo(@Header("Authorization") String token,
+                                    @Query("ids") String[] ids);
+
+    @GET("users/{id}/groups")
+    Observable<String> groupList(@Header("Authorization") String token,
+                                 @Path("id") String id,
+                                 @Query("user_id") String user_id);
+
+    @GET("groups/{id}/settings")
+    Observable<String> groupSettings(@Header("Authorization") String token,
+                                 @Path("id") String id,
+                                 @Query("user_id") String user_id);
 
     @POST("groups/{id}/activities")
     @FormUrlEncoded

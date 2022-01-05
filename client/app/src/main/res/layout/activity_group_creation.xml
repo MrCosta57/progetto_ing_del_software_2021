@@ -7,7 +7,7 @@
     tools:context=".GroupCreationActivity">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/group_name"
+        android:id="@+id/edit_user_input"
         android:layout_width="331dp"
         android:layout_height="48dp"
         android:layout_marginTop="48dp"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
         <EditText
-            android:id="@+id/group_name_text"
+            android:id="@+id/edit_user_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="15"
@@ -32,17 +32,17 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/group_description"
+        android:id="@+id/user_family"
         android:layout_width="331dp"
         android:layout_height="48dp"
         android:layout_marginTop="20dp"
         android:textColorHint="#B9B8B8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group_name">
+        app:layout_constraintTop_toBottomOf="@+id/edit_user_input">
 
         <EditText
-            android:id="@+id/group_description_text"
+            android:id="@+id/user_family_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="15"
@@ -51,7 +51,7 @@
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/group_name"
+            app:layout_constraintTop_toBottomOf="@+id/edit_user_input"
             tools:ignore="TextContrastCheck,SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -121,7 +121,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.088"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group_description" />
+        app:layout_constraintTop_toBottomOf="@+id/user_family" />
 
     <SearchView
         android:id="@+id/profiles_searchbar"
