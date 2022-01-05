@@ -85,7 +85,7 @@ public class MembersGroupFragment extends Fragment {
                         ids[i]=obj.getString("user_id");
                     }
                     profileInfo(token, ids);
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET MEMBERS OF GROUP ["+id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
@@ -100,7 +100,7 @@ public class MembersGroupFragment extends Fragment {
                         mMemberName.add(obj.getString("given_name") + obj.getString("family_name"));
                     }
                     initMemberRecycler();
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET PROFILEINFOS "+ids.toString()+" REQUEST ERROR", t.getMessage()))
         );
     }
 }

@@ -129,7 +129,7 @@ public class HomePageActivity extends AppCompatActivity {
                         groupSettings(token, group_id, user_id, obj.getBoolean("has_cabinet_notifications"));
                         activityList(token,group_id,user_id);
                     }
-                }, t -> Log.d("HTTP GROUP LIST REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET GROUPS OF USER ["+user_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
@@ -141,7 +141,7 @@ public class HomePageActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject(s);
 
                     groupInfo(token, id, user_id,has_notifications,obj.getBoolean("open"));
-                }, t -> Log.d("HTTP GROUP SETTINGS REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET SETTINGS GROUP ["+id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
@@ -157,7 +157,7 @@ public class HomePageActivity extends AppCompatActivity {
                     mNotifications.add(has_notifications);
                     mVisible.add(visible);
                     initGroupRecycler();
-                }, t -> Log.d("HTTP GROUP INFO REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET INFO GROUP ["+group_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
@@ -173,7 +173,7 @@ public class HomePageActivity extends AppCompatActivity {
                         JSONObject info = obj.getJSONObject("activity_info");
                         timeslotsActivity(token, group_id, info.getString("activity_id"), info.getString("creator_id"), user_id, info.getString("name"), info.getBoolean("greenpass_isrequired"), obj.getBoolean("has_positive"));
                     }
-                }, t -> Log.d("HTTP ACTIVITIES REQUEST ERROR", t.getMessage()))
+                }, t -> Log.d("HTTP GET ACTIVITIES FROM GROUPS ["+group_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
     private void timeslotsActivity(String token, String group_id, String activity_id, String creator_id, String user_id, String name, Boolean green_pass_is_required, Boolean has_positive) {
@@ -185,7 +185,6 @@ public class HomePageActivity extends AppCompatActivity {
                     Date maxDate = null;
                     String insertDate = "";
                     JSONObject prop = null;
-                    Log.d("TIMESOLOT ACTIITY", activity_id + " lunghezza:" + String.valueOf(arr.length()));
                     for(int i = 0; i<arr.length();i++)
                     {
                         JSONObject obj = arr.getJSONObject(i);
@@ -230,7 +229,7 @@ public class HomePageActivity extends AppCompatActivity {
                         initActivityRecycler();
                     }
                     else
-                        Log.d("HTTP TIMESLOTS REQUEST ERROR", t.getMessage());
+                        Log.d("HTTP GET TIMESLOTS FROM ACTIVITY ["+activity_id+"] REQUEST ERROR", t.getMessage());
                 })
         );
     }

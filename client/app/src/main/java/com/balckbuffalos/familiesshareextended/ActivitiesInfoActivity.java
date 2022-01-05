@@ -83,7 +83,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
             user_id = sharedPreferences.getString("user_id", "none");
         } catch (GeneralSecurityException | IOException e) { e.printStackTrace(); }
 
-        getChildId();
+        getChildId(token, user_id);
 
         switch_activity_partecipate = findViewById(R.id.switch_activity_info_partecipate);
         switch_activity_partecipate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -102,7 +102,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
         });
     }
 
-    private void getChildId() {
+    private void getChildId(String token, String user_id) {
         compositeDisposable.add(myAPI.getChildren(token, user_id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -114,7 +114,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                     child_id = child.getString("child_id");
 
                     activityInfo(token,group_id,user_id,activity_id);
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET CHILD ID FROM PARENT ["+user_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
@@ -178,7 +178,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
         compositeDisposable.add(myAPI.editPartecipants(token, group_id, activity_id, timeslot_id, user_id,adminChanges, summary, description, location, start, end, extprop, notifyUsers)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> { }, t -> Log.d("HTTP REQUEST ERROR addPartecipantParent: ", t.getMessage()))
+                .subscribe(s -> { }, t -> Log.d("HTTP PATCH PARTECIPANTS OF ACTIVITY ["+activity_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
@@ -214,7 +214,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                     }
 
                     timeslotsActivity(token, group_id, activity_id, user_id);
-                }, t -> Log.d("HTTP REQUEST ERROR ACTIVITYINFO: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET ACTIVITIES FROM GROUPS ["+group_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
@@ -276,7 +276,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                     tv_endTime.setText(endTime);
                     tv_nAdults.setText(nAdults);
                     tv_nChildren.setText(nChildren);
-                }, t -> Log.d("HTTP REQUEST ERROR ACTIVITYSLOTS: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET TIMESLOTS FROM ACTIVITY ["+activity_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 }

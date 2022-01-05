@@ -127,7 +127,7 @@ public class GroupActivity extends AppCompatActivity implements BottomNavigation
                 .subscribe(s -> {
                     Log.d("READ NOTIFICATIONS", s);
 
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET NOTIFICATIONS OF GROUP ["+group_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
@@ -140,7 +140,7 @@ public class GroupActivity extends AppCompatActivity implements BottomNavigation
 
                     groupSettings(token,group_id,user_id, obj);
 
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET INFO GROUP ["+group_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
     private void groupSettings(String token, String id, String user_id, JSONObject obj) {
@@ -160,7 +160,7 @@ public class GroupActivity extends AppCompatActivity implements BottomNavigation
                     bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
                     bottomNavigationView.setSelectedItemId(R.id.page_activities);
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET SETTINGS GROUP ["+id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 }

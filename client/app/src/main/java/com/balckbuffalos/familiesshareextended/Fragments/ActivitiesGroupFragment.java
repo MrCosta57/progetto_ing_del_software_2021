@@ -119,7 +119,7 @@ public class ActivitiesGroupFragment extends Fragment {
                         JSONObject info = obj.getJSONObject("activity_info");
                         timeslotsActivity(token, group_id, info.getString("activity_id"), info.getString("creator_id"), user_id, info.getString("name"), info.getBoolean("greenpass_isrequired"), obj.getBoolean("has_positive"));
                     }
-                }, t -> Log.d("HTTP ACTIVITIES REQUEST ERROR", t.getMessage()))
+                }, t -> Log.d("HTTP GET ACTIVITIES FROM GROUPS ["+group_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
     private void timeslotsActivity(String token, String group_id, String activity_id, String creator_id, String user_id, String name, Boolean green_pass_is_required, Boolean has_positive) {
@@ -176,7 +176,7 @@ public class ActivitiesGroupFragment extends Fragment {
                         initActivityRecycler();
                     }
                     else
-                        Log.d("HTTP TIMESLOTS REQUEST ERROR", t.getMessage());
+                        Log.d("HTTP GET TIMESLOTS FROM ACTIVITY ["+activity_id+"] REQUEST ERROR", t.getMessage());
                 })
         );
     }

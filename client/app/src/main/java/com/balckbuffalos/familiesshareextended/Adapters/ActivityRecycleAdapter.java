@@ -159,7 +159,7 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
                     mNChildren.remove(position);
                     mGreenPass.remove(position);
                     this.notifyDataSetChanged();
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP DELETE ACTIVITY ["+activity_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 }

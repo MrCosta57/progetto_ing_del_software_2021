@@ -68,7 +68,8 @@ public class InfoGroupFragment extends Fragment {
         compositeDisposable.add(myAPI.editGroup(token, id, user_id, visible, name, description, location, background, contact_type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> { visibility.setText(current_visibility?"Public group":"Private group");}, t -> Log.d("ERROR ",  t.getMessage())
+                .subscribe(s -> { visibility.setText(current_visibility?"Public group":"Private group");},
+                        t -> Log.d("HTTP PATCH GROUP ["+id+"] REQUEST ERROR",  t.getMessage())
                 ));
     }
 }
