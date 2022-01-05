@@ -215,6 +215,11 @@ public interface INodeJS {
                                @Query("description") String description,
                                @Part MultipartBody.Part file);
 
+    @POST("cabinet/{id}/read_notifications")
+    Observable<String> readNotifications(@Header("Authorization") String token,
+                                         @Path("id") String id,
+                                         @Query("user_id") String user_id);
+
     @DELETE("cabinet/{group_id}/{file_id}")
     Observable<String> deleteFile(@Header("Authorization") String token,
                                                @Path("group_id") String group_id,
@@ -226,4 +231,9 @@ public interface INodeJS {
                                   @Path("group_id") String group_id,
                                   @Path("activity_id") String activity_id,
                                   @Query("user_id") String user_id);
+
+    @DELETE("groups/{group_id}")
+    Observable<String> deleteGroup(@Header("Authorization") String token,
+                                      @Path("group_id") String group_id,
+                                      @Query("user_id") String user_id);
 }

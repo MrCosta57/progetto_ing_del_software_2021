@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.balckbuffalos.familiesshareextended.R;
@@ -127,16 +129,17 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
                     mFileType.remove(position);
                     mCreatorId.remove(position);
                     this.notifyDataSetChanged();
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP DELETE FILE ["+file_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
-    @SuppressLint("StaticFieldLeak")
+    @SuppressLint({"StaticFieldLeak", "ShowToast"})
     private void getFile(String token, String group_id, String user_id, String file_id) {
         compositeDisposable.add(myAPI.getFile(token, group_id, file_id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
+                    Toast.makeText(mContext, "DOWNLOAD STARTED", Toast.LENGTH_LONG);
                     new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected Void doInBackground(Void... voids) {
@@ -144,9 +147,11 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
                         boolean writtenToDisk = writeResponseBodyToDisk(s.body());
 
                         Log.d("DOWNLOAD INFO", "file download was a success? " + writtenToDisk);
+                        Toast.makeText(mContext, "DOWNLOAD FINISHED", Toast.LENGTH_LONG);
+
                         return null;
                     }
-                }.execute();},t->Log.d("ERROR", t.getMessage())));
+                }.execute();},t->Log.d("HTTP GET FILE ["+file_id+"] REQUEST ERROR", t.getMessage())));
     }
 
     private boolean writeResponseBodyToDisk(ResponseBody body) {

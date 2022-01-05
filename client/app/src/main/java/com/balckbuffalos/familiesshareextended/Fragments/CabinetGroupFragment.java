@@ -169,7 +169,7 @@ public class CabinetGroupFragment extends Fragment {
                         mCreatorId.add(obj.getString("creator_id"));
                     }
                     initFileRecycler();
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET FILE FROM GROUP ["+id+"]REQUEST ERROR", t.getMessage()))
         );
     }
 
@@ -185,7 +185,7 @@ public class CabinetGroupFragment extends Fragment {
                     mFileType.clear();
                     mCreatorId.clear();
                     fileList(token, group_id, user_id);
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP POST FILE REQUEST ERROR", t.getMessage()))
         );
     }
 }

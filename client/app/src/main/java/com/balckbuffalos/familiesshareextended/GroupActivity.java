@@ -104,6 +104,7 @@ public class GroupActivity extends AppCompatActivity implements BottomNavigation
                 getSupportFragmentManager().beginTransaction().replace(R.id.fr_container, activitiesGroupFragment).commit();
                 return true;
             case R.id.page_cabinet:
+                readNotifications(token, group_id, user_id);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fr_container, cabinetGroupFragment).commit();
                 return true;
             case R.id.page_info:
@@ -119,6 +120,17 @@ public class GroupActivity extends AppCompatActivity implements BottomNavigation
         return false;
     }
 
+    private void readNotifications(String token, String group_id, String user_id) {
+        compositeDisposable.add(myAPI.readNotifications(token, group_id, user_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                    Log.d("READ NOTIFICATIONS", s);
+
+                }, t -> Log.d("HTTP GET NOTIFICATIONS OF GROUP ["+group_id+"] REQUEST ERROR", t.getMessage()))
+        );
+    }
+
     private void groupInfo(String token, String group_id, String user_id) {
         compositeDisposable.add(myAPI.groupInfo(token, group_id, user_id)
                 .subscribeOn(Schedulers.io())
@@ -128,7 +140,7 @@ public class GroupActivity extends AppCompatActivity implements BottomNavigation
 
                     groupSettings(token,group_id,user_id, obj);
 
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET INFO GROUP ["+group_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
     private void groupSettings(String token, String id, String user_id, JSONObject obj) {
@@ -148,7 +160,7 @@ public class GroupActivity extends AppCompatActivity implements BottomNavigation
                     bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
                     bottomNavigationView.setSelectedItemId(R.id.page_activities);
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET SETTINGS GROUP ["+id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 }

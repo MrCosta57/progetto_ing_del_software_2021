@@ -188,7 +188,7 @@ public class InfoUserActivity extends AppCompatActivity {
                     textViewEmail.setText(req_email);
                     setGreenPass(obj.getBoolean("greenpass_available"));  //Setting Greeenpass initial state
                     setPositivity(obj.getBoolean("is_positive"));  //Setting Positivity initial state
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET INFO PROFILES ["+ids.toString()+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
@@ -261,7 +261,7 @@ public class InfoUserActivity extends AppCompatActivity {
         compositeDisposable.add(myAPI.changeGreenpassState(token, user_id, greenpass_available)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s ->{}, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                .subscribe(s ->{}, t -> Log.d("HTTP PATCH GREEN PASS OF USER ["+user_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
@@ -269,7 +269,7 @@ public class InfoUserActivity extends AppCompatActivity {
         compositeDisposable.add(myAPI.changePositivity(token, user_id, is_positive)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s ->{}, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                .subscribe(s ->{}, t -> Log.d("HTTP PATCH POSITIVITY OF USER ["+user_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 

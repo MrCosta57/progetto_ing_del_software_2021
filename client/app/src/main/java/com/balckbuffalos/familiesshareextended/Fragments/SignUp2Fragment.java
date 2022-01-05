@@ -19,8 +19,6 @@ import com.stepstone.stepper.VerificationError;
 
 public class SignUp2Fragment extends Fragment implements Step {
 
-
-
     private TextInputLayout name, surname, gender, allergy;
     private DatePicker date;
 

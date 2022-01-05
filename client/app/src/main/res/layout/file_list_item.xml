@@ -89,11 +89,11 @@
     <Button
         android:id="@+id/download_button"
         android:layout_width="139dp"
-        android:layout_height="36dp"
+        android:layout_height="48dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="136dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="92dp"
         android:text="@string/download"
         tools:ignore="TextContrastCheck" />
 </RelativeLayout>

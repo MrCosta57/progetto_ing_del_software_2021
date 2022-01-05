@@ -75,7 +75,6 @@ public class MembersGroupFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
-                    Log.d("LEGGO S","S " + s);
                     JSONArray arr = new JSONArray(s);
                     String[] ids = new String[arr.length()];
                     for(int i = 0; i<arr.length();i++)
@@ -85,7 +84,7 @@ public class MembersGroupFragment extends Fragment {
                         ids[i]=obj.getString("user_id");
                     }
                     profileInfo(token, ids);
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET MEMBERS OF GROUP ["+id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
@@ -100,7 +99,7 @@ public class MembersGroupFragment extends Fragment {
                         mMemberName.add(obj.getString("given_name") + obj.getString("family_name"));
                     }
                     initMemberRecycler();
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET PROFILEINFOS "+ids.toString()+" REQUEST ERROR", t.getMessage()))
         );
     }
 }

@@ -104,7 +104,7 @@ public class GroupCreationActivity extends AppCompatActivity {
             token = sharedPreferences.getString("token", "none");
             user_id = sharedPreferences.getString("user_id", "none");
 
-            profilesInfo();
+            profilesInfo(token, user_id);
         } catch (GeneralSecurityException | IOException e) { e.printStackTrace(); }
 
     }
@@ -124,7 +124,7 @@ public class GroupCreationActivity extends AppCompatActivity {
     }
 
 
-    private void profilesInfo() {
+    private void profilesInfo(String token, String user_id) {
         compositeDisposable.add(myAPI.profilesInfo(token,"visibility", null, true)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -139,7 +139,7 @@ public class GroupCreationActivity extends AppCompatActivity {
                     }
 
                     initProfliesRecycler();
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET PROFILE INFO ["+user_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
@@ -158,7 +158,7 @@ public class GroupCreationActivity extends AppCompatActivity {
                         GroupCreationActivity.this.startActivity(myIntent);
                     },
                     t -> {
-                        Toast.makeText(GroupCreationActivity.this, "ERROR " + t.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.d("HTTP POST GROUP REQUEST ERROR", t.getMessage());
                         Intent myIntent = new Intent(GroupCreationActivity.this, HomePageActivity.class);
                         GroupCreationActivity.this.startActivity(myIntent);
                     }) );

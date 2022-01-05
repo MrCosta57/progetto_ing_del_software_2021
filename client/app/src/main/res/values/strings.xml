@@ -37,7 +37,7 @@
     <string name="title_activity_group">GroupActivity</string>
     <string name="homepage">HOMEPAGE</string>
     <string name="logout">LOGOUT</string>
-    <string name="message_green_pass_icon">If you see the ! icon, it means that the activity requires the GREEN PASS certification</string>
+    <string name="message_green_pass_icon">When the ! icon appears, it means that the activity requires the GREEN PASS certification\nIf an activity\'s background turns red, it means that a COVID case has been detected and you should get tested</string>
     <string name="home">Home</string>
     <string name="my_profile">My Profile</string>
     <string name="create_a_group">Create a group</string>
@@ -107,4 +107,6 @@
     <string name="day_month_sep">/</string>
     <string name="edit">Edit</string>
     <string name="insert_the_new_value">Insert the new value</string>
+    <string name="splash_screen">Splash screen</string>
+    <string name="trash_bin_icon">trash bin icon</string>
 </resources>

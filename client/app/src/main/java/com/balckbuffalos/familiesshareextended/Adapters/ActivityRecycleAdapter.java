@@ -40,12 +40,13 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
     private final ArrayList<Integer> mNAdult;
     private final ArrayList<Integer> mNChildren;
     private final ArrayList<Boolean> mGreenPass;
+    private final ArrayList<Boolean> mHasPositive;
 
     String token, user_id;
 
     private final Context mContext;
 
-    public ActivityRecycleAdapter(Context mContext, ArrayList<String> mActivityId, ArrayList<String> mGroupId, ArrayList<String> mCreatorId, ArrayList<String> mDate, ArrayList<String> mName, ArrayList<Integer> mNAdult, ArrayList<Integer> mNChildren, ArrayList<Boolean> mGreenPass, String user_id, String token) {
+    public ActivityRecycleAdapter(Context mContext, ArrayList<String> mActivityId, ArrayList<String> mGroupId, ArrayList<String> mCreatorId, ArrayList<String> mDate, ArrayList<String> mName, ArrayList<Integer> mNAdult, ArrayList<Integer> mNChildren, ArrayList<Boolean> mGreenPass, String user_id, String token, ArrayList<Boolean> mHasPositive) {
         this.mActivityId = mActivityId;
         this.mGroupId = mGroupId;
         this.mCreatorId = mCreatorId;
@@ -55,8 +56,9 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
         this.mNChildren = mNChildren;
         this.mContext = mContext;
         this.mGreenPass = mGreenPass;
-        this.token=token;
-        this.user_id=user_id;
+        this.token = token;
+        this.user_id = user_id;
+        this.mHasPositive = mHasPositive;
     }
 
     @NonNull
@@ -70,7 +72,6 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
         return new ViewHolder(view);
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if(mDate.get(position).equals("N/D")) {
@@ -112,6 +113,10 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
             myIntent.putExtra("activity_id", mActivityId.get(position));
             mContext.startActivity(myIntent);
         });
+
+        if(mHasPositive.get(position)) {
+            holder.parent_layout.setBackgroundColor(0xFFC62828);
+        }
     }
 
     @Override
@@ -154,7 +159,7 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
                     mNChildren.remove(position);
                     mGreenPass.remove(position);
                     this.notifyDataSetChanged();
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP DELETE ACTIVITY ["+activity_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 }

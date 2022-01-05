@@ -91,9 +91,9 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
         int ora_fine = adapter.getStep3().getActivityEndHour();
         int minuto_fine = adapter.getStep3().getActivityEndMinute();
 
-        Log.d("CIAOOOO", "BELLOOO" + "token: " + token + " \ngroupid:  " + group_id + "\nuserid: " + user_id + "\nedttitle: " + title + "\nedt_description " + description
+        /*Log.d("CIAOOOO", "BELLOOO" + "token: " + token + " \ngroupid:  " + group_id + "\nuserid: " + user_id + "\nedttitle: " + title + "\nedt_description " + description
                 + "\nedtposition: " + position + "\ncolor: " + color + "\ngreenpass: " + green_pass + "\ndatainizio: " + data_inizio + "\norainizio: " + ora_inizio + "\nminutoinizio: " + minuto_inizio + "\ndatafine: " + data_fine + "\norafine: "
-                + ora_fine + "\nminutofine: " + minuto_fine);
+                + ora_fine + "\nminutofine: " + minuto_fine);*/
 
         if(data_inizio.after(data_fine) || (data_inizio.equals(data_fine) && ora_inizio > ora_fine) || (data_inizio.equals(data_fine) && ora_inizio == ora_fine && minuto_inizio >= minuto_fine)){
             Toast.makeText(ActivitiesCreationActivity.this, "INVALID START OR END TIME ATTRIBUTES", Toast.LENGTH_LONG).show();
@@ -175,11 +175,10 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
                             ActivitiesCreationActivity.this.startActivity(myIntent);
                         },
                         t -> {
-                    Log.d("ERRORE", t.toString());
-                    Toast.makeText(ActivitiesCreationActivity.this, "ERROR "+t.getMessage(), Toast.LENGTH_LONG).show();
-                        Intent myIntent = new Intent(ActivitiesCreationActivity.this, GroupActivity.class);
-                        myIntent.putExtra("group_id", group_id);
-                        ActivitiesCreationActivity.this.startActivity(myIntent);
+                            Log.d("HTTP POST ACTIVITY REQUEST ERROR", t.getMessage());
+                            Intent myIntent = new Intent(ActivitiesCreationActivity.this, GroupActivity.class);
+                            myIntent.putExtra("group_id", group_id);
+                            ActivitiesCreationActivity.this.startActivity(myIntent);
                 })
         );
     }

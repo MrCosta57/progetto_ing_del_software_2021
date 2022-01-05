@@ -49,7 +49,6 @@ public class Utility {
 
                 switch(menuItem.getItemId()){
                     case R.id.home_menu:
-                        Log.d("PROVA", token+" "+user_id);
                         if(!(token.equals("none")||user_id.equals("none"))) {
                             Intent myIntent = new Intent(ctx, HomePageActivity.class);
                             ctx.startActivity(myIntent);

@@ -3,6 +3,7 @@ package com.balckbuffalos.familiesshareextended;
 import static com.balckbuffalos.familiesshareextended.Utility.Utility.showMenu;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.ArraySet;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,6 +51,7 @@ public class HomePageActivity extends AppCompatActivity {
     private final ArrayList<String> mMembers = new ArrayList<>();
     private final ArrayList<Boolean> mVisible = new ArrayList<>();
     private final ArrayList<Boolean> mNotifications = new ArrayList<>();
+    private final ArrayList<Boolean> mAdmin = new ArrayList<>();
 
     private final ArrayList<String> mActivityId = new ArrayList<>();
     private final ArrayList<String> mActivityGroupId = new ArrayList<>();
@@ -59,6 +61,7 @@ public class HomePageActivity extends AppCompatActivity {
     private final ArrayList<Integer> mNAdult = new ArrayList<>();
     private final ArrayList<Integer> mNChildren = new ArrayList<>();
     private final ArrayList<Boolean> mGreenPass = new ArrayList<>();
+    private final ArrayList<Boolean> mHasPositive = new ArrayList<>();
 
     private ActivityRecycleAdapter adapter;
     private String token;
@@ -96,7 +99,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     private void initGroupRecycler(){
         RecyclerView groupRecyclerView = findViewById(R.id.groupsRecycler);
-        GroupRecycleAdapter adapter = new GroupRecycleAdapter(mGroupId, this, mGroupName, mMembers, mVisible, mNotifications);
+        GroupRecycleAdapter adapter = new GroupRecycleAdapter(mGroupId, this, mGroupName, mMembers, mVisible, mNotifications, mAdmin, token, user_id);
         groupRecyclerView.addItemDecoration(new DividerItemDecoration(groupRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
         groupRecyclerView.setAdapter(adapter);
@@ -106,7 +109,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     private void initActivityRecycler(){
         RecyclerView activityRecyclerView = findViewById(R.id.activityRecycler);
-        adapter = new ActivityRecycleAdapter(this, mActivityId, mActivityGroupId, mCreatorId, mDate, mName, mNAdult, mNChildren, mGreenPass, user_id, token);
+        adapter = new ActivityRecycleAdapter(this, mActivityId, mActivityGroupId, mCreatorId, mDate, mName, mNAdult, mNChildren, mGreenPass, user_id, token, mHasPositive);
         activityRecyclerView.addItemDecoration(new DividerItemDecoration(activityRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
         activityRecyclerView.setAdapter(adapter);
@@ -125,26 +128,44 @@ public class HomePageActivity extends AppCompatActivity {
                         JSONObject obj = arr.getJSONObject(i);
                         String group_id = obj.getString("group_id");
 
-                        groupSettings(token, group_id, user_id, obj.getBoolean("has_notifications"));
+                        memberList(token, group_id, user_id, obj.getBoolean("has_cabinet_notifications"));
                         activityList(token,group_id,user_id);
                     }
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET GROUPS OF USER ["+user_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
-    private void groupSettings(String token, String id, String user_id, Boolean has_notifications) {
+    private void memberList(String token, String id, String user_id, Boolean has_notifications) {
+        compositeDisposable.add(myAPI.membersList(token, id, user_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                    JSONArray arr = new JSONArray(s);
+                    String[] ids = new String[arr.length()];
+                    for(int i = 0; i<arr.length();i++)
+                    {
+                        JSONObject obj = arr.getJSONObject(i);
+                        if(obj.getString("user_id").equals(user_id))
+                            groupSettings(token, id, user_id, has_notifications, obj.getBoolean("admin"));
+                    }
+
+                }, t -> Log.d("HTTP GET MEMBERS OF GROUP ["+id+"] REQUEST ERROR", t.getMessage()))
+        );
+    }
+
+    private void groupSettings(String token, String id, String user_id, Boolean has_notifications, Boolean is_admin) {
         compositeDisposable.add(myAPI.groupSettings(token, id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
                     JSONObject obj = new JSONObject(s);
 
-                    groupInfo(token, id, user_id,has_notifications,obj.getBoolean("open"));
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                    groupInfo(token, id, user_id, has_notifications, is_admin, obj.getBoolean("open"));
+                }, t -> Log.d("HTTP GET SETTINGS GROUP ["+id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
-    private void groupInfo(String token, String group_id, String user_id, Boolean has_notifications, Boolean visible) {
+    private void groupInfo(String token, String group_id, String user_id, Boolean has_notifications, Boolean is_admin, Boolean visible) {
         compositeDisposable.add(myAPI.groupInfo(token, group_id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -155,8 +176,9 @@ public class HomePageActivity extends AppCompatActivity {
                     mGroupId.add(group_id);
                     mNotifications.add(has_notifications);
                     mVisible.add(visible);
+                    mAdmin.add(is_admin);
                     initGroupRecycler();
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET INFO GROUP ["+group_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
@@ -169,13 +191,13 @@ public class HomePageActivity extends AppCompatActivity {
                     for(int i = 0; i<arr.length();i++)
                     {
                         JSONObject obj = arr.getJSONObject(i);
-
-                        timeslotsActivity(token, group_id, obj.getString("activity_id"), obj.getString("creator_id"), user_id, obj.getString("name"), obj.getBoolean("greenpass_isrequired"));
+                        JSONObject info = obj.getJSONObject("activity_info");
+                        timeslotsActivity(token, group_id, info.getString("activity_id"), info.getString("creator_id"), user_id, info.getString("name"), info.getBoolean("greenpass_isrequired"), obj.getBoolean("has_positive"));
                     }
-                }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                }, t -> Log.d("HTTP GET ACTIVITIES FROM GROUPS ["+group_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
-    private void timeslotsActivity(String token, String group_id, String activity_id, String creator_id, String user_id, String name, Boolean green_pass_is_required) {
+    private void timeslotsActivity(String token, String group_id, String activity_id, String creator_id, String user_id, String name, Boolean green_pass_is_required, Boolean has_positive) {
         compositeDisposable.add(myAPI.timeslotsActivity(token, group_id, activity_id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -184,7 +206,6 @@ public class HomePageActivity extends AppCompatActivity {
                     Date maxDate = null;
                     String insertDate = "";
                     JSONObject prop = null;
-                    Log.d("TIMESOLOT ACTIITY:", activity_id + " lunghezza:" + String.valueOf(arr.length()));
                     for(int i = 0; i<arr.length();i++)
                     {
                         JSONObject obj = arr.getJSONObject(i);
@@ -206,8 +227,9 @@ public class HomePageActivity extends AppCompatActivity {
                             mName.add(name);
                             mGreenPass.add(green_pass_is_required);
                             mDate.add(insertDate);
-                            mNAdult.add(prop.getString("parents").equals("[]") ? 0 : prop.getString("children").split(",").length);
-                            mNChildren.add(prop.getString("children").equals("[]") ? 0 : prop.getString("parents").split(",").length);
+                            mNAdult.add(prop.getString("parents").equals("[]") ? 0 : prop.getString("parents").split(",").length);
+                            mNChildren.add(prop.getString("children").equals("[]") ? 0 : prop.getString("children").split(",").length);
+                            mHasPositive.add(has_positive);
 
                             initActivityRecycler();
                             break;
@@ -224,10 +246,11 @@ public class HomePageActivity extends AppCompatActivity {
                         mDate.add("N/D");
                         mNAdult.add(0);
                         mNChildren.add(0);
+                        mHasPositive.add(has_positive);
                         initActivityRecycler();
                     }
                     else
-                        Log.d("HTTP REQUEST ERROR: ", t.getMessage());
+                        Log.d("HTTP GET TIMESLOTS FROM ACTIVITY ["+activity_id+"] REQUEST ERROR", t.getMessage());
                 })
         );
     }

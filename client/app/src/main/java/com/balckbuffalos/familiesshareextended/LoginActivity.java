@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                             Intent myIntent = new Intent(LoginActivity.this, HomePageActivity.class);
                             LoginActivity.this.startActivity(myIntent);
                             finish();},
-                        t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
+                        t -> Log.d("HTTP LOGIN REQUEST ERROR, mail:["+email+"] password:["+password+"]", t.getMessage()))
         );
     }
 }
