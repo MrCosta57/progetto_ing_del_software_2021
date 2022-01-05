@@ -126,7 +126,7 @@ router.get("/:id", async (req, res) => {
     const cursor = files.find({ 'metadata.group_id': group_id });
 
     if ((await cursor.count()) === 0) {
-      return res.status(500).send({
+      return res.status(404).send({
         message: "No files found!",
       });
     }
@@ -181,7 +181,7 @@ router.get("/:group_id/:file_id", async (req, res) => {
     const cursor = files.find({ _id: ObjectID(file_id) });
 
     if ((await cursor.count()) === 0) {
-      return res.status(500).send({
+      return res.status(404).send({
         message: "No files found!",
       });
     }
@@ -291,13 +291,20 @@ async function deleteAll_files(group_id) {
     await mongoClient.connect();
     const database = mongoClient.db(db_config.split("/").pop()); //extract the database name from string
     const files = database.collection(bucket_name + ".files");
+    //console.log(group_id);
     const cursor = files.find({ 'metadata.group_id': group_id });
 
+    //console.log(cursor);
     if ((await cursor.count()) === 0) {
       return res.status(500).send({
         message: "No files found!",
       });
     }
+
+    const bucket = new GridFSBucket(database, {
+      bucketName: bucket_name,
+    });
+    
     await cursor.forEach((doc) => {
       bucket.delete(ObjectID(doc._id));
     });

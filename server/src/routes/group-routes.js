@@ -310,9 +310,9 @@ router.get('/:id', (req, res, next) => {
 })
 
 router.delete('/:id', async (req, res, next) => {
-  /*if (!req.user_id) {
+  if (!req.user_id) {
     return res.status(401).send('Not authenticated')
-  }*/
+  }
   const { id } = req.params
   const edittingUser = await Member.findOne({
     group_id: req.params.id,
