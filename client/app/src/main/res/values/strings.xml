@@ -103,4 +103,6 @@
     <string name="will_your_child_participate">Will your child participate?</string>
     <string name="to_str">to</string>
     <string name="day_month_sep">/</string>
+    <string name="splash_screen">Splash screen</string>
+    <string name="trash_bin_icon">trash bin icon</string>
 </resources>

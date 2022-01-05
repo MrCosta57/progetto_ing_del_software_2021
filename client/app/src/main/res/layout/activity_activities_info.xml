@@ -37,7 +37,18 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_menu"
-            app:title="Activity Info" />
+            app:title="Activity Info" >
+
+            <LinearLayout
+                android:background="@drawable/circle"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:id="@+id/powerCircle"
+                android:layout_width="20dp"
+                android:layout_height="20sp" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
     </com.google.android.material.appbar.AppBarLayout>
 
 

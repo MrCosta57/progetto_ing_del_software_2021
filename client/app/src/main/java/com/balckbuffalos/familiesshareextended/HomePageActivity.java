@@ -3,6 +3,7 @@ package com.balckbuffalos.familiesshareextended;
 import static com.balckbuffalos.familiesshareextended.Utility.Utility.showMenu;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.ArraySet;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,6 +51,7 @@ public class HomePageActivity extends AppCompatActivity {
     private final ArrayList<String> mMembers = new ArrayList<>();
     private final ArrayList<Boolean> mVisible = new ArrayList<>();
     private final ArrayList<Boolean> mNotifications = new ArrayList<>();
+    private final ArrayList<Boolean> mAdmin = new ArrayList<>();
 
     private final ArrayList<String> mActivityId = new ArrayList<>();
     private final ArrayList<String> mActivityGroupId = new ArrayList<>();
@@ -97,7 +99,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     private void initGroupRecycler(){
         RecyclerView groupRecyclerView = findViewById(R.id.groupsRecycler);
-        GroupRecycleAdapter adapter = new GroupRecycleAdapter(mGroupId, this, mGroupName, mMembers, mVisible, mNotifications);
+        GroupRecycleAdapter adapter = new GroupRecycleAdapter(mGroupId, this, mGroupName, mMembers, mVisible, mNotifications, mAdmin, token, user_id);
         groupRecyclerView.addItemDecoration(new DividerItemDecoration(groupRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
         groupRecyclerView.setAdapter(adapter);
@@ -126,26 +128,44 @@ public class HomePageActivity extends AppCompatActivity {
                         JSONObject obj = arr.getJSONObject(i);
                         String group_id = obj.getString("group_id");
 
-                        groupSettings(token, group_id, user_id, obj.getBoolean("has_cabinet_notifications"));
+                        memberList(token, group_id, user_id, obj.getBoolean("has_cabinet_notifications"));
                         activityList(token,group_id,user_id);
                     }
                 }, t -> Log.d("HTTP GET GROUPS OF USER ["+user_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
-    private void groupSettings(String token, String id, String user_id, Boolean has_notifications) {
+    private void memberList(String token, String id, String user_id, Boolean has_notifications) {
+        compositeDisposable.add(myAPI.membersList(token, id, user_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                    JSONArray arr = new JSONArray(s);
+                    String[] ids = new String[arr.length()];
+                    for(int i = 0; i<arr.length();i++)
+                    {
+                        JSONObject obj = arr.getJSONObject(i);
+                        if(obj.getString("user_id").equals(user_id))
+                            groupSettings(token, id, user_id, has_notifications, obj.getBoolean("admin"));
+                    }
+
+                }, t -> Log.d("HTTP GET MEMBERS OF GROUP ["+id+"] REQUEST ERROR", t.getMessage()))
+        );
+    }
+
+    private void groupSettings(String token, String id, String user_id, Boolean has_notifications, Boolean is_admin) {
         compositeDisposable.add(myAPI.groupSettings(token, id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
                     JSONObject obj = new JSONObject(s);
 
-                    groupInfo(token, id, user_id,has_notifications,obj.getBoolean("open"));
+                    groupInfo(token, id, user_id, has_notifications, is_admin, obj.getBoolean("open"));
                 }, t -> Log.d("HTTP GET SETTINGS GROUP ["+id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
-    private void groupInfo(String token, String group_id, String user_id, Boolean has_notifications, Boolean visible) {
+    private void groupInfo(String token, String group_id, String user_id, Boolean has_notifications, Boolean is_admin, Boolean visible) {
         compositeDisposable.add(myAPI.groupInfo(token, group_id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -156,6 +176,7 @@ public class HomePageActivity extends AppCompatActivity {
                     mGroupId.add(group_id);
                     mNotifications.add(has_notifications);
                     mVisible.add(visible);
+                    mAdmin.add(is_admin);
                     initGroupRecycler();
                 }, t -> Log.d("HTTP GET INFO GROUP ["+group_id+"] REQUEST ERROR", t.getMessage()))
         );

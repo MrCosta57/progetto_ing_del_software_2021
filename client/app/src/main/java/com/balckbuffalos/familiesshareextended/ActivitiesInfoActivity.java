@@ -9,6 +9,8 @@ import androidx.security.crypto.MasterKeys;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -213,6 +215,10 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                         activityGPText.setText("GREEN PASS is NOT mandatory");
                     }
 
+                    GradientDrawable background = (GradientDrawable) findViewById(R.id.powerCircle).getBackground();
+                    background.setColor(Color.parseColor(obj.getString("color")));
+
+
                     timeslotsActivity(token, group_id, activity_id, user_id);
                 }, t -> Log.d("HTTP GET ACTIVITIES FROM GROUPS ["+group_id+"] REQUEST ERROR", t.getMessage()))
         );
@@ -276,6 +282,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                     tv_endTime.setText(endTime);
                     tv_nAdults.setText(nAdults);
                     tv_nChildren.setText(nChildren);
+
                 }, t -> Log.d("HTTP GET TIMESLOTS FROM ACTIVITY ["+activity_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
