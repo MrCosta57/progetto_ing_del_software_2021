@@ -12,6 +12,7 @@ import com.balckbuffalos.familiesshareextended.Adapters.MemberRecycleAdapter;
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -79,7 +80,7 @@ public class InfoUserActivity extends AppCompatActivity {
             showMenu(v, R.menu.top_app_bar, this, getApplicationContext());
         });
 
-        Switch switchGreenpass = findViewById(R.id.switchGreenPass);
+        SwitchMaterial switchGreenpass = findViewById(R.id.switchGreenPass);
         CheckBox check_posisitity = findViewById(R.id.checkBoxPositivity);
         TextView textViewEditing = findViewById(R.id.textViewEditing);
 
@@ -194,7 +195,7 @@ public class InfoUserActivity extends AppCompatActivity {
 
     private void setGreenPass(Boolean state){  //Set greenpass switch correctly
         TextView text_greenpass_state = findViewById(R.id.textViewGreenPassState);
-        Switch switchGreenpass = findViewById(R.id.switchGreenPass);
+        SwitchMaterial switchGreenpass = findViewById(R.id.switchGreenPass);
 
         if(state){
             if(!switchGreenpass.isChecked())
