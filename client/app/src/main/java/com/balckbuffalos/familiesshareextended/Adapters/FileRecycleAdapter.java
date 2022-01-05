@@ -147,7 +147,6 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
                         boolean writtenToDisk = writeResponseBodyToDisk(s.body());
 
                         Log.d("DOWNLOAD INFO", "file download was a success? " + writtenToDisk);
-                        Toast.makeText(mContext, "DOWNLOAD FINISHED", Toast.LENGTH_LONG);
 
                         return null;
                     }
@@ -185,7 +184,6 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
                 }
 
                 outputStream.flush();
-
                 return true;
             } catch (IOException e) {
                 return false;
