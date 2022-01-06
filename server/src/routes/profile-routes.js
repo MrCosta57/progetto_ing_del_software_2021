@@ -2,6 +2,8 @@ const express = require('express')
 const router = new express.Router()
 const jwt = require('jsonwebtoken')
 const Profile = require('../models/profile')
+const Child=require('../models/child')
+const Parent=require('../models/parent')
 const Image = require('../models/image')
 
 router.get('/', (req, res, next) => {
@@ -131,12 +133,17 @@ router.post('/change_is_positive_state', async (req, res, next) => {  //Usato re
 
 
 router.post('/change_childs_is_positive_state', async (req, res, next) => {  //Usato req.query !!!
-  if (!req.parent_id) { return res.status(401).send('Not authorized') }
+  if (!req.user_id) { return res.status(401).send('Not authorized') }
   try {
-    const parent_id = req.parent_id
+    const parent_id = req.user_id
     const is_positive = req.query.is_positive
-    const profile = await Profile.findOne({ parent_id: parent_id })
-    const child = profile.child_id;
+    const child_id=req.child_id;
+
+    if (await Parent.find({parent_id: parent_id, child_id: child_id})){
+      return res.status(500).send('Users not found');
+    }
+
+    const child = await Child.findOne({child_id: child_id});
     if (child.suspended) {
       await Profile.updateOne({ parent_id }, { suspended: false })
       const usersChildren = await Parent.find({ parent_id: user_id })
@@ -149,8 +156,8 @@ router.post('/change_childs_is_positive_state', async (req, res, next) => {  //U
     is_positive,
     token
   }
-  profile.is_positive = req.query.is_positive
-  await profile.save()
+  child.is_positive = req.query.is_positive
+  await child.save()
   res.json(response)
   } catch (error) {
     next(error)

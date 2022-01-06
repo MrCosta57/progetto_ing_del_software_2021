@@ -1258,12 +1258,15 @@ router.get('/:id/activities', (req, res, next) => {  //Usato req.query !!!
                     has_positive=true;
                     break;
                 }
+                
+                if (!has_positive){
+                  for(let child_id of child_ids_vett){
+                    let info=await Child.findOne({child_id: child_id});
+                    if (info.is_positive)
+                      has_positive=true;
+                      break;
+                  }
 
-                for(let child_id of child_ids_vett){
-                  let info=await Profile.findOne({user_id: child_id});
-                  if (info.is_positive)
-                    has_positive=true;
-                    break;
                 }
 
                 tracingArray.push({activity_info: activity, has_positive: has_positive});
@@ -1278,6 +1281,7 @@ router.get('/:id/activities', (req, res, next) => {  //Usato req.query !!!
     })
     .catch(next)
 })
+
 
 router.patch('/:id/activities/:activityId', async (req, res, next) => {
   if (!req.user_id) {
