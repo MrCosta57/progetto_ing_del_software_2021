@@ -110,7 +110,7 @@ public class GroupRecycleAdapter extends  RecyclerView.Adapter<GroupRecycleAdapt
             super(itemView);
             group_icon = itemView.findViewById(R.id.group_icon);
             bell_icon = itemView.findViewById(R.id.bell_icon);
-            groupName = itemView.findViewById(R.id.edit_user_input);
+            groupName = itemView.findViewById(R.id.group_name);
             members = itemView.findViewById(R.id.n_member);
             info = itemView.findViewById(R.id.group_info);
             trash_image = itemView.findViewById(R.id.trash_bin_icon);

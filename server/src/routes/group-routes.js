@@ -310,9 +310,9 @@ router.get('/:id', (req, res, next) => {
 })
 
 router.delete('/:id', async (req, res, next) => {
-  /*if (!req.user_id) {
+  if (!req.user_id) {
     return res.status(401).send('Not authenticated')
-  }*/
+  }
   const { id } = req.params
   const edittingUser = await Member.findOne({
     group_id: req.params.id,
@@ -333,7 +333,7 @@ router.delete('/:id', async (req, res, next) => {
     await Group_Settings.deleteOne({ group_id: id })
     await Image.deleteMany({ owner_type: 'group', owner_id: id })
     await deleteAll_files(req.params.id);
-    //FIXME: TESTARE SE FUNZIONA LA CANCELLAZIONE DI TUTTE LE IMMAGINI
+    
     res.status(200).send('Group was deleted')
   } catch (error) {
     next(error)

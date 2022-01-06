@@ -126,7 +126,7 @@ router.get("/:id", async (req, res) => {
     const cursor = files.find({ 'metadata.group_id': group_id });
 
     if ((await cursor.count()) === 0) {
-      return res.status(500).send({
+      return res.status(404).send({
         message: "No files found!",
       });
     }
@@ -181,7 +181,7 @@ router.get("/:group_id/:file_id", async (req, res) => {
     const cursor = files.find({ _id: ObjectID(file_id) });
 
     if ((await cursor.count()) === 0) {
-      return res.status(500).send({
+      return res.status(404).send({
         message: "No files found!",
       });
     }
@@ -257,7 +257,7 @@ router.delete('/:group_id/:file_id', async (req, res, next) => {
 
 
 router.post('/:group_id/read_notifications', async (req, res, next) => {  //Usato req.query !!!
-  
+
   const user_id = req.user_id;
   const group_id = req.params.group_id;
 
@@ -291,19 +291,26 @@ async function deleteAll_files(group_id) {
     await mongoClient.connect();
     const database = mongoClient.db(db_config.split("/").pop()); //extract the database name from string
     const files = database.collection(bucket_name + ".files");
+    
     const cursor = files.find({ 'metadata.group_id': group_id });
 
     if ((await cursor.count()) === 0) {
-      return res.status(500).send({
-        message: "No files found!",
+      console.log("No files found!");
+
+    } else {
+
+      const bucket = new GridFSBucket(database, {
+        bucketName: bucket_name,
       });
+
+      await cursor.forEach((doc) => {
+        bucket.delete(ObjectID(doc._id));
+      });
+
+      console.log("Files successfully deleted");
     }
-    await cursor.forEach((doc) => {
-      bucket.delete(ObjectID(doc._id));
-    });
-    res.send("Files successfully deleted");
   } catch (error) {
-    next(error);
+    console.log("Some errors are occurred: "+error);
   }
 }
 
