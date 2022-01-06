@@ -31,8 +31,14 @@ const childSchema = new mongoose.Schema(
     },
     allergies: String,
     special_needs: String,
-    other_info: String
+    other_info: String,
+    is_positive: {
+      type: Boolean,
+      required: true, 
+      default: false
+    },
   },
+  
   { timestamps: true, toJSON: { virtuals: true } }
 )
 

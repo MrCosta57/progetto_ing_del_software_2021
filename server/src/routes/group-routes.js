@@ -1245,7 +1245,10 @@ router.get('/:id/activities', (req, res, next) => {  //Usato req.query !!!
               let items=resp.data.items;
               for (let item of items){
                 let parent_ids_str=item.extendedProperties.shared.parents;
-                let parent_ids_vett=JSON.parse(parent_ids_str);
+                let parent_ids_vett = JSON.parse(parent_ids_str);
+                
+                let child_ids_str = item.extendedProperties.shared.children;
+                let child_ids_vett = JSON.parse(child_ids_str);
             
                 let has_positive=false;
 
@@ -1255,6 +1258,14 @@ router.get('/:id/activities', (req, res, next) => {  //Usato req.query !!!
                     has_positive=true;
                     break;
                 }
+
+                for(let child_id of child_ids_vett){
+                  let info=await Profile.findOne({user_id: child_id});
+                  if (info.is_positive)
+                    has_positive=true;
+                    break;
+                }
+
                 tracingArray.push({activity_info: activity, has_positive: has_positive});
                 has_positive=false;
               }
