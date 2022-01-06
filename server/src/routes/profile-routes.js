@@ -130,4 +130,33 @@ router.post('/change_is_positive_state', async (req, res, next) => {  //Usato re
 
 
 
+router.post('/change_childs_is_positive_state', async (req, res, next) => {  //Usato req.query !!!
+  if (!req.parent_id) { return res.status(401).send('Not authorized') }
+  try {
+    const parent_id = req.parent_id
+    const is_positive = req.query.is_positive
+    const profile = await Profile.findOne({ parent_id: parent_id })
+    const child = profile.child_id;
+    if (child.suspended) {
+      await Profile.updateOne({ parent_id }, { suspended: false })
+      const usersChildren = await Parent.find({ parent_id: user_id })
+      const childIds = usersChildren.map(usersChildren.child_id)
+      await Child.updateMany({ child_id: { $in: childIds } }, { suspended: false })
+  }
+  const token = await jwt.sign({ child_id, is_positive }, process.env.SERVER_SECRET)
+  const response = {
+    id: child_id,
+    is_positive,
+    token
+  }
+  profile.is_positive = req.query.is_positive
+  await profile.save()
+  res.json(response)
+  } catch (error) {
+    next(error)
+  }
+})
+
+
+
 module.exports = router

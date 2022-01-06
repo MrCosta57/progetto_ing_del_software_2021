@@ -65,6 +65,12 @@ public interface INodeJS {
                                         @Field("user_id") String user_id,
                                         @Query("is_positive") Boolean is_positive);
 
+    @POST("profiles/change_childs_is_positive_state")
+    @FormUrlEncoded
+    Observable<String> changeChildsPositivity(@Header("Authorization") String token,
+                                        @Field("parent_id") String parent_id,
+                                        @Query("is_positive") Boolean is_positive);
+
     @PATCH("users/{id}/profile")
     @FormUrlEncoded
     Observable<String> editUser(@Header("Authorization") String token,

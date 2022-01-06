@@ -274,6 +274,14 @@ public class InfoUserActivity extends AppCompatActivity {
         );
     }
 
+    private void changeChildsPositivity(String token, String parent_id, Boolean is_positive) {
+        compositeDisposable.add(myAPI.changeChildsPositivity(token, parent_id, is_positive)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s ->{}, t -> Log.d("HTTP PATCH POSITIVITY OF CHILD ["+parent_id+"] REQUEST ERROR", t.getMessage()))
+        );
+    }
+
     private void editUser(String token, String user_id, String given_name, String family_name, String email, String phone, String phone_type, Boolean visible, String street, String number, String city, String description, String contact_option) {
         compositeDisposable.add(myAPI.editUser(token, user_id, given_name, family_name, email, phone, phone_type, visible, street, number, city, description, contact_option)
                 .subscribeOn(Schedulers.io())
