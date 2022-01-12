@@ -136,9 +136,11 @@ router.post('/change_childs_is_positive_state', async (req, res, next) => {  //U
   if (!req.user_id) { return res.status(401).send('Not authorized') }
   try {
     const parent_id = req.user_id
+    const child_id = req.query.child_id
     const is_positive = req.query.is_positive
-    const child_id=req.child_id;
 
+    console.log("Parent_id: " + parent_id)
+    console.log("Child_id: " + child_id)
     if (await Parent.find({parent_id: parent_id, child_id: child_id})){
       return res.status(500).send('Users not found');
     }
@@ -156,7 +158,7 @@ router.post('/change_childs_is_positive_state', async (req, res, next) => {  //U
     is_positive,
     token
   }
-  child.is_positive = req.query.is_positive
+  child.is_positive = is_positive
   await child.save()
   res.json(response)
   } catch (error) {

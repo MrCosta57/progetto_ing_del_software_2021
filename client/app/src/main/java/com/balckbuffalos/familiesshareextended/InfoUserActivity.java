@@ -58,7 +58,7 @@ public class InfoUserActivity extends AppCompatActivity {
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     MaterialToolbar toolbar;
 
-    String user_id, token;
+    String user_id, token, child_id;
     private final ArrayList<String> mChildrenName = new ArrayList<>();
     private final ArrayList<String> mChildrenBirthdate = new ArrayList<>();
     PopupWindow popupEditWindow;
@@ -82,6 +82,7 @@ public class InfoUserActivity extends AppCompatActivity {
 
         SwitchMaterial switchGreenpass = findViewById(R.id.switchGreenPass);
         CheckBox check_posisitity = findViewById(R.id.checkBoxPositivity);
+        CheckBox check_positivity_child = findViewById(R.id.checkBoxChild);
         TextView textViewEditing = findViewById(R.id.textViewEditing);
 
         textViewEditing.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -127,6 +128,18 @@ public class InfoUserActivity extends AppCompatActivity {
             else{
                 changePositivity(token, user_id, false);
                 setPositivity(false);
+            }
+        });
+
+        //Child positivity state change
+        check_positivity_child.setOnClickListener(v->{
+            if(check_positivity_child.isChecked()){
+                changeChildsPositivity(token, user_id, child_id, true);
+                setChildsPositivity(true);
+            }
+            else{
+                changeChildsPositivity(token, user_id, child_id, false);
+                setChildsPositivity(false);
             }
         });
 
@@ -218,6 +231,15 @@ public class InfoUserActivity extends AppCompatActivity {
                 check_posisitity.setChecked(false);
     }
 
+    private void setChildsPositivity(Boolean state){  //Set positivity checkbox correctly
+        CheckBox check_posisitity_child = findViewById(R.id.checkBoxChild);
+
+        if(state && !check_posisitity_child.isChecked())
+            check_posisitity_child.setChecked(true);
+        else if(!state && check_posisitity_child.isChecked())
+            check_posisitity_child.setChecked(false);
+    }
+
     private void childrenList(String token, String id, String user_id) {  //Get all the children
         compositeDisposable.add(myAPI.childrenList(token, id, user_id)
                 .subscribeOn(Schedulers.io())
@@ -243,8 +265,10 @@ public class InfoUserActivity extends AppCompatActivity {
                     for(int i = 0; i<arr.length();i++)
                     {
                         JSONObject obj = arr.getJSONObject(i);
+                        child_id = obj.getString("child_id");
                         mChildrenName.add(obj.getString("given_name") + obj.getString("family_name"));
                         mChildrenBirthdate.add(obj.getString("birthdate").substring(0, 10));  //Returns the birthdate (format YYYY-MM-DD)
+                        setChildsPositivity(obj.getBoolean("is_positive"));
                     }
                     initChildrenRecycler();
                 }, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
@@ -275,10 +299,11 @@ public class InfoUserActivity extends AppCompatActivity {
     }
 
     private void changeChildsPositivity(String token, String user_id, String child_id, Boolean is_positive) {
+        Toast.makeText(this, "Child:" + child_id, Toast.LENGTH_LONG).show();
         compositeDisposable.add(myAPI.changeChildsPositivity(token, user_id, child_id, is_positive)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s ->{}, t -> Log.d("HTTP PATCH POSITIVITY OF CHILD ["+parent_id+"] REQUEST ERROR", t.getMessage()))
+                .subscribe(s ->{}, t -> Log.d("HTTP PATCH POSITIVITY OF CHILD ["+user_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 
