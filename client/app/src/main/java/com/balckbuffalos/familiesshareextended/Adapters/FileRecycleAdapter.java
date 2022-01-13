@@ -1,6 +1,8 @@
 package com.balckbuffalos.familiesshareextended.Adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -36,18 +38,22 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final ArrayList<String> mFileId;
+    private final ArrayList<String> mFileName;
     private final ArrayList<String> mMemberName;
     private final ArrayList<String> mDescription;
     private final ArrayList<String> mDate;
     private final ArrayList<String> mFileType;
     private final ArrayList<String> mCreatorId;
 
+    private NotificationManager mNotificationManager;
+
     String group_id, token, user_id;
 
     private final Context mContext;
 
-    public FileRecycleAdapter(Context mContext, ArrayList<String> mFileId, ArrayList<String> mMemberName, ArrayList<String> mDescription, ArrayList<String> mDate, ArrayList<String> mFileType, ArrayList<String> mCreatorId, String group_id, String user_id, String token) {
+    public FileRecycleAdapter(Context mContext, ArrayList<String> mFileId, ArrayList<String> mFileName, ArrayList<String> mMemberName, ArrayList<String> mDescription, ArrayList<String> mDate, ArrayList<String> mFileType, ArrayList<String> mCreatorId, String group_id, String user_id, String token) {
         this.mFileId = mFileId;
+        this.mFileName = mFileName;
         this.mMemberName = mMemberName;
         this.mDescription = mDescription;
         this.mDate = mDate;
@@ -66,6 +72,7 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
 
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
+        mNotificationManager = (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
         return new ViewHolder(view);
     }
@@ -93,7 +100,7 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
         else
             holder.file_image.setImageResource(R.drawable.file_icon);
 
-        holder.download.setOnClickListener(v -> getFile(token, group_id, user_id, file_id));
+        holder.download.setOnClickListener(v -> getFile(token, group_id, user_id, file_id, mFileName.get(position), position));
     }
 
     @Override
@@ -134,28 +141,30 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
     }
 
     @SuppressLint({"StaticFieldLeak", "ShowToast"})
-    private void getFile(String token, String group_id, String user_id, String file_id) {
+    private void getFile(String token, String group_id, String user_id, String file_id, String file_name, int id) {
         compositeDisposable.add(myAPI.getFile(token, group_id, file_id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
+                    assert s.body() != null;
                     Toast.makeText(mContext, "DOWNLOAD STARTED", Toast.LENGTH_LONG);
                     new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected Void doInBackground(Void... voids) {
+                        createNotification(file_name, "downloading", id);
                         assert s.body() != null;
-                        boolean writtenToDisk = writeResponseBodyToDisk(s.body());
+                        boolean writtenToDisk = writeResponseBodyToDisk(s.body(), file_name);
 
                         Log.d("DOWNLOAD INFO", "file download was a success? " + writtenToDisk);
-
+                        finishNotifications(file_name, "download completed", id);
                         return null;
                     }
                 }.execute();},t->Log.d("HTTP GET FILE ["+file_id+"] REQUEST ERROR", t.getMessage())));
     }
 
-    private boolean writeResponseBodyToDisk(ResponseBody body) {
+    private boolean writeResponseBodyToDisk(ResponseBody body, String file_name) {
         try {
-            File futureStudioIconFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "Future Studio Icon.png");
+            File futureStudioIconFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + file_name);
 
             InputStream inputStream = null;
             OutputStream outputStream = null;
@@ -199,5 +208,35 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
         } catch (IOException e) {
             return false;
         }
+    }
+
+    private void createNotification(String contentTitle, String contentText, int id) {
+
+        mNotificationManager = (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        //Build the notification using Notification.Builder
+        Notification.Builder builder = new Notification.Builder(mContext)
+                .setSmallIcon(android.R.drawable.stat_sys_download)
+                .setAutoCancel(true)
+                .setContentTitle(contentTitle)
+                .setContentText(contentText);
+
+
+        //Show the notification
+        mNotificationManager.notify(id, builder.build());
+    }
+
+    private void finishNotifications(String contentTitle, String contentText, int id) {
+
+        mNotificationManager = (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        //Build the notification using Notification.Builder
+        Notification.Builder builder = new Notification.Builder(mContext)
+                .setSmallIcon(android.R.drawable.stat_sys_download_done)
+                .setAutoCancel(true)
+                .setContentTitle(contentTitle)
+                .setContentText(contentText);
+
+
+        //Show the notification
+        mNotificationManager.notify(id, builder.build());
     }
 }

@@ -48,6 +48,7 @@ public class CabinetGroupFragment extends Fragment {
     private String description = "";
 
     private final ArrayList<String> mFileId = new ArrayList<>();
+    private final ArrayList<String> mFileName = new ArrayList<>();
     private final ArrayList<String> mMemberName = new ArrayList<>();
     private final ArrayList<String> mDescription = new ArrayList<>();
     private final ArrayList<String> mDate = new ArrayList<>();
@@ -83,6 +84,7 @@ public class CabinetGroupFragment extends Fragment {
         view.findViewById(R.id.floating_file_button).setOnClickListener(view -> showPopup());
 
         mFileId.clear();
+        mFileName.clear();
         mMemberName.clear();
         mDescription.clear();
         mDate.clear();
@@ -144,7 +146,7 @@ public class CabinetGroupFragment extends Fragment {
 
     private void initFileRecycler(){
         RecyclerView fileRecyclerView = view.findViewById(R.id.file_recycler);
-        FileRecycleAdapter adapter = new FileRecycleAdapter(getActivity(), mFileId, mMemberName, mDescription, mDate, mFileType, mCreatorId, group_id, user_id, token);
+        FileRecycleAdapter adapter = new FileRecycleAdapter(getActivity(), mFileId, mFileName, mMemberName, mDescription, mDate, mFileType, mCreatorId, group_id, user_id, token);
         fileRecyclerView.addItemDecoration(new DividerItemDecoration(fileRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
         fileRecyclerView.setAdapter(adapter);
@@ -162,6 +164,7 @@ public class CabinetGroupFragment extends Fragment {
                     {
                         JSONObject obj = arr.getJSONObject(i);
                         mFileId.add(obj.getString("file_id"));
+                        mFileName.add(obj.getString("name"));
                         mDescription.add(obj.getString("description"));
                         mDate.add(obj.getString("date").substring(0,10));
                         mFileType.add(obj.getString("contentType"));
@@ -179,6 +182,7 @@ public class CabinetGroupFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
                     mFileId.clear();
+                    mFileName.clear();
                     mMemberName.clear();
                     mDescription.clear();
                     mDate.clear();
