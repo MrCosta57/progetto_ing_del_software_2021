@@ -283,7 +283,7 @@ public class InfoUserActivity extends AppCompatActivity {
     }
 
     private void changeGreenpassState(String token, String user_id, Boolean greenpass_available) {
-        compositeDisposable.add(myAPI.changeGreenpassState(token, user_id, greenpass_available)
+        compositeDisposable.add(myAPI.changeGreenpassState(token, greenpass_available)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s ->{}, t -> Log.d("HTTP PATCH GREEN PASS OF USER ["+user_id+"] REQUEST ERROR", t.getMessage()))
@@ -291,7 +291,7 @@ public class InfoUserActivity extends AppCompatActivity {
     }
 
     private void changePositivity(String token, String user_id, Boolean is_positive) {
-        compositeDisposable.add(myAPI.changePositivity(token, user_id, is_positive)
+        compositeDisposable.add(myAPI.changePositivity(token, is_positive)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s ->{}, t -> Log.d("HTTP PATCH POSITIVITY OF USER ["+user_id+"] REQUEST ERROR", t.getMessage()))
@@ -300,7 +300,7 @@ public class InfoUserActivity extends AppCompatActivity {
 
     private void changeChildsPositivity(String token, String user_id, String child_id, Boolean is_positive) {
         Toast.makeText(this, "Child:" + child_id, Toast.LENGTH_LONG).show();
-        compositeDisposable.add(myAPI.changeChildsPositivity(token, user_id, child_id, is_positive)
+        compositeDisposable.add(myAPI.changeChildsPositivity(token, child_id, is_positive)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s ->{}, t -> Log.d("HTTP PATCH POSITIVITY OF CHILD ["+user_id+"] REQUEST ERROR", t.getMessage()))

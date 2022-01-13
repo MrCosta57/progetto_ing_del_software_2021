@@ -55,21 +55,18 @@ public interface INodeJS {
     @POST("profiles/change_greenpass_available")
     @FormUrlEncoded
     Observable<String> changeGreenpassState(@Header("Authorization") String token,
-                                            @Field("user_id") String user_id,
                                             @Query("greenpass_available") Boolean greenpass_available);
 
 
     @POST("profiles/change_is_positive_state")
     @FormUrlEncoded
     Observable<String> changePositivity(@Header("Authorization") String token,
-                                        @Field("user_id") String user_id,
                                         @Query("is_positive") Boolean is_positive);
 
     @POST("profiles/change_childs_is_positive_state")
     @FormUrlEncoded
     Observable<String> changeChildsPositivity(@Header("Authorization") String token,
-                                        @Field("user_id") String user_id,
-                                        @Query("child_id") String child_id,
+                                        @Field("child_id") String child_id,
                                         @Query("is_positive") Boolean is_positive);
 
     @PATCH("users/{id}/profile")

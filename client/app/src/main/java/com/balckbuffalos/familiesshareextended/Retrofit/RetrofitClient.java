@@ -8,7 +8,7 @@ public class RetrofitClient {
     private static Retrofit instance;
 
     public static Retrofit getInstance() {
-        String IPV4 = "192.168.1.130";
+        String IPV4 = "192.168.106.46";
         String port="4000";
         if (instance == null)
             instance = new Retrofit.Builder()

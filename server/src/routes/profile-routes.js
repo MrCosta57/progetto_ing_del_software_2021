@@ -136,12 +136,11 @@ router.post('/change_childs_is_positive_state', async (req, res, next) => {  //U
   if (!req.user_id) { return res.status(401).send('Not authorized') }
   try {
     const parent_id = req.user_id
-    const child_id = req.query.child_id
+    const child_id = req.body.child_id
     const is_positive = req.query.is_positive
-
-    console.log("Parent_id: " + parent_id)
-    console.log("Child_id: " + child_id)
-    if (await Parent.find({parent_id: parent_id, child_id: child_id})){
+  
+    if (!(await Parent.findOne({parent_id: parent_id, child_id: child_id}))){
+      console.log("Utente non trovato")
       return res.status(500).send('Users not found');
     }
 
@@ -152,9 +151,10 @@ router.post('/change_childs_is_positive_state', async (req, res, next) => {  //U
       const childIds = usersChildren.map(usersChildren.child_id)
       await Child.updateMany({ child_id: { $in: childIds } }, { suspended: false })
   }
-  const token = await jwt.sign({ child_id, is_positive }, process.env.SERVER_SECRET)
+  const token = await jwt.sign({ parent_id, is_positive }, process.env.SERVER_SECRET)
   const response = {
-    id: child_id,
+    id: parent_id,
+    child_id,
     is_positive,
     token
   }
