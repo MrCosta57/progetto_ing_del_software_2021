@@ -110,4 +110,5 @@
     <string name="splash_screen">Splash screen</string>
     <string name="trash_bin_icon">trash bin icon</string>
     <string name="my_child_tested_positive_for_covid">My child tested positive for covid</string>
+    <string name="is_the_green_pass_certification_required">Is the GREEN PASS certification required?</string>
 </resources>
