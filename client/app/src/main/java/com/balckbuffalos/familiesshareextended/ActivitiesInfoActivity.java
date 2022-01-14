@@ -61,6 +61,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activities_info);
 
+        // Gets the group_id and activity_id fields from the caller (previous) screen
         Bundle extras = getIntent().getExtras();
         group_id = extras.getString("group_id");
         activity_id = extras.getString("activity_id");
@@ -85,8 +86,10 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
             user_id = sharedPreferences.getString("user_id", "none");
         } catch (GeneralSecurityException | IOException e) { e.printStackTrace(); }
 
+        // Calls the function that will get the user's child's id and start the population of the fields inside the screen
         getChildId(token, user_id);
 
+        // Sets all the listeners needed to catch that will be made by the user on the default values
         switch_activity_partecipate = findViewById(R.id.switch_activity_info_partecipate);
         switch_activity_partecipate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -104,12 +107,13 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
         });
     }
 
+    // Gets the user's child's id and calls the function that populates the fields inside the screen
     private void getChildId(String token, String user_id) {
         compositeDisposable.add(myAPI.getChildren(token, user_id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
-                    /* For our application, we assume that every parent always has one child */
+                    // For our application, we assume that every parent always has one child
                     JSONArray children = new JSONArray(s);
                     JSONObject child = children.getJSONObject(0);
 
@@ -120,6 +124,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
         );
     }
 
+    // Depending on the source and the isChecked argument, inserts/removes the user or the user's child into/from the participants
     private void onClickEditPartecipants(String source, String id, boolean isChecked) {
         try {
             JSONObject prop = extprop.getJSONObject("shared");
@@ -158,6 +163,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
+    // Function used to check if an id is contained inside an array
     private boolean contains(JSONArray v, String id) throws JSONException {
         for (int i = 0; i < v.length(); i++) {
             if (v.getString(i).equals(id)) {
@@ -167,6 +173,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
         return false;
     }
 
+    // Function used to find the index of an id inside an array
     private int findIndex(JSONArray v, String id) throws JSONException {
         for (int i = 0; i < v.length(); i++) {
             if (v.getString(i).equals(id)) {
@@ -185,6 +192,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
+    // Shows the activity info that will be displayed in the top half of the screen
     private void activityInfo(String token, String group_id, String user_id, String activity_id) {
         compositeDisposable.add(myAPI.activityInfo(token, group_id, activity_id, user_id)
                 .subscribeOn(Schedulers.io())
@@ -207,6 +215,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                     activityDescription.setText(description);
                     activityLocation.setText(location);
 
+                    // If the GREEN PASS certification is required, then it displays the "!" icon
                     if ((obj.getBoolean("greenpass_isrequired"))) {
                         green_pass_icon.setVisibility(View.VISIBLE);
                         activityGPText.setText("GREEN PASS is mandatory");
@@ -224,6 +233,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
         );
     }
 
+    // Shows the activity info that will be taken from the timeslot and that will be displayed in the bottom half of the screen
     private void timeslotsActivity(String token, String group_id, String activity_id, String user_id) {
         compositeDisposable.add(myAPI.timeslotsActivity(token, group_id, activity_id, user_id)
                 .subscribeOn(Schedulers.io())

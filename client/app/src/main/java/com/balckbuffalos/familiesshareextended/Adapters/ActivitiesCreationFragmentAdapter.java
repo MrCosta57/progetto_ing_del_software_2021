@@ -16,6 +16,7 @@ import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 import com.stepstone.stepper.viewmodel.StepViewModel;
 
 public class ActivitiesCreationFragmentAdapter extends AbstractFragmentStepAdapter {
+    // Created an ActivitiesCreationFragment field for each one of the single fragments of the stepper so that they can be referenced easily
     private ActivitiesCreation1Fragment step = new ActivitiesCreation1Fragment();
     private ActivitiesCreation2Fragment step2 = new ActivitiesCreation2Fragment();
     private ActivitiesCreation3Fragment step3 = new ActivitiesCreation3Fragment();
@@ -29,22 +30,24 @@ public class ActivitiesCreationFragmentAdapter extends AbstractFragmentStepAdapt
         Bundle b = new Bundle();
 
         b.putInt("CURRENT_STEP_POSITION_KEY", position);
+        // Returns the fragment corresponding to the position inside the stepper (there are 3 fragments so position ranges from 0 to 2)
         if(position == 0) {
             step.setArguments(b);
-            return step;
+            return getStep();
         }
         else if(position == 1){
             step2.setArguments(b);
-            return step2;
+            return getStep2();
         }
         else if(position == 2){
             step3.setArguments(b);
-            return step3;
+            return getStep3();
         } else {
             return null;
         }
     }
 
+    // Public getters so that the private fields can be read also from other classes such as ActivitiesCreationActivity
     public ActivitiesCreation1Fragment getStep() {
         return step;
     }
@@ -57,6 +60,7 @@ public class ActivitiesCreationFragmentAdapter extends AbstractFragmentStepAdapt
         return step3;
     }
 
+    // Returns the number of fragments (3 in this case)
     @Override
     public int getCount() {
         return 3;

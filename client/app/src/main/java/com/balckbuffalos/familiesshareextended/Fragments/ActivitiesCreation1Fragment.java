@@ -40,20 +40,20 @@ public class ActivitiesCreation1Fragment extends Fragment implements Step {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflates the layout so that it can be displayed on the screen
         View view = inflater.inflate(R.layout.fragment_activities_creation1, container, false);
         mPickColorButton = view.findViewById(R.id.pick_color_button);
         mColorPreview = view.findViewById(R.id.preview_selected_color);
         mDefaultColor = 0;
 
-        mPickColorButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        openColorPickerDialogue();
-                    }
-                });
+        // Sets all the listeners needed to catch that will be made by the user on the default values
+        mPickColorButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openColorPickerDialogue();
+            }
+        });
 
         edt_title = view.findViewById(R.id.activity_title_text);
         edt_title.addTextChangedListener(new TextWatcher() {
@@ -98,6 +98,7 @@ public class ActivitiesCreation1Fragment extends Fragment implements Step {
         return view;
     }
 
+    // Displays a new dialog that will be used to select a color to match the activity, that will overwrite the previous one
     private void openColorPickerDialogue() {
         final AmbilWarnaDialog colorPickerDialogue = new AmbilWarnaDialog(getActivity(), mDefaultColor,
                 new AmbilWarnaDialog.OnAmbilWarnaListener() {

@@ -41,6 +41,7 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private String title, description, position;
     private String token,group_id,user_id;
+    // Used to be able to get the step fields from the ActivitiesCreationFragmentAdapter class' public getters
     private ActivitiesCreationFragmentAdapter adapter = new ActivitiesCreationFragmentAdapter(getSupportFragmentManager(), this);
     @ColorInt
     private int color;
@@ -63,6 +64,7 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
 
+        // Gets the token, group_id, and user_id fields from the caller (previous) screen
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             token = extras.getString("token");
@@ -77,6 +79,7 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
 
     @Override
     public void onCompleted(View completeButton) {
+        // When the user finishes the insertion of the parameters, it saves them into the private fields and local variables
         title = adapter.getStep().getactivityTitle();
         description = adapter.getStep().getactivityDescription();
         position = adapter.getStep().getactivityPosition();
@@ -91,10 +94,7 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
         int ora_fine = adapter.getStep3().getActivityEndHour();
         int minuto_fine = adapter.getStep3().getActivityEndMinute();
 
-        /*Log.d("CIAOOOO", "BELLOOO" + "token: " + token + " \ngroupid:  " + group_id + "\nuserid: " + user_id + "\nedttitle: " + title + "\nedt_description " + description
-                + "\nedtposition: " + position + "\ncolor: " + color + "\ngreenpass: " + green_pass + "\ndatainizio: " + data_inizio + "\norainizio: " + ora_inizio + "\nminutoinizio: " + minuto_inizio + "\ndatafine: " + data_fine + "\norafine: "
-                + ora_fine + "\nminutofine: " + minuto_fine);*/
-
+        // Check needed to verify that the received data is valid (enters the branch if it isn't)
         if(data_inizio.after(data_fine) || (data_inizio.equals(data_fine) && ora_inizio > ora_fine) || (data_inizio.equals(data_fine) && ora_inizio == ora_fine && minuto_inizio >= minuto_fine)){
             Toast.makeText(ActivitiesCreationActivity.this, "INVALID START OR END TIME ATTRIBUTES", Toast.LENGTH_LONG).show();
             return;
@@ -105,6 +105,7 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
         JSONArray events = new JSONArray();
 
         try {
+            // Creates and populates the objects that will be sent to the server so that the activity is created officially
             String hexColor = String.format("#%06X", (0xFFFFFF & color));
 
             activity.put("group_id", group_id);

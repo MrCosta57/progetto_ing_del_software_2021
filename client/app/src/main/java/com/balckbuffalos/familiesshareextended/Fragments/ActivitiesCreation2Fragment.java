@@ -36,12 +36,14 @@ public class ActivitiesCreation2Fragment extends Fragment implements Step {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflates the layout so that it can be displayed on the screen
         View view = inflater.inflate(R.layout.fragment_activities_creation2, container, false);
 
         startDate = view.findViewById(R.id.activity_start_date_picker);
         startDate.setSpinnersShown(false);
+
+        // Sets all the listeners needed to catch that will be made by the user on the default values
         startDate.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
