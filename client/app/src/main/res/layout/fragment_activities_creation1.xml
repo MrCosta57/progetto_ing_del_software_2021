@@ -142,9 +142,11 @@
         android:showText="false"
         android:text="@string/is_the_green_pass_certification_required"
         android:textColor="#6E6C6C"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/preview_selected_color" />
+        app:layout_constraintTop_toBottomOf="@+id/preview_selected_color"
+        app:layout_constraintVertical_bias="0.085" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

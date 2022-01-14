@@ -41,7 +41,7 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private String title, description, position;
     private String token,group_id,user_id;
-    ActivitiesCreationFragmentAdapter adapter = new ActivitiesCreationFragmentAdapter(getSupportFragmentManager(), this);
+    private ActivitiesCreationFragmentAdapter adapter = new ActivitiesCreationFragmentAdapter(getSupportFragmentManager(), this);
     @ColorInt
     private int color;
 

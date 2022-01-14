@@ -67,7 +67,7 @@ public class GroupCreationActivity extends AppCompatActivity {
         TextView name=findViewById(R.id.group_name_text);
         TextView desc=findViewById(R.id.group_description_text);
 
-
+        //Button for group creation, POST all info to server
         createButton.setOnClickListener((v)->{
             ids=adapter.getSelectedIds();
             String[] ids_array=new String[ids.size()];
@@ -77,7 +77,7 @@ public class GroupCreationActivity extends AppCompatActivity {
                     "email", "email", true, name.getText().toString(), desc.getText().toString());
         });
 
-
+        //Search bar for searching users by email
         SearchView searchView=findViewById(R.id.profiles_searchbar);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -148,6 +148,7 @@ public class GroupCreationActivity extends AppCompatActivity {
     private void createGroup(String token, String user_id, String[] ids, String location, String owner_id,
                              String contact_type, String contact_info, Boolean visible, String name, String description) {
 
+        //Call server's endpoit
         compositeDisposable.add(myAPI.createGroup(token, user_id, ids, location, owner_id, contact_type,
                 contact_info, visible, name, description)
                 .subscribeOn(Schedulers.io())
