@@ -29,8 +29,8 @@ import retrofit2.Retrofit;
 
 public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycleAdapter.ViewHolder>{
 
-    INodeJS myAPI;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private INodeJS myAPI;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final ArrayList<String> mActivityId;
     private final ArrayList<String> mGroupId;
@@ -42,7 +42,7 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
     private final ArrayList<Boolean> mGreenPass;
     private final ArrayList<Boolean> mHasPositive;
 
-    String token, user_id;
+    private String token, user_id;
 
     private final Context mContext;
 

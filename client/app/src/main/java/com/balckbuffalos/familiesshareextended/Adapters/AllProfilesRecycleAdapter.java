@@ -32,9 +32,8 @@ public class AllProfilesRecycleAdapter extends RecyclerView.Adapter<AllProfilesR
     private JSONArray mProfileInfoAll;
     private final ArrayList<String> ids=new ArrayList<>();
 
-    //private final Context mContext;
 
-    public AllProfilesRecycleAdapter(/*Context mContext,*/JSONArray mProfileInfo) throws JSONException {
+    public AllProfilesRecycleAdapter(JSONArray mProfileInfo) throws JSONException {
         this.mProfileInfoAll=new JSONArray();
         this.mProfileInfo=mProfileInfo;
         //this.mContext = mContext;
@@ -62,6 +61,7 @@ public class AllProfilesRecycleAdapter extends RecyclerView.Adapter<AllProfilesR
             holder.profileIcon.setImageResource(R.drawable.user_icon);
             String tmp_id = tmp.getString("user_id");
 
+            //Check/uncheck the checkbox to add/remove user to the group initial members
             holder.checkBox.setOnClickListener(new View.OnClickListener() {
                 final String id=tmp_id;
 
@@ -95,6 +95,7 @@ public class AllProfilesRecycleAdapter extends RecyclerView.Adapter<AllProfilesR
         return filter;
     }
 
+    //Perform searching between all users using the query typed in the UI search bar by the user
     private Filter filter=new Filter() {
 
         //run on background thread
@@ -111,7 +112,7 @@ public class AllProfilesRecycleAdapter extends RecyclerView.Adapter<AllProfilesR
                 } else {
                     for (int i = 0; i < mProfileInfoAll.length(); i++) {
                         JSONObject profile=(JSONObject) mProfileInfoAll.get(i);
-                        if (profile.getString("given_name").toLowerCase(Locale.ROOT).contains(constraint.toString().toLowerCase(Locale.ROOT))) {
+                        if (profile.getString("email").toLowerCase(Locale.ROOT).contains(constraint.toString().toLowerCase(Locale.ROOT))) {
                             filteredArray.put(profile);
                         }
                     }

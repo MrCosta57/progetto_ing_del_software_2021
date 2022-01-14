@@ -28,8 +28,8 @@ import retrofit2.Retrofit;
 
 public class GroupRecycleAdapter extends  RecyclerView.Adapter<GroupRecycleAdapter.ViewHolder>{
 
-    INodeJS myAPI;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private INodeJS myAPI;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final ArrayList<String> mGroupId;
     private final ArrayList<String> mGroupName;

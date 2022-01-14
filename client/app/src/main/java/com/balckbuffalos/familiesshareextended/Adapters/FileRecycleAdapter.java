@@ -34,8 +34,8 @@ import retrofit2.Retrofit;
 
 public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter.ViewHolder>{
 
-    INodeJS myAPI;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private INodeJS myAPI;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final ArrayList<String> mFileId;
     private final ArrayList<String> mFileName;
@@ -47,7 +47,7 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
 
     private NotificationManager mNotificationManager;
 
-    String group_id, token, user_id;
+    private String group_id, token, user_id;
 
     private final Context mContext;
 

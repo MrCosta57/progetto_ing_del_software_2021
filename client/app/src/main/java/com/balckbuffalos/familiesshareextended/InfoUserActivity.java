@@ -54,18 +54,18 @@ import retrofit2.http.Path;
 
 public class InfoUserActivity extends AppCompatActivity {
 
-    INodeJS myAPI;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
-    MaterialToolbar toolbar;
+    private INodeJS myAPI;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private MaterialToolbar toolbar;
 
-    String user_id, token, child_id;
+    private String user_id, token, child_id;
     private final ArrayList<String> mChildrenName = new ArrayList<>();
     private final ArrayList<String> mChildrenBirthdate = new ArrayList<>();
-    PopupWindow popupEditWindow;
+    private PopupWindow popupEditWindow;
 
     //User information
-    String req_givenName, req_familyName, req_email, req_phone, req_phoneType, req_street, req_number, req_city, req_description, req_contactOption;
-    Boolean req_visible;
+    private String req_givenName, req_familyName, req_email, req_phone, req_phoneType, req_street, req_number, req_city, req_description, req_contactOption;
+    private Boolean req_visible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

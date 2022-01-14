@@ -160,15 +160,16 @@
         android:id="@+id/switch_green_pass_cert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="8dp"
         android:minHeight="48dp"
         android:showText="false"
-        android:text="Is the GREEN PASS certification required? "
+        android:text="@string/is_the_green_pass_certification_required"
         android:textColor="#6E6C6C"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.744"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/preview_selected_color" />
+        app:layout_constraintTop_toBottomOf="@+id/preview_selected_color"
+        app:layout_constraintVertical_bias="0.085" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
