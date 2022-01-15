@@ -187,7 +187,6 @@ public class InfoUserActivity extends AppCompatActivity {
                     TextView textViewSurname = findViewById(R.id.textViewCognomeUser);
                     TextView textViewEmail = findViewById(R.id.textViewEmailUser);
 
-                    Log.d("OBJ - ", "TESTOOOOOOOOOOO"+obj.toString());
                     //Setting global variables for an eventually editing
                     req_givenName = obj.getString("given_name");
                     req_familyName = obj.getString("family_name");
@@ -302,7 +301,6 @@ public class InfoUserActivity extends AppCompatActivity {
     }
 
     private void changeChildsPositivity(String token, String user_id, String child_id, Boolean is_positive) {
-        Toast.makeText(this, "Child:" + child_id, Toast.LENGTH_LONG).show();
         compositeDisposable.add(myAPI.changeChildsPositivity(token, child_id, is_positive)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
