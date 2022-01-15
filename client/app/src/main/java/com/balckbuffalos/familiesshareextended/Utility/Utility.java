@@ -42,41 +42,35 @@ public class Utility {
                 user_id = sharedPreferences.getString("user_id", "none");
             } catch (GeneralSecurityException | IOException e) { e.printStackTrace(); }
 
-            switch(menuItem.getItemId()){
-                case R.id.home_menu:
-                    if(!(token.equals("none")||user_id.equals("none"))) {
-                        Intent myIntent = new Intent(ctx, HomePageActivity.class);
-                        ctx.startActivity(myIntent);
-                    }
-                    return true;
-                case R.id.profile_menu:
-                    if(!(token.equals("none")||user_id.equals("none"))) {
-                       Intent myIntent = new Intent(ctx, InfoUserActivity.class);
-                       ctx.startActivity(myIntent);
-                    }
-                    return true;
-                case R.id.create_group_menu:
-                    if(!(token.equals("none")||user_id.equals("none"))) {
-                       Intent myIntent = new Intent(ctx, GroupCreationActivity.class);
-                       ctx.startActivity(myIntent);
-                    }
-                    return true;
-                case R.id.join_group_menu:
-                    /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
-                       Intent myIntent = new Intent(ctx, JoinGroupActivity.class);
-                       ctx.startActivity(myIntent);
-                    }*/
-                    return true;
-                case R.id.guide_menu:
-                    /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
-                       Intent myIntent = new Intent(ctx, GuideActivity.class);
-                       ctx.startActivity(myIntent);
-                    }*/
-                    return true;
-                case R.id.logout_menu:
-                    String masterKeyAlias;
-                    try {
-                        masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+                switch(menuItem.getItemId()){
+                    case R.id.home_menu:
+                        if(!(token.equals("none")||user_id.equals("none"))) {
+                            Intent myIntent = new Intent(ctx, HomePageActivity.class);
+                            ctx.startActivity(myIntent);
+                        }
+                        return true;
+                    case R.id.profile_menu:
+                        if(!(token.equals("none")||user_id.equals("none"))) {
+                           Intent myIntent = new Intent(ctx, InfoUserActivity.class);
+                           ctx.startActivity(myIntent);
+                        }
+                        return true;
+                    case R.id.create_group_menu:
+                        if(!(token.equals("none")||user_id.equals("none"))) {
+                           Intent myIntent = new Intent(ctx, GroupCreationActivity.class);
+                           ctx.startActivity(myIntent);
+                        }
+                        return true;
+                    case R.id.join_group_menu:
+                        /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
+                           Intent myIntent = new Intent(ctx, JoinGroupActivity.class);
+                           ctx.startActivity(myIntent);
+                        }*/
+                        return true;
+                    case R.id.logout_menu:
+                        String masterKeyAlias = null;
+                        try {
+                            masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
 
                         SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(
                                 "secret_shared_prefs",

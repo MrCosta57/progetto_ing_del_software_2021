@@ -41,6 +41,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -96,7 +97,8 @@ public class InfoUserActivity extends AppCompatActivity {
             );
             token = sharedPreferences.getString("token", "none");
             user_id = sharedPreferences.getString("user_id", "none");
-            String[] ids = {user_id};
+            String[] ids = new String[1];
+            ids[0]=user_id;
             userInfo(token, ids);
         } catch (GeneralSecurityException | IOException e) { e.printStackTrace(); }
 
@@ -181,10 +183,11 @@ public class InfoUserActivity extends AppCompatActivity {
                 .subscribe(s -> {
                     JSONArray arr = new JSONArray(s);
                     JSONObject obj = arr.getJSONObject(0);
-                    TextView textViewNome = findViewById(R.id.textViewNomeUser);
-                    TextView textViewCognome = findViewById(R.id.textViewCognomeUser);
+                    TextView textViewName = findViewById(R.id.textViewNomeUser);
+                    TextView textViewSurname = findViewById(R.id.textViewCognomeUser);
                     TextView textViewEmail = findViewById(R.id.textViewEmailUser);
 
+                    Log.d("OBJ - ", "TESTOOOOOOOOOOO"+obj.toString());
                     //Setting global variables for an eventually editing
                     req_givenName = obj.getString("given_name");
                     req_familyName = obj.getString("family_name");
@@ -194,13 +197,15 @@ public class InfoUserActivity extends AppCompatActivity {
                     req_visible = obj.getBoolean("visible");
                     req_description = obj.getString("description");
                     req_contactOption = obj.getString("contact_option");
+
                     //Setting profile info
-                    textViewNome.setText(req_givenName);
-                    textViewCognome.setText(req_familyName);
+                    textViewName.setText(req_givenName);
+                    textViewSurname.setText(req_familyName);
                     textViewEmail.setText(req_email);
+
                     setGreenPass(obj.getBoolean("greenpass_available"));  //Setting Greeenpass initial state
                     setPositivity(obj.getBoolean("is_positive"));  //Setting Positivity initial state
-                }, t -> Log.d("HTTP GET INFO PROFILES ["+ids.toString()+"] REQUEST ERROR", t.getMessage()))
+                }, t -> Log.d("HTTP GET INFO PROFILES ["+ Arrays.toString(ids) +"] REQUEST ERROR", t.getMessage()))
         );
     }
 
@@ -264,7 +269,7 @@ public class InfoUserActivity extends AppCompatActivity {
                     {
                         JSONObject obj = arr.getJSONObject(i);
                         child_id = obj.getString("child_id");
-                        mChildrenName.add(obj.getString("given_name") + obj.getString("family_name"));
+                        mChildrenName.add(obj.getString("given_name") +" "+ obj.getString("family_name"));
                         mChildrenBirthdate.add(obj.getString("birthdate").substring(0, 10));  //Returns the birthdate (format YYYY-MM-DD)
                         setChildsPositivity(obj.getBoolean("is_positive"));
                     }
