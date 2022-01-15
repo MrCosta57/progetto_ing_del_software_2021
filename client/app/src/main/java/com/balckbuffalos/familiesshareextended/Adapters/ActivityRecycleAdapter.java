@@ -99,10 +99,13 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
         String activity_id = mActivityId.get(position);
         if(creator_id.equals(user_id))
             holder.trash_image.setVisibility(View.VISIBLE);
+        else{
+            holder.trash_image.setVisibility(View.INVISIBLE);
+        }
 
         holder.trash_image.setOnClickListener(view -> {
             if(creator_id.equals(user_id))
-                deleteActivity(token, mGroupId.get(position), user_id, activity_id, position);
+                deleteActivity(token, mGroupId.get(position), activity_id, position);
         });
 
         // if you click on the item of the recycleview you can see the activity info page
@@ -145,8 +148,8 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void deleteActivity(String token, String group_id, String user_id, String activity_id, int position) {
-        compositeDisposable.add(myAPI.deleteActivity(token, group_id, activity_id, user_id)
+    private void deleteActivity(String token, String group_id, String activity_id, int position) {
+        compositeDisposable.add(myAPI.deleteActivity(token, group_id, activity_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {

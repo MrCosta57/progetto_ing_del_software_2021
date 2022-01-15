@@ -155,6 +155,7 @@ public class GroupCreationActivity extends AppCompatActivity {
                     },
                     t -> {
                         Log.d("HTTP POST GROUP REQUEST ERROR", t.getMessage());
+                        Toast.makeText(GroupCreationActivity.this, "INVALID GROUP ATTRIBUTE(S)", Toast.LENGTH_LONG).show();
                         Intent myIntent = new Intent(GroupCreationActivity.this, HomePageActivity.class);
                         GroupCreationActivity.this.startActivity(myIntent);
                     }) );

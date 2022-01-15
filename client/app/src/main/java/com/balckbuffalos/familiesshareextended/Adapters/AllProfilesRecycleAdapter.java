@@ -46,7 +46,7 @@ public class AllProfilesRecycleAdapter extends RecyclerView.Adapter<AllProfilesR
 
         try{
             JSONObject tmp=mProfileInfo.getJSONObject(position);
-            String name_surname=tmp.getString("given_name")+tmp.getString("family_name");
+            String name_surname=tmp.getString("given_name")+" "+tmp.getString("family_name");
 
             holder.profileName.setText(name_surname);
             holder.profileEmail.setText(tmp.getString("email"));

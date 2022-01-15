@@ -1328,27 +1328,32 @@ router.patch('/:id/activities/:activityId', async (req, res, next) => {
   }
 })
 
-router.delete('/:groupId/activities/:activityId', async (req, res, next) => { //Usato req.query!!!
-  if (!req.query.user_id) {
+router.delete('/:groupId/activities/:activityId', async (req, res, next) => {
+  
+  if (!req.user_id) {
     return res.status(401).send('Not authenticated')
   }
   try {
     const group_id = req.params.groupId
     const user_id = req.user_id
+    const activity_id = req.params.activityId
     const member = await Member.findOne({
       group_id,
       user_id,
       group_accepted: true,
       user_accepted: true
     })
+
     if (!member) {
+      console.log("CIAO1!")
       return res.status(401).send('Unauthorized')
     }
-    if (!member.admin) {
+
+    if ( !member.admin && !(await Activity.findOne({creator_id: user_id, activity_id: activity_id})) ) {
+      console.log("CIAO2!")
       return res.status(401).send('Unauthorized')
     }
     const group = await Group.findOne({ group_id })
-    const activity_id = req.params.activityId
     const resp = await calendar.events.list({
       calendarId: group.calendar_id,
       sharedExtendedProperty: `activityId=${activity_id}`

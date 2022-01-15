@@ -81,7 +81,7 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
         int minuto_fine = adapter.getStep3().getActivityEndMinute();
 
         // Check needed to verify that the received data is valid (enters the branch if it isn't)
-        if(title.equals("") || description.equals("") || position.equals("") || data_inizio.after(data_fine) || (data_inizio.equals(data_fine) && ora_inizio > ora_fine) || (data_inizio.equals(data_fine) && ora_inizio == ora_fine && minuto_inizio >= minuto_fine)){
+        if(title.equals("") || data_inizio.after(data_fine) || (data_inizio.equals(data_fine) && ora_inizio > ora_fine) || (data_inizio.equals(data_fine) && ora_inizio == ora_fine && minuto_inizio >= minuto_fine)){
             guard = false;
             Toast.makeText(ActivitiesCreationActivity.this, "INVALID ACTIVITY ATTRIBUTE(S)", Toast.LENGTH_LONG).show();
             reset();
