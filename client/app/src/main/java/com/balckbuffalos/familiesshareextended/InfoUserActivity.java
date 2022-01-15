@@ -2,20 +2,16 @@ package com.balckbuffalos.familiesshareextended;
 
 import static com.balckbuffalos.familiesshareextended.Utility.Utility.showMenu;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import com.balckbuffalos.familiesshareextended.Adapters.ChildrenRecycleAdapter;
-import com.balckbuffalos.familiesshareextended.Adapters.MemberRecycleAdapter;
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,38 +20,28 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
-import retrofit2.http.Field;
-import retrofit2.http.Header;
-import retrofit2.http.Path;
 
 public class InfoUserActivity extends AppCompatActivity {
 
     private INodeJS myAPI;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private MaterialToolbar toolbar;
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private String user_id, token, child_id;
     private final ArrayList<String> mChildrenName = new ArrayList<>();
@@ -63,9 +49,10 @@ public class InfoUserActivity extends AppCompatActivity {
     private PopupWindow popupEditWindow;
 
     //User information
-    private String req_givenName, req_familyName, req_email, req_phone, req_phoneType, req_street, req_number, req_city, req_description, req_contactOption;
+    private String req_givenName, req_familyName, req_email, req_phone, req_phoneType, req_description, req_contactOption;
     private Boolean req_visible;
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,10 +61,8 @@ public class InfoUserActivity extends AppCompatActivity {
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
 
-        toolbar = findViewById(R.id.topAppBar3);
-        toolbar.setOnClickListener (v->{
-            showMenu(v, R.menu.top_app_bar, this, getApplicationContext());
-        });
+        MaterialToolbar toolbar = findViewById(R.id.topAppBar3);
+        toolbar.setOnClickListener (v-> showMenu(v, R.menu.top_app_bar, this, getApplicationContext()));
 
         SwitchMaterial switchGreenpass = findViewById(R.id.switchGreenPass);
         CheckBox check_posisitity = findViewById(R.id.checkBoxPositivity);
@@ -145,7 +130,7 @@ public class InfoUserActivity extends AppCompatActivity {
 
         //Editing
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupEditView = inflater.inflate(R.layout.popup_edit_user, null);
+        @SuppressLint("InflateParams") View popupEditView = inflater.inflate(R.layout.popup_edit_user, null);
         int width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
         int height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
 
@@ -163,11 +148,11 @@ public class InfoUserActivity extends AppCompatActivity {
         buttonEdit.setOnClickListener(z->{
             //Checking what information has to be changed
             if(rdbName.isChecked())
-                editUser(token, user_id, editInfo.getText().toString(), req_familyName, req_email, req_phone, req_phoneType, req_visible, req_street, req_number, req_city, req_description, req_contactOption);
+                editUser(token, user_id, editInfo.getText().toString(), req_familyName, req_email, req_phone, req_phoneType, req_visible, req_description, req_contactOption);
             else if(rdbSurname.isChecked())
-                editUser(token, user_id, req_givenName, editInfo.getText().toString(), req_email, req_phone, req_phoneType, req_visible, req_street, req_number, req_city, req_description, req_contactOption);
+                editUser(token, user_id, req_givenName, editInfo.getText().toString(), req_email, req_phone, req_phoneType, req_visible, req_description, req_contactOption);
             else
-                editUser(token, user_id, req_givenName, req_familyName, editInfo.getText().toString(), req_phone, req_phoneType, req_visible, req_street, req_number, req_city, req_description, req_contactOption);
+                editUser(token, user_id, req_givenName, req_familyName, editInfo.getText().toString(), req_phone, req_phoneType, req_visible, req_description, req_contactOption);
             popupEditWindow.dismiss();
 
             //Reload MyProfile
@@ -209,6 +194,7 @@ public class InfoUserActivity extends AppCompatActivity {
         );
     }
 
+    @SuppressLint("SetTextI18n")
     private void setGreenPass(Boolean state){  //Set greenpass switch correctly
         TextView text_greenpass_state = findViewById(R.id.textViewGreenPassState);
         SwitchMaterial switchGreenpass = findViewById(R.id.switchGreenPass);
@@ -310,8 +296,8 @@ public class InfoUserActivity extends AppCompatActivity {
         );
     }
 
-    private void editUser(String token, String user_id, String given_name, String family_name, String email, String phone, String phone_type, Boolean visible, String street, String number, String city, String description, String contact_option) {
-        compositeDisposable.add(myAPI.editUser(token, user_id, given_name, family_name, email, phone, phone_type, visible, street, number, city, description, contact_option)
+    private void editUser(String token, String user_id, String given_name, String family_name, String email, String phone, String phone_type, Boolean visible, String description, String contact_option) {
+        compositeDisposable.add(myAPI.editUser(token, user_id, given_name, family_name, email, phone, phone_type, visible, "", "", "", description, contact_option)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s ->{}, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
