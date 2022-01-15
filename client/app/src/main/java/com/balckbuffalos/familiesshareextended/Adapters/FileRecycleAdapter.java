@@ -2,9 +2,11 @@ package com.balckbuffalos.familiesshareextended.Adapters;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -215,10 +217,24 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
                 .setSmallIcon(android.R.drawable.stat_sys_download)
                 .setAutoCancel(true)
                 .setContentTitle(contentTitle)
+                .setPriority(Notification.PRIORITY_MAX)
                 .setContentText("downloading");
 
-
+        Log.d("TROIA", "TUA MADRE");
         //Show the notification
+
+        // === Removed some obsoletes
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            String channelId = String.valueOf(id);
+            NotificationChannel channel = new NotificationChannel(
+                    channelId,
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_HIGH);
+            mNotificationManager.createNotificationChannel(channel);
+            builder.setChannelId(channelId);
+        }
+
         mNotificationManager.notify(id, builder.build());
     }
 
@@ -230,8 +246,22 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
                 .setSmallIcon(android.R.drawable.stat_sys_download_done)
                 .setAutoCancel(true)
                 .setContentTitle(contentTitle)
+                .setPriority(Notification.PRIORITY_MAX)
                 .setContentText("download completed");
 
+        Log.d("TROIA", "TUA MADRE2");
+
+        // === Removed some obsoletes
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            String channelId = String.valueOf(id);
+            NotificationChannel channel = new NotificationChannel(
+                    channelId,
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_HIGH);
+            mNotificationManager.createNotificationChannel(channel);
+            builder.setChannelId(channelId);
+        }
 
         //Show the notification
         mNotificationManager.notify(id, builder.build());

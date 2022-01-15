@@ -22,6 +22,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.balckbuffalos.familiesshareextended.Adapters.FileRecycleAdapter;
 import com.balckbuffalos.familiesshareextended.R;
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
@@ -192,6 +194,7 @@ public class CabinetGroupFragment extends Fragment {
                     mFileType.clear();
                     mCreatorId.clear();
                     fileList(token, group_id, user_id);
+                    Toast.makeText(getActivity(), "File successfully uploaded", Toast.LENGTH_LONG).show();
                 }, t -> Log.d("HTTP POST FILE REQUEST ERROR", t.getMessage()))
         );
     }
