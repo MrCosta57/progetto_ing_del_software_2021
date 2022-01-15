@@ -187,9 +187,7 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
                     if (read == -1) {
                         break;
                     }
-
                     outputStream.write(fileReader, 0, read);
-
                 }
 
                 outputStream.flush();
@@ -200,7 +198,6 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
                 if (inputStream != null) {
                     inputStream.close();
                 }
-
                 if (outputStream != null) {
                     outputStream.close();
                 }
