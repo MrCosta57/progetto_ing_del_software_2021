@@ -101,7 +101,10 @@ public class SignUpActivity extends AppCompatActivity implements StepperLayout.S
 
                             }
                         },
-                        t -> Log.d("HTTP POST USER REQUEST ERROR", t.getMessage()))
+                        t -> {Toast.makeText(SignUpActivity.this, "ERROR user register", Toast.LENGTH_LONG).show();
+                            Log.d("HTTP POST USER REQUEST ERROR", t.getMessage());
+                            Intent myIntent = new Intent(SignUpActivity.this, LoginActivity.class);
+                            SignUpActivity.this.startActivity(myIntent);})
         );
     }
 
@@ -113,7 +116,10 @@ public class SignUpActivity extends AppCompatActivity implements StepperLayout.S
                             Toast.makeText(SignUpActivity.this, "Child register with success", Toast.LENGTH_LONG).show();
                             Intent myIntent = new Intent(SignUpActivity.this, LoginActivity.class);
                             SignUpActivity.this.startActivity(myIntent);},
-                        t -> Log.d("HTTP POST CHILD REQUEST ERROR", t.getMessage()))
+                        t -> {Toast.makeText(SignUpActivity.this, "ERROR child register", Toast.LENGTH_LONG).show();
+                            Log.d("HTTP POST CHILD REQUEST ERROR", t.getMessage());
+                            Intent myIntent = new Intent(SignUpActivity.this, LoginActivity.class);
+                            SignUpActivity.this.startActivity(myIntent);})
         );
     }
 }
