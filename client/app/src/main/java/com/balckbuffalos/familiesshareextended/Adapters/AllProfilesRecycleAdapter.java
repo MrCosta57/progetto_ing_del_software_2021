@@ -1,8 +1,6 @@
 package com.balckbuffalos.familiesshareextended.Adapters;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,25 +9,19 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.balckbuffalos.familiesshareextended.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Locale;
 
 public class AllProfilesRecycleAdapter extends RecyclerView.Adapter<AllProfilesRecycleAdapter.ViewHolder> implements Filterable {
 
     private JSONArray mProfileInfo;
-    private JSONArray mProfileInfoAll;
+    private final JSONArray mProfileInfoAll;
     private final ArrayList<String> ids=new ArrayList<>();
 
 
@@ -96,7 +88,7 @@ public class AllProfilesRecycleAdapter extends RecyclerView.Adapter<AllProfilesR
     }
 
     //Perform searching between all users using the query typed in the UI search bar by the user
-    private Filter filter=new Filter() {
+    private final Filter filter=new Filter() {
 
         //run on background thread
         @Override

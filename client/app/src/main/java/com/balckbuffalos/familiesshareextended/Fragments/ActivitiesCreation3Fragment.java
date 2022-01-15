@@ -22,8 +22,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class ActivitiesCreation3Fragment extends Fragment implements Step {
-    private DatePicker endDate;
-    private TimePicker endTime;
     private Date activityEndDate = Calendar.getInstance().getTime();
     private int activityEndHour = Calendar.getInstance().getTime().getHours(), activityEndMinute = Calendar.getInstance().getTime().getMinutes();
 
@@ -40,26 +38,20 @@ public class ActivitiesCreation3Fragment extends Fragment implements Step {
         // Inflates the layout so that it can be displayed on the screen
         View view = inflater.inflate(R.layout.fragment_activities_creation3, container, false);
 
-        endDate = view.findViewById(R.id.activity_end_date_picker);
+        DatePicker endDate = view.findViewById(R.id.activity_end_date_picker);
         endDate.setSpinnersShown(false);
 
         // Sets all the listeners needed to catch that will be made by the user on the default values
-        endDate.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
-            @Override
-            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(year, monthOfYear, dayOfMonth);
-                activityEndDate = calendar.getTime();
-            }
+        endDate.setOnDateChangedListener((view12, year, monthOfYear, dayOfMonth) -> {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(year, monthOfYear, dayOfMonth);
+            activityEndDate = calendar.getTime();
         });
 
-        endTime = view.findViewById(R.id.activity_end_time_picker);
-        endTime.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                activityEndHour = hourOfDay;
-                activityEndMinute = minute;
-            }
+        TimePicker endTime = view.findViewById(R.id.activity_end_time_picker);
+        endTime.setOnTimeChangedListener((view1, hourOfDay, minute) -> {
+            activityEndHour = hourOfDay;
+            activityEndMinute = minute;
         });
 
 

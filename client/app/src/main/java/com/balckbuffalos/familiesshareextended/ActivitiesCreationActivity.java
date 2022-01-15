@@ -2,35 +2,20 @@ package com.balckbuffalos.familiesshareextended;
 
 import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKeys;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.balckbuffalos.familiesshareextended.Adapters.ActivitiesCreationFragmentAdapter;
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.Date;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -38,11 +23,10 @@ import retrofit2.Retrofit;
 
 public class ActivitiesCreationActivity extends AppCompatActivity implements StepperLayout.StepperListener {
     private INodeJS myAPI;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private String title, description, position;
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private String token,group_id,user_id;
     // Used to be able to get the step fields from the ActivitiesCreationFragmentAdapter class' public getters
-    private ActivitiesCreationFragmentAdapter adapter = new ActivitiesCreationFragmentAdapter(getSupportFragmentManager(), this);
+    private final ActivitiesCreationFragmentAdapter adapter = new ActivitiesCreationFragmentAdapter(getSupportFragmentManager(), this);
     @ColorInt
     private int color;
 
@@ -77,12 +61,13 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
         mStepperLayout.setAdapter(adapter);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onCompleted(View completeButton) {
         // When the user finishes the insertion of the parameters, it saves them into the private fields and local variables
-        title = adapter.getStep().getactivityTitle();
-        description = adapter.getStep().getactivityDescription();
-        position = adapter.getStep().getactivityPosition();
+        String title = adapter.getStep().getactivityTitle();
+        String description = adapter.getStep().getactivityDescription();
+        String position = adapter.getStep().getactivityPosition();
         color = adapter.getStep().getmDefaultColor();
         boolean green_pass = adapter.getStep().getactivityGPR();
 

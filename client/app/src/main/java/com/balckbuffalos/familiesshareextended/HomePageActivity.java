@@ -3,27 +3,21 @@ package com.balckbuffalos.familiesshareextended;
 import static com.balckbuffalos.familiesshareextended.Utility.Utility.showMenu;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.collection.ArraySet;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toolbar;
-
 import com.balckbuffalos.familiesshareextended.Adapters.ActivityRecycleAdapter;
 import com.balckbuffalos.familiesshareextended.Adapters.GroupRecycleAdapter;
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
 import com.google.android.material.appbar.MaterialToolbar;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.DateFormat;
@@ -33,7 +27,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -42,9 +35,7 @@ import retrofit2.Retrofit;
 public class HomePageActivity extends AppCompatActivity {
 
     private INodeJS myAPI;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
-
-    private MaterialToolbar toolbar;
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final ArrayList<String> mGroupId = new ArrayList<>();
     private final ArrayList<String> mGroupName = new ArrayList<>();
@@ -63,10 +54,10 @@ public class HomePageActivity extends AppCompatActivity {
     private final ArrayList<Boolean> mGreenPass = new ArrayList<>();
     private final ArrayList<Boolean> mHasPositive = new ArrayList<>();
 
-    private ActivityRecycleAdapter adapter;
     private String token;
     private String user_id;
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,9 +67,8 @@ public class HomePageActivity extends AppCompatActivity {
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
 
-        toolbar = findViewById(R.id.topAppBar);
-        toolbar.setOnClickListener (v->{
-            showMenu(v, R.menu.top_app_bar, this, getApplicationContext());});
+        MaterialToolbar toolbar = findViewById(R.id.topAppBar);
+        toolbar.setOnClickListener (v-> showMenu(v, R.menu.top_app_bar, this, getApplicationContext()));
 
         try {
             String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
@@ -109,7 +99,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     private void initActivityRecycler(){
         RecyclerView activityRecyclerView = findViewById(R.id.activityRecycler);
-        adapter = new ActivityRecycleAdapter(this, mActivityId, mActivityGroupId, mCreatorId, mDate, mName, mNAdult, mNChildren, mGreenPass, user_id, token, mHasPositive);
+        ActivityRecycleAdapter adapter = new ActivityRecycleAdapter(this, mActivityId, mActivityGroupId, mCreatorId, mDate, mName, mNAdult, mNChildren, mGreenPass, user_id, token, mHasPositive);
         activityRecyclerView.addItemDecoration(new DividerItemDecoration(activityRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
         activityRecyclerView.setAdapter(adapter);
@@ -141,7 +131,6 @@ public class HomePageActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
                     JSONArray arr = new JSONArray(s);
-                    String[] ids = new String[arr.length()];
                     for(int i = 0; i<arr.length();i++)
                     {
                         JSONObject obj = arr.getJSONObject(i);

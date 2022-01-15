@@ -1,17 +1,13 @@
 package com.balckbuffalos.familiesshareextended.Adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.balckbuffalos.familiesshareextended.R;
-
 import java.util.ArrayList;
 
 public class MemberRecycleAdapter extends  RecyclerView.Adapter<MemberRecycleAdapter.ViewHolder> {
@@ -19,12 +15,9 @@ public class MemberRecycleAdapter extends  RecyclerView.Adapter<MemberRecycleAda
     private final ArrayList<String> mMemberName;
     private final ArrayList<Boolean> mMemberAdmin;
 
-    private final Context mContext;
-
-    public MemberRecycleAdapter(Context mContext, ArrayList<String> mMemberName, ArrayList<Boolean> mMemberAdmin) {
+    public MemberRecycleAdapter(ArrayList<String> mMemberName, ArrayList<Boolean> mMemberAdmin) {
         this.mMemberName = mMemberName;
         this.mMemberAdmin = mMemberAdmin;
-        this.mContext = mContext;
     }
 
     @NonNull

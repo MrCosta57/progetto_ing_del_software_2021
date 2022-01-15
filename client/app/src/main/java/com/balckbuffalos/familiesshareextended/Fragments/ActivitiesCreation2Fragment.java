@@ -22,8 +22,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class ActivitiesCreation2Fragment extends Fragment implements Step {
-    private DatePicker startDate;
-    private TimePicker startTime;
     private Date activityStartDate = Calendar.getInstance().getTime();
     private int activityStartHour = Calendar.getInstance().getTime().getHours(), activityStartMinute = Calendar.getInstance().getTime().getMinutes();
 
@@ -40,26 +38,20 @@ public class ActivitiesCreation2Fragment extends Fragment implements Step {
         // Inflates the layout so that it can be displayed on the screen
         View view = inflater.inflate(R.layout.fragment_activities_creation2, container, false);
 
-        startDate = view.findViewById(R.id.activity_start_date_picker);
+        DatePicker startDate = view.findViewById(R.id.activity_start_date_picker);
         startDate.setSpinnersShown(false);
 
         // Sets all the listeners needed to catch that will be made by the user on the default values
-        startDate.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
-            @Override
-            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(year, monthOfYear, dayOfMonth);
-                activityStartDate = calendar.getTime();
-            }
+        startDate.setOnDateChangedListener((view1, year, monthOfYear, dayOfMonth) -> {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(year, monthOfYear, dayOfMonth);
+            activityStartDate = calendar.getTime();
         });
 
-        startTime = view.findViewById(R.id.activity_start_time_picker);
-        startTime.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                activityStartHour = hourOfDay;
-                activityStartMinute = minute;
-            }
+        TimePicker startTime = view.findViewById(R.id.activity_start_time_picker);
+        startTime.setOnTimeChangedListener((view12, hourOfDay, minute) -> {
+            activityStartHour = hourOfDay;
+            activityStartMinute = minute;
         });
 
         return view;

@@ -2,33 +2,21 @@ package com.balckbuffalos.familiesshareextended;
 
 import static com.balckbuffalos.familiesshareextended.Utility.Utility.showMenu;
 
-import androidx.annotation.MenuRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
-
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.PopupMenu;
 import android.widget.TextView;
-
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
 import com.google.android.material.appbar.MaterialToolbar;
-
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -37,12 +25,9 @@ import retrofit2.Retrofit;
 public class LoginActivity extends AppCompatActivity {
 
     private INodeJS myAPI;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private Button btn_login;
-    private TextView sign_up;
     private EditText edt_mail, edt_password;
-    private MaterialToolbar toolbar;
 
     @Override
     protected void onStop() {
@@ -63,12 +48,11 @@ public class LoginActivity extends AppCompatActivity {
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
 
-        toolbar = findViewById(R.id.topAppBar);
-        toolbar.setOnClickListener (v->{
-            showMenu(v, R.menu.top_app_bar, this, getApplicationContext());});
+        MaterialToolbar toolbar = findViewById(R.id.topAppBar);
+        toolbar.setOnClickListener (v-> showMenu(v, R.menu.top_app_bar, this, getApplicationContext()));
 
-        btn_login = findViewById(R.id.login_button);
-        sign_up = findViewById(R.id.SignUp);
+        Button btn_login = findViewById(R.id.login_button);
+        TextView sign_up = findViewById(R.id.SignUp);
 
         edt_mail = findViewById(R.id.emailText);
         edt_password = findViewById(R.id.passwordText);
@@ -81,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressWarnings("deprecation")
     private void loginUser(String email, String password) {
         compositeDisposable.add(myAPI.authenticateUser(email, password, "deviceToken", "en", "")
                 .subscribeOn(Schedulers.io())

@@ -39,9 +39,8 @@ import retrofit2.Retrofit;
 public class ActivitiesGroupFragment extends Fragment {
 
     private INodeJS myAPI;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private FloatingActionButton createActivity;
     private final ArrayList<String> mActivityId = new ArrayList<>();
     private final ArrayList<String> mActivityGroupId = new ArrayList<>();
     private final ArrayList<String> mCreatorId = new ArrayList<>();
@@ -69,20 +68,18 @@ public class ActivitiesGroupFragment extends Fragment {
 
         Bundle extras = this.getArguments();
 
+        assert extras != null;
         group_id = extras.getString("group_id");
         token = extras.getString("token");
         user_id = extras.getString("user_id");
 
-        createActivity = view.findViewById(R.id.floating_activity_button);
-        createActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), ActivitiesCreationActivity.class);
-                intent.putExtra("token", token);
-                intent.putExtra("group_id", group_id);
-                intent.putExtra("user_id", user_id);
-                startActivity(intent);
-            }
+        FloatingActionButton createActivity = view.findViewById(R.id.floating_activity_button);
+        createActivity.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(), ActivitiesCreationActivity.class);
+            intent.putExtra("token", token);
+            intent.putExtra("group_id", group_id);
+            intent.putExtra("user_id", user_id);
+            startActivity(intent);
         });
         mActivityId.clear();
         mActivityGroupId.clear();
@@ -131,7 +128,7 @@ public class ActivitiesGroupFragment extends Fragment {
                     Date maxDate = null;
                     String insertDate = "";
                     JSONObject prop = null;
-                    Log.d("TIMESOLOT ACTIITY", activity_id + " lunghezza:" + String.valueOf(arr.length()));
+
                     for(int i = 0; i<arr.length();i++)
                     {
                         JSONObject obj = arr.getJSONObject(i);
@@ -140,6 +137,7 @@ public class ActivitiesGroupFragment extends Fragment {
                         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY);
                         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Rome"),Locale.ITALY);
                         Date myDate = dateFormat.parse(date.substring(28,30)+"/"+date.substring(25,27)+"/"+date.substring(20,24));
+                        //chosing the correct event from the date
                         assert myDate != null;
                         if((maxDate == null) || (maxDate.before(myDate))){
                             maxDate = myDate;

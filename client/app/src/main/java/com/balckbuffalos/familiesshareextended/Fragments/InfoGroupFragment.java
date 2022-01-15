@@ -22,7 +22,7 @@ import retrofit2.Retrofit;
 public class InfoGroupFragment extends Fragment {
 
     private INodeJS myAPI;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private String group_id, token, user_id;
 
     private TextView visibility;
@@ -38,6 +38,7 @@ public class InfoGroupFragment extends Fragment {
 
         Bundle extras = this.getArguments();
 
+        assert extras != null;
         group_id = extras.getString("group_id");
         token = extras.getString("token");
         user_id = extras.getString("user_id");
@@ -48,7 +49,7 @@ public class InfoGroupFragment extends Fragment {
         myAPI = retrofit.create(INodeJS.class);
 
 
-        /*INFO*/
+        // INFO
         TextView description = view.findViewById(R.id.description_text);
         visibility = view.findViewById(R.id.visibility_text);
         Button changeVisibility = view.findViewById(R.id.change_visibility_button);
@@ -64,11 +65,12 @@ public class InfoGroupFragment extends Fragment {
         return view;
     }
 
+    //Editing only the visibility of the group
     private void editGroup(String token, String id, String user_id, Boolean visible, String name, String description, String location, String background, String contact_type) {
         compositeDisposable.add(myAPI.editGroup(token, id, user_id, visible, name, description, location, background, contact_type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> { visibility.setText(current_visibility?"Public group":"Private group");},
+                .subscribe(s -> visibility.setText(current_visibility?"Public group":"Private group"),
                         t -> Log.d("HTTP PATCH GROUP ["+id+"] REQUEST ERROR",  t.getMessage())
                 ));
     }

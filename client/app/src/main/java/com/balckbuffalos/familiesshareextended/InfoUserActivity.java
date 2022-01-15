@@ -2,11 +2,9 @@ package com.balckbuffalos.familiesshareextended;
 
 import static com.balckbuffalos.familiesshareextended.Utility.Utility.showMenu;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
-
 import com.balckbuffalos.familiesshareextended.Adapters.ChildrenRecycleAdapter;
 import com.balckbuffalos.familiesshareextended.Adapters.MemberRecycleAdapter;
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
@@ -283,7 +281,7 @@ public class InfoUserActivity extends AppCompatActivity {
     private void initChildrenRecycler(){ 
         RecyclerView childrenRecyclerView = findViewById(R.id.childrenRecyclerView);
         childrenRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ChildrenRecycleAdapter adapter = new ChildrenRecycleAdapter(this, mChildrenName, mChildrenBirthdate);
+        ChildrenRecycleAdapter adapter = new ChildrenRecycleAdapter(mChildrenName, mChildrenBirthdate);
         childrenRecyclerView.setAdapter(adapter);
     }
 

@@ -38,17 +38,15 @@ import retrofit2.Retrofit;
 
 public class GroupCreationActivity extends AppCompatActivity {
     private INodeJS myAPI;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
-
-    private MaterialToolbar toolbar;
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private JSONArray mProfileInfo;
     private ArrayList<String> ids;
     private AllProfilesRecycleAdapter adapter;
 
     private String token, user_id;
-    private Button createButton;
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,12 +56,11 @@ public class GroupCreationActivity extends AppCompatActivity {
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
 
-        toolbar = findViewById(R.id.topAppBar);
-        toolbar.setOnClickListener (v->{
-            showMenu(v, R.menu.top_app_bar, this, getApplicationContext());});
+        MaterialToolbar toolbar = findViewById(R.id.topAppBar);
+        toolbar.setOnClickListener (v-> showMenu(v, R.menu.top_app_bar, this, getApplicationContext()));
 
 
-        createButton=findViewById(R.id.create_group_btn);
+        Button createButton = findViewById(R.id.create_group_btn);
         TextView name=findViewById(R.id.group_name_text);
         TextView desc=findViewById(R.id.group_description_text);
 
@@ -73,8 +70,8 @@ public class GroupCreationActivity extends AppCompatActivity {
             String[] ids_array=new String[ids.size()];
             ids_array=ids.toArray(ids_array);
 
-            createGroup(token, user_id, ids_array, "location", user_id,
-                    "email", "email", true, name.getText().toString(), desc.getText().toString());
+            createGroup(token, user_id, ids_array, user_id,
+                    name.getText().toString(), desc.getText().toString());
         });
 
         //Search bar for searching users by email
@@ -146,12 +143,9 @@ public class GroupCreationActivity extends AppCompatActivity {
 
 
 
-    private void createGroup(String token, String user_id, String[] ids, String location, String owner_id,
-                             String contact_type, String contact_info, Boolean visible, String name, String description) {
-
+    private void createGroup(String token, String user_id, String[] ids, String owner_id, String name, String description) {
         //Call server's endpoit
-        compositeDisposable.add(myAPI.createGroup(token, user_id, ids, location, owner_id, contact_type,
-                contact_info, visible, name, description)
+        compositeDisposable.add(myAPI.createGroup(token, user_id, ids, "location", owner_id, "email", "email", true, name, description)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
