@@ -4,12 +4,12 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-// officila documentation website: https://square.github.io/retrofit/
+// Official documentation website: https://square.github.io/retrofit/
 public class RetrofitClient {
     private static Retrofit instance;
 
     public static Retrofit getInstance() {
-        String IPV4 = "192.168.1.20";
+        String IPV4 = "192.168.1.58";
         String port="4000";
         if (instance == null)
             instance = new Retrofit.Builder()

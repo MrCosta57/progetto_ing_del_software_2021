@@ -91,42 +91,43 @@ public class InfoUserActivity extends AppCompatActivity {
         mChildrenName.clear();
         mChildrenBirthdate.clear();
         childrenList(token, user_id, user_id);
+        if (!mChildrenName.isEmpty()) {
+            //Greenpass state change
+            switchGreenpass.setOnClickListener(v -> {
+                if (switchGreenpass.isChecked()) {
+                    changeGreenpassState(token, user_id, true);
+                    setGreenPass(true);
+                } else {
+                    changeGreenpassState(token, user_id, false);
+                    setGreenPass(false);
+                }
+            });
 
-        //Greenpass state change
-        switchGreenpass.setOnClickListener(v->{
-            if(switchGreenpass.isChecked()){
-                changeGreenpassState(token, user_id, true);
-                setGreenPass(true);
-            }
-            else{
-                changeGreenpassState(token, user_id, false);
-                setGreenPass(false);
-            }
-        });
+            //Positivity state change
+            check_posisitity.setOnClickListener(v -> {
+                if (check_posisitity.isChecked()) {
+                    changePositivity(token, user_id, true);
+                    setPositivity(true);
+                } else {
+                    changePositivity(token, user_id, false);
+                    setPositivity(false);
+                }
+            });
 
-        //Positivity state change
-        check_posisitity.setOnClickListener(v->{
-            if(check_posisitity.isChecked()){
-                changePositivity(token, user_id, true);
-                setPositivity(true);
-            }
-            else{
-                changePositivity(token, user_id, false);
-                setPositivity(false);
-            }
-        });
-
-        //Child positivity state change
-        check_positivity_child.setOnClickListener(v->{
-            if(check_positivity_child.isChecked()){
-                changeChildsPositivity(token, user_id, child_id, true);
-                setChildsPositivity(true);
-            }
-            else{
-                changeChildsPositivity(token, user_id, child_id, false);
-                setChildsPositivity(false);
-            }
-        });
+            //Child positivity state change
+            check_positivity_child.setOnClickListener(v -> {
+                if (check_positivity_child.isChecked()) {
+                    changeChildsPositivity(token, user_id, child_id, true);
+                    setChildsPositivity(true);
+                } else {
+                    changeChildsPositivity(token, user_id, child_id, false);
+                    setChildsPositivity(false);
+                }
+            });
+        }else{
+            findViewById(R.id.child_label).setVisibility(View.INVISIBLE);
+            check_positivity_child.setVisibility(View.INVISIBLE);
+        }
 
         //Editing
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
