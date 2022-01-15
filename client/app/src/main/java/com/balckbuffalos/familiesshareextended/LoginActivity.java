@@ -13,6 +13,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -90,7 +92,8 @@ public class LoginActivity extends AppCompatActivity {
                             Intent myIntent = new Intent(LoginActivity.this, HomePageActivity.class);
                             LoginActivity.this.startActivity(myIntent);
                             finish();},
-                        t -> Log.d("HTTP LOGIN REQUEST ERROR, mail:["+email+"] password:["+password+"]", t.getMessage()))
+                        t -> {Log.d("HTTP LOGIN REQUEST ERROR, mail:["+email+"] password:["+password+"]", t.getMessage());
+                            Toast.makeText(this, "Email or Password incorrect", Toast.LENGTH_LONG).show();})
         );
     }
 }
