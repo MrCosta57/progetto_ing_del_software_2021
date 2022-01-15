@@ -186,9 +186,7 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
                     if (read == -1) {
                         break;
                     }
-
                     outputStream.write(fileReader, 0, read);
-
                 }
 
                 outputStream.flush();
@@ -199,7 +197,6 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
                 if (inputStream != null) {
                     inputStream.close();
                 }
-
                 if (outputStream != null) {
                     outputStream.close();
                 }
@@ -220,7 +217,6 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
                 .setPriority(Notification.PRIORITY_MAX)
                 .setContentText("downloading");
 
-        Log.d("TROIA", "TUA MADRE");
         //Show the notification
 
         // === Removed some obsoletes
@@ -248,8 +244,6 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
                 .setContentTitle(contentTitle)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setContentText("download completed");
-
-        Log.d("TROIA", "TUA MADRE2");
 
         // === Removed some obsoletes
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)

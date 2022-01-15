@@ -138,9 +138,6 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
             e.printStackTrace();
         }
 
-        Log.d("ACTIVITY ", "ACTIVITY : " + activity.toString());
-        Log.d("EVENTS ", "EVENTS: " + events.toString());
-
         createActivity(token, group_id, user_id, activity, events);
     }
 
