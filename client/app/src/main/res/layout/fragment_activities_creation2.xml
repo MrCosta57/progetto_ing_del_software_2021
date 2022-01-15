@@ -27,14 +27,15 @@
             app:title="Activity Creation" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <DatePicker
-        android:id="@+id/activity_start_date_picker"
-        android:layout_width="411dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="20dp"
-        android:datePickerMode="spinner"
+    <CalendarView
+        android:id="@+id/calendar_view1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewNomeUser" />
 
@@ -53,7 +54,7 @@
         android:id="@+id/activity_start_time_picker"
         android:layout_width="286dp"
         android:layout_height="90dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:timePickerMode="spinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -64,12 +65,12 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="10dp"
         android:text="@string/select_a_time_for_the_start_of_the_activity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.127"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_start_date_picker" />
+        app:layout_constraintTop_toBottomOf="@+id/calendar_view1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
