@@ -1,7 +1,6 @@
 ### Annunci / Status del progetto
-Beta version - Codice Sorgente 1.0
+Beta version - Codice Sorgente 1.1
 
-Non tutte le features sono testate e funzionanti
 
 # Progetto di Ingegneria del Software 2021
 
