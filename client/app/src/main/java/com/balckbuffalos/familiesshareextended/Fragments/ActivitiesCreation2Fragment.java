@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -38,11 +39,10 @@ public class ActivitiesCreation2Fragment extends Fragment implements Step {
         // Inflates the layout so that it can be displayed on the screen
         View view = inflater.inflate(R.layout.fragment_activities_creation2, container, false);
 
-        DatePicker startDate = view.findViewById(R.id.activity_start_date_picker);
-        startDate.setSpinnersShown(false);
+        CalendarView startDate = view.findViewById(R.id.calendar_view1);
 
         // Sets all the listeners needed to catch that will be made by the user on the default values
-        startDate.setOnDateChangedListener((view1, year, monthOfYear, dayOfMonth) -> {
+        startDate.setOnDateChangeListener((view1, year, monthOfYear, dayOfMonth) -> {
             Calendar calendar = Calendar.getInstance();
             calendar.set(year, monthOfYear, dayOfMonth);
             activityStartDate = calendar.getTime();

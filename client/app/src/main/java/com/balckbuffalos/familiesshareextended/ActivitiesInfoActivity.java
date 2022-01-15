@@ -32,7 +32,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
 
     private INodeJS myAPI;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private String group_id, token, user_id, child_id, activity_id, timeslot_id, summary, description, location, start, end, nChildren, nAdults;
+    private String group_id, token, user_id, child_id = "", activity_id, timeslot_id, summary, description, location, start, end, nChildren, nAdults;
     private JSONObject extprop;
     private SwitchMaterial switch_activity_partecipate, switch_activity_info_partecipate_child;
     private TextView tv_nAdults, tv_nChildren;
@@ -75,7 +75,11 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
         switch_activity_partecipate.setOnCheckedChangeListener((buttonView, isChecked) -> onClickEditPartecipants("parents", user_id, isChecked));
 
         switch_activity_info_partecipate_child = findViewById(R.id.switch_activity_info_partecipate_child);
-        switch_activity_info_partecipate_child.setOnCheckedChangeListener((buttonView, isChecked) -> onClickEditPartecipants("children", child_id, isChecked));
+        if (!child_id.equals("")) {
+            switch_activity_info_partecipate_child.setOnCheckedChangeListener((buttonView, isChecked) -> onClickEditPartecipants("children", child_id, isChecked));
+        } else {
+            switch_activity_info_partecipate_child.setVisibility(View.INVISIBLE);
+        }
     }
 
     // Gets the user's child's id and calls the function that populates the fields inside the screen
@@ -91,7 +95,10 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                     child_id = child.getString("child_id");
 
                     activityInfo(token,group_id,user_id,activity_id);
-                }, t -> Log.d("HTTP GET CHILD ID FROM PARENT ["+user_id+"] REQUEST ERROR", t.getMessage()))
+                }, t -> {
+                    activityInfo(token,group_id,user_id,activity_id);
+                    Log.d("HTTP GET CHILD ID FROM PARENT ["+user_id+"] REQUEST ERROR", t.getMessage());
+                })
         );
     }
 
@@ -241,9 +248,13 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                     }
 
                     switch_activity_info_partecipate_child = findViewById(R.id.switch_activity_info_partecipate_child);
-                    JSONArray oldChildren = new JSONArray(prop.getString("children"));
-                    if (contains(oldChildren, child_id)) {
-                        switch_activity_info_partecipate_child.setChecked(true);
+                    if (!child_id.equals("")) {
+                        JSONArray oldChildren = new JSONArray(prop.getString("children"));
+                        if (contains(oldChildren, child_id)) {
+                            switch_activity_info_partecipate_child.setChecked(true);
+                        }
+                    } else {
+                        switch_activity_info_partecipate_child.setVisibility(View.INVISIBLE);
                     }
 
                     TextView tv_startDay = findViewById(R.id.activity_info_day_text);
