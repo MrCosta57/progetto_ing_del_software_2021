@@ -64,6 +64,7 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
     @SuppressWarnings("deprecation")
     @Override
     public void onCompleted(View completeButton) {
+        boolean guard = true;
         // When the user finishes the insertion of the parameters, it saves them into the private fields and local variables
         String title = adapter.getStep().getactivityTitle();
         String description = adapter.getStep().getactivityDescription();
@@ -80,9 +81,10 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
         int minuto_fine = adapter.getStep3().getActivityEndMinute();
 
         // Check needed to verify that the received data is valid (enters the branch if it isn't)
-        if(data_inizio.after(data_fine) || (data_inizio.equals(data_fine) && ora_inizio > ora_fine) || (data_inizio.equals(data_fine) && ora_inizio == ora_fine && minuto_inizio >= minuto_fine)){
-            Toast.makeText(ActivitiesCreationActivity.this, "INVALID START OR END TIME ATTRIBUTES", Toast.LENGTH_LONG).show();
-            return;
+        if(title.equals("") || description.equals("") || position.equals("") || data_inizio.after(data_fine) || (data_inizio.equals(data_fine) && ora_inizio > ora_fine) || (data_inizio.equals(data_fine) && ora_inizio == ora_fine && minuto_inizio >= minuto_fine)){
+            guard = false;
+            Toast.makeText(ActivitiesCreationActivity.this, "INVALID ACTIVITY ATTRIBUTE(S)", Toast.LENGTH_LONG).show();
+            reset();
         }
 
         JSONObject activity = new JSONObject();
@@ -138,7 +140,9 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
             e.printStackTrace();
         }
 
-        createActivity(token, group_id, user_id, activity, events);
+        if (guard) {
+            createActivity(token, group_id, user_id, activity, events);
+        }
     }
 
     @Override
@@ -163,10 +167,14 @@ public class ActivitiesCreationActivity extends AppCompatActivity implements Ste
                         t -> {
                             Toast.makeText(this, "GREENPASS required but not available", Toast.LENGTH_LONG).show();
                             Log.d("HTTP POST ACTIVITY REQUEST ERROR", t.getMessage());
-                            Intent myIntent = new Intent(ActivitiesCreationActivity.this, GroupActivity.class);
-                            myIntent.putExtra("group_id", group_id);
-                            ActivitiesCreationActivity.this.startActivity(myIntent);
+                            reset();
                 })
         );
+    }
+
+    private void reset() {
+        Intent myIntent = new Intent(ActivitiesCreationActivity.this, GroupActivity.class);
+        myIntent.putExtra("group_id", group_id);
+        ActivitiesCreationActivity.this.startActivity(myIntent);
     }
 }

@@ -38,6 +38,7 @@ public class ActivitiesCreation1Fragment extends Fragment implements Step {
         Button mPickColorButton = view.findViewById(R.id.pick_color_button);
         mColorPreview = view.findViewById(R.id.preview_selected_color);
         mDefaultColor = 0;
+        activityGPR = false;
 
         // Sets all the listeners needed to catch that will be made by the user on the default values
         mPickColorButton.setOnClickListener(v -> openColorPickerDialogue());
@@ -102,15 +103,23 @@ public class ActivitiesCreation1Fragment extends Fragment implements Step {
     }
 
     public String getactivityTitle() {
-        return activityTitle.toString();
+        return retCharSeqIntoStr(activityTitle);
     }
 
     public String getactivityDescription() {
-        return activityDescription.toString();
+        return retCharSeqIntoStr(activityDescription);
     }
 
     public String getactivityPosition() {
-        return activityPosition.toString();
+        return retCharSeqIntoStr(activityPosition);
+    }
+
+    private String retCharSeqIntoStr(CharSequence param) {
+        if (param == null || param.toString().isEmpty()) {
+            return "";
+        }else {
+            return param.toString();
+        }
     }
 
     public boolean getactivityGPR() {
