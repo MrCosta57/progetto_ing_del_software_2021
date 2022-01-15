@@ -27,10 +27,10 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/name_children"
+        android:id="@+id/name"
         android:layout_width="270dp"
         android:layout_height="60dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:textColorHint="#B9B8B8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
@@ -38,7 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
         <EditText
-            android:id="@+id/name_children_text"
+            android:id="@+id/name_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="10"
@@ -50,7 +50,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/surname_children"
+        android:id="@+id/surname"
         android:layout_width="270dp"
         android:layout_height="60dp"
         android:layout_marginTop="30dp"
@@ -58,10 +58,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_children">
+        app:layout_constraintTop_toBottomOf="@+id/name">
 
         <EditText
-            android:id="@+id/surname_children_text"
+            android:id="@+id/surname_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="10"
@@ -80,7 +80,7 @@
         android:textColorHint="#B9B8B8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/surname_children">
+        app:layout_constraintTop_toBottomOf="@+id/surname">
 
         <EditText
             android:id="@+id/emailText"

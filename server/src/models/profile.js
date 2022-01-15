@@ -49,7 +49,8 @@ const profileSchema = new mongoose.Schema(
     },
     visible: {
       type: Boolean,
-      required: true
+      required: true,
+      default: true
     },
     suspended: {
       type: Boolean,

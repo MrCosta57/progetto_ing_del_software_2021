@@ -125,6 +125,7 @@ public class GroupCreationActivity extends AppCompatActivity {
 
 
     private void profilesInfo(String token, String user_id) {
+        //Call server's endpoit
         compositeDisposable.add(myAPI.profilesInfo(token,"visibility", null, true)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

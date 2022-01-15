@@ -55,7 +55,7 @@ public class Utility {
                         }
                         return true;
                     case R.id.profile_menu:
-                        TODO: if(!(token.equals("none")||user_id.equals("none"))) {
+                        if(!(token.equals("none")||user_id.equals("none"))) {
                            Intent myIntent = new Intent(ctx, InfoUserActivity.class);
                            ctx.startActivity(myIntent);
                         }
@@ -69,12 +69,6 @@ public class Utility {
                     case R.id.join_group_menu:
                         /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
                            Intent myIntent = new Intent(ctx, JoinGroupActivity.class);
-                           ctx.startActivity(myIntent);
-                        }*/
-                        return true;
-                    case R.id.guide_menu:
-                        /*TODO: if(!(token.equals("none")||user_id.equals("none"))) {
-                           Intent myIntent = new Intent(ctx, GuideActivity.class);
                            ctx.startActivity(myIntent);
                         }*/
                         return true;

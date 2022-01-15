@@ -58,8 +58,8 @@ public class SignUpActivity extends AppCompatActivity implements StepperLayout.S
 
     @Override
     public void onCompleted(View completeButton) {
-        edt_name = findViewById(R.id.name_children_text);
-        edt_surname = findViewById(R.id.surname_children_text);
+        edt_name = findViewById(R.id.name_text);
+        edt_surname = findViewById(R.id.surname_text);
         edt_mail = findViewById(R.id.emailText);
         edt_password = findViewById(R.id.passwordText);
         edt_confirm_password = findViewById(R.id.confirmPasswordText);
@@ -90,8 +90,8 @@ public class SignUpActivity extends AppCompatActivity implements StepperLayout.S
 
                             add_child = findViewById(R.id.switch_child);
                             if(add_child.isChecked()) {
-                                edt_children_name = findViewById(R.id.name_children_text);
-                                edt_children_surname = findViewById(R.id.surname_children_text);
+                                edt_children_name = findViewById(R.id.name_child_text);
+                                edt_children_surname = findViewById(R.id.surname_child_text);
                                 edt_gender = findViewById(R.id.gender_text);
                                 edt_allergy = findViewById(R.id.allergy_text);
                                 birthdate = findViewById(R.id.date);

@@ -85,6 +85,7 @@ router.post('/', async (req, res, next) => {
   if (!(given_name && family_name && email && password && visible !== undefined && language)) {
     return res.status(400).send('Bad Request')
   }
+  
   try {
     const user = await User.findOne({ email })
     if (user) {

@@ -17,9 +17,6 @@
         android:id="@+id/join_group_menu"
         android:title="@string/join_a_group" />
     <item
-        android:id="@+id/guide_menu"
-        android:title="@string/guide" />
-    <item
         android:id="@+id/logout_menu"
         android:title="@string/logout_menu" />
     <item

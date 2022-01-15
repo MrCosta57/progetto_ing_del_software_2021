@@ -35,8 +35,8 @@ public class SignUp2Fragment extends Fragment implements Step {
         View view = inflater.inflate(R.layout.fragment_sign_up2, container, false);
 
         SwitchMaterial sw = view.findViewById(R.id.switch_child);
-        name = view.findViewById(R.id.name_children);
-        surname = view.findViewById(R.id.surname_children);
+        name = view.findViewById(R.id.name_child);
+        surname = view.findViewById(R.id.surname_child);
         gender = view.findViewById(R.id.gender);
         allergy = view.findViewById(R.id.allergy);
         date = view.findViewById(R.id.date);
