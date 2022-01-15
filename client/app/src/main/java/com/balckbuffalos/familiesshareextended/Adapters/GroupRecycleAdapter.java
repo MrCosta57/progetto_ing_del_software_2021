@@ -29,7 +29,7 @@ import retrofit2.Retrofit;
 public class GroupRecycleAdapter extends  RecyclerView.Adapter<GroupRecycleAdapter.ViewHolder>{
 
     private INodeJS myAPI;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final ArrayList<String> mGroupId;
     private final ArrayList<String> mGroupName;
@@ -76,24 +76,26 @@ public class GroupRecycleAdapter extends  RecyclerView.Adapter<GroupRecycleAdapt
         holder.info.setText(info);
         holder.group_icon.setImageResource(R.drawable.group_icon);
 
+        //if the user has notifications not read
         if(mNotifications.get(position))
             holder.bell_icon.setVisibility(View.VISIBLE);
         else
             holder.bell_icon.setVisibility(View.INVISIBLE);
 
+        //clicking of recycleview item send you to group page
         holder.parent_layout.setOnClickListener(v -> {
             Intent myIntent = new Intent(mContext, GroupActivity.class);
             myIntent.putExtra("group_id", mGroupId.get(position));
             mContext.startActivity(myIntent);
         });
 
-        int pos = position;
+        //if the user is the admin of the group --> he can delete it
         if(mAdmin.get(position))
             holder.trash_image.setVisibility(View.VISIBLE);
 
         holder.trash_image.setOnClickListener(view -> {
             if(mAdmin.get(position))
-                deleteGroup(token, mGroupId.get(pos), user_id, pos);
+                deleteGroup(token, mGroupId.get(position), user_id, position);
         });
     }
 

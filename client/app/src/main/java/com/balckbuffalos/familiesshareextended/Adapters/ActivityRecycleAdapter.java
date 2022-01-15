@@ -1,5 +1,4 @@
 package com.balckbuffalos.familiesshareextended.Adapters;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -10,18 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.balckbuffalos.familiesshareextended.ActivitiesInfoActivity;
 import com.balckbuffalos.familiesshareextended.R;
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
-
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -30,7 +25,7 @@ import retrofit2.Retrofit;
 public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycleAdapter.ViewHolder>{
 
     private INodeJS myAPI;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final ArrayList<String> mActivityId;
     private final ArrayList<String> mGroupId;
@@ -42,7 +37,7 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
     private final ArrayList<Boolean> mGreenPass;
     private final ArrayList<Boolean> mHasPositive;
 
-    private String token, user_id;
+    private final String token, user_id;
 
     private final Context mContext;
 
@@ -72,8 +67,10 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        // Retrieving the correct format of the date
         if(mDate.get(position).equals("N/D")) {
             holder.hours.setText("N/D");
             holder.day.setText("N/D");
@@ -90,23 +87,25 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
         holder.n_adult.setText(mNAdult.get(position).toString());
         holder.n_children.setText(mNChildren.get(position).toString());
 
+        // checking if green pass is mandatory for the activity
         if (mGreenPass.get(position)) {
             holder.green_pass_icon.setVisibility(View.VISIBLE);
         } else {
             holder.green_pass_icon.setVisibility(View.INVISIBLE);
         }
 
+        // if the user is the creator of the activity --> he can delete it
         String creator_id = mCreatorId.get(position);
         String activity_id = mActivityId.get(position);
-        int pos = position;
         if(creator_id.equals(user_id))
             holder.trash_image.setVisibility(View.VISIBLE);
 
         holder.trash_image.setOnClickListener(view -> {
             if(creator_id.equals(user_id))
-                deleteActivity(token, mGroupId.get(pos), user_id, activity_id, pos);
+                deleteActivity(token, mGroupId.get(position), user_id, activity_id, position);
         });
 
+        // if you click on the item of the recycleview you can see the activity info page
         holder.parent_layout.setOnClickListener(v -> {
             Intent myIntent = new Intent(mContext, ActivitiesInfoActivity.class);
             myIntent.putExtra("group_id", mGroupId.get(position));
@@ -114,6 +113,7 @@ public class ActivityRecycleAdapter extends  RecyclerView.Adapter<ActivityRecycl
             mContext.startActivity(myIntent);
         });
 
+        // if some partecipants of the activity has tested positive for covid
         if(mHasPositive.get(position)) {
             holder.parent_layout.setBackgroundColor(0xFFC62828);
         }

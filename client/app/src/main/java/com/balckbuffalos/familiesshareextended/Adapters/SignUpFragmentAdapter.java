@@ -2,10 +2,8 @@ package com.balckbuffalos.familiesshareextended.Adapters;
 
 import android.content.Context;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
-
 import com.balckbuffalos.familiesshareextended.Fragments.SignUp1Fragment;
 import com.balckbuffalos.familiesshareextended.Fragments.SignUp2Fragment;
 import com.stepstone.stepper.Step;

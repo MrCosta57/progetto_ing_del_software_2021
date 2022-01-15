@@ -3,13 +3,11 @@ package com.balckbuffalos.familiesshareextended;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
@@ -17,6 +15,7 @@ import java.security.GeneralSecurityException;
 public class SplashScreenActivity extends AppCompatActivity {
 
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,18 +34,17 @@ public class SplashScreenActivity extends AppCompatActivity {
                 );
                 String token = sharedPreferences.getString("token", "none");
                 String user_id = sharedPreferences.getString("user_id", "none");
+                Intent homeIntent;
                 if(token.equals("none")||user_id.equals("none"))
                 {
-                    Intent homeIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                    startActivity(homeIntent);
-                    finish();
+                    homeIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
                 }
                 else
                 {
-                    Intent homeIntent = new Intent(SplashScreenActivity.this, HomePageActivity.class);
-                    startActivity(homeIntent);
-                    finish();
+                    homeIntent = new Intent(SplashScreenActivity.this, HomePageActivity.class);
                 }
+                startActivity(homeIntent);
+                finish();
             } catch (GeneralSecurityException | IOException e) { e.printStackTrace(); }
 
         }, SPLASH_TIME_OUT);

@@ -1,7 +1,6 @@
 package com.balckbuffalos.familiesshareextended;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,11 +14,8 @@ import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
-
 import org.json.JSONObject;
-
 import java.util.Date;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -28,9 +24,12 @@ import retrofit2.Retrofit;
 public class SignUpActivity extends AppCompatActivity implements StepperLayout.StepperListener {
 
     private INodeJS myAPI;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private EditText edt_name, edt_surname, edt_mail, edt_password, edt_confirm_password, edt_children_name, edt_children_surname, edt_gender, edt_allergy;
+    private EditText edt_children_name;
+    private EditText edt_children_surname;
+    private EditText edt_gender;
+    private EditText edt_allergy;
     private SwitchMaterial add_child;
     private DatePicker birthdate;
 
@@ -58,11 +57,11 @@ public class SignUpActivity extends AppCompatActivity implements StepperLayout.S
 
     @Override
     public void onCompleted(View completeButton) {
-        edt_name = findViewById(R.id.name_children_text);
-        edt_surname = findViewById(R.id.surname_children_text);
-        edt_mail = findViewById(R.id.emailText);
-        edt_password = findViewById(R.id.passwordText);
-        edt_confirm_password = findViewById(R.id.confirmPasswordText);
+        EditText edt_name = findViewById(R.id.name_children_text);
+        EditText edt_surname = findViewById(R.id.surname_children_text);
+        EditText edt_mail = findViewById(R.id.emailText);
+        EditText edt_password = findViewById(R.id.passwordText);
+        EditText edt_confirm_password = findViewById(R.id.confirmPasswordText);
 
         if(!((edt_password.getText().toString()).equals(edt_confirm_password.getText().toString()))){
             Toast.makeText(SignUpActivity.this, "DIFFERENT PASSWORDS", Toast.LENGTH_LONG).show();
@@ -98,7 +97,7 @@ public class SignUpActivity extends AppCompatActivity implements StepperLayout.S
 
                                 JSONObject obj = new JSONObject(s);
 
-                                insertChild(obj.getString("token"), obj.getString("id"), obj.getString("id"), new Date(birthdate.getCalendarView().getDate()), edt_children_name.getText().toString(), edt_children_surname.getText().toString(), edt_gender.getText().toString(), edt_allergy.getText().toString(), "no", "no", "", "");
+                                insertChild(obj.getString("token"), obj.getString("id"), obj.getString("id"), new Date(birthdate.getCalendarView().getDate()), edt_children_name.getText().toString(), edt_children_surname.getText().toString(), edt_gender.getText().toString(), edt_allergy.getText().toString());
 
                             }
                         },
@@ -106,8 +105,8 @@ public class SignUpActivity extends AppCompatActivity implements StepperLayout.S
         );
     }
 
-    private void insertChild(String token, String id, String user_id, Date date, String name, String surname, String gender, String allergies, String other_info, String special_needs, String background, String image_path) {
-        compositeDisposable.add(myAPI.insertChild(token, id, user_id, date, name, surname, gender, allergies, other_info, special_needs, background, image_path)
+    private void insertChild(String token, String id, String user_id, Date date, String name, String surname, String gender, String allergies) {
+        compositeDisposable.add(myAPI.insertChild(token, id, user_id, date, name, surname, gender, allergies, "no", "no", "", "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s ->{

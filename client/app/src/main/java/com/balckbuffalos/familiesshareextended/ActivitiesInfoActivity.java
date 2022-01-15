@@ -2,45 +2,27 @@ package com.balckbuffalos.familiesshareextended;
 
 import static com.balckbuffalos.familiesshareextended.Utility.Utility.showMenu;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
-
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
-
-import com.balckbuffalos.familiesshareextended.Fragments.ActivitiesGroupFragment;
 import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.text.DateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.TimeZone;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -49,13 +31,13 @@ import retrofit2.Retrofit;
 public class ActivitiesInfoActivity extends AppCompatActivity {
 
     private INodeJS myAPI;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private String group_id, token, user_id, child_id, activity_id, timeslot_id, summary, description, location, start, end, nChildren, nAdults;
     private JSONObject extprop;
     private SwitchMaterial switch_activity_partecipate, switch_activity_info_partecipate_child;
-    private MaterialToolbar toolbar;
     private TextView tv_nAdults, tv_nChildren;
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +51,8 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
 
-        toolbar = findViewById(R.id.topAppBar);
-        toolbar.setOnClickListener (v->{
-            showMenu(v, R.menu.top_app_bar, this, getApplicationContext());});
+        MaterialToolbar toolbar = findViewById(R.id.topAppBar);
+        toolbar.setOnClickListener (v-> showMenu(v, R.menu.top_app_bar, this, getApplicationContext()));
 
         try {
             String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
@@ -91,20 +72,10 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
 
         // Sets all the listeners needed to catch that will be made by the user on the default values
         switch_activity_partecipate = findViewById(R.id.switch_activity_info_partecipate);
-        switch_activity_partecipate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                onClickEditPartecipants("parents", user_id, isChecked);
-            }
-        });
+        switch_activity_partecipate.setOnCheckedChangeListener((buttonView, isChecked) -> onClickEditPartecipants("parents", user_id, isChecked));
 
         switch_activity_info_partecipate_child = findViewById(R.id.switch_activity_info_partecipate_child);
-        switch_activity_info_partecipate_child.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                onClickEditPartecipants("children", child_id, isChecked);
-            }
-        });
+        switch_activity_info_partecipate_child.setOnCheckedChangeListener((buttonView, isChecked) -> onClickEditPartecipants("children", child_id, isChecked));
     }
 
     // Gets the user's child's id and calls the function that populates the fields inside the screen
@@ -143,7 +114,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                     }
                     array.put(id);
                     prop.put(source, array.toString());
-                    editPartecipants(token, group_id, activity_id, timeslot_id, user_id, false, summary, description, location, start, end, extprop, false);
+                    editPartecipants(token, group_id, activity_id, timeslot_id, user_id, summary, description, location, start, end, extprop);
                 }
             } else {
                 if (contains(array, id)) {
@@ -157,7 +128,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
                     int index = findIndex(array, id);
                     array.remove(index);
                     prop.put(source, array.toString());
-                    editPartecipants(token, group_id, activity_id, timeslot_id, user_id, false, summary, description, location, start, end, extprop, false);
+                    editPartecipants(token, group_id, activity_id, timeslot_id, user_id, summary, description, location, start, end, extprop);
                 }
             }
         } catch (Exception e) { e.printStackTrace(); }
@@ -183,8 +154,8 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
         return -1;
     }
 
-    private void editPartecipants(String token, String group_id, String activity_id, String timeslot_id, String user_id, Boolean adminChanges, String summary, String description, String location, String start, String end, JSONObject extprop, Boolean notifyUsers) {
-        compositeDisposable.add(myAPI.editPartecipants(token, group_id, activity_id, timeslot_id, user_id,adminChanges, summary, description, location, start, end, extprop, notifyUsers)
+    private void editPartecipants(String token, String group_id, String activity_id, String timeslot_id, String user_id, String summary, String description, String location, String start, String end, JSONObject extprop) {
+        compositeDisposable.add(myAPI.editPartecipants(token, group_id, activity_id, timeslot_id, user_id, false, summary, description, location, start, end, extprop, false)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> { }, t -> Log.d("HTTP PATCH PARTECIPANTS OF ACTIVITY ["+activity_id+"] REQUEST ERROR", t.getMessage()))

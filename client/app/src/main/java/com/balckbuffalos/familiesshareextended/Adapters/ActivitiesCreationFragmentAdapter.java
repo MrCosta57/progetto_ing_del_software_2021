@@ -9,17 +9,15 @@ import androidx.fragment.app.FragmentManager;
 import com.balckbuffalos.familiesshareextended.Fragments.ActivitiesCreation1Fragment;
 import com.balckbuffalos.familiesshareextended.Fragments.ActivitiesCreation2Fragment;
 import com.balckbuffalos.familiesshareextended.Fragments.ActivitiesCreation3Fragment;
-import com.balckbuffalos.familiesshareextended.Fragments.SignUp1Fragment;
-import com.balckbuffalos.familiesshareextended.Fragments.SignUp2Fragment;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 import com.stepstone.stepper.viewmodel.StepViewModel;
 
 public class ActivitiesCreationFragmentAdapter extends AbstractFragmentStepAdapter {
     // Created an ActivitiesCreationFragment field for each one of the single fragments of the stepper so that they can be referenced easily
-    private ActivitiesCreation1Fragment step = new ActivitiesCreation1Fragment();
-    private ActivitiesCreation2Fragment step2 = new ActivitiesCreation2Fragment();
-    private ActivitiesCreation3Fragment step3 = new ActivitiesCreation3Fragment();
+    private final ActivitiesCreation1Fragment step = new ActivitiesCreation1Fragment();
+    private final ActivitiesCreation2Fragment step2 = new ActivitiesCreation2Fragment();
+    private final ActivitiesCreation3Fragment step3 = new ActivitiesCreation3Fragment();
 
     public ActivitiesCreationFragmentAdapter(@NonNull FragmentManager fm, @NonNull Context context) {
         super(fm, context);

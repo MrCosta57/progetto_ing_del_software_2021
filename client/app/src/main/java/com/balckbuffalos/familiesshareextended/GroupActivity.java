@@ -6,13 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
-
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-
 import com.balckbuffalos.familiesshareextended.Fragments.ActivitiesGroupFragment;
 import com.balckbuffalos.familiesshareextended.Fragments.CabinetGroupFragment;
 import com.balckbuffalos.familiesshareextended.Fragments.InfoGroupFragment;
@@ -22,30 +20,27 @@ import com.balckbuffalos.familiesshareextended.Retrofit.INodeJS;
 import com.balckbuffalos.familiesshareextended.Retrofit.RetrofitClient;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
-import retrofit2.http.Field;
 
+@SuppressWarnings("deprecation")
 public class GroupActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private INodeJS myAPI;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private String group_id, token, user_id;
 
-    private ActivitiesGroupFragment activitiesGroupFragment = new ActivitiesGroupFragment();
-    private CabinetGroupFragment cabinetGroupFragment = new CabinetGroupFragment();
-    private InfoGroupFragment infoGroupFragment = new InfoGroupFragment();
-    private MarketGroupFragment marketGroupFragment = new MarketGroupFragment();
-    private MembersGroupFragment membersGroupFragment = new MembersGroupFragment();
-    private Bundle bundle = new Bundle();
+    private final ActivitiesGroupFragment activitiesGroupFragment = new ActivitiesGroupFragment();
+    private final CabinetGroupFragment cabinetGroupFragment = new CabinetGroupFragment();
+    private final InfoGroupFragment infoGroupFragment = new InfoGroupFragment();
+    private final MarketGroupFragment marketGroupFragment = new MarketGroupFragment();
+    private final MembersGroupFragment membersGroupFragment = new MembersGroupFragment();
+    private final Bundle bundle = new Bundle();
 
     private MaterialToolbar toolbar;
     private BottomNavigationView bottomNavigationView;
@@ -80,8 +75,7 @@ public class GroupActivity extends AppCompatActivity implements BottomNavigation
         bundle.putString("user_id", user_id);
 
         toolbar = findViewById(R.id.topAppBar);
-        toolbar.setOnClickListener (v->{
-            showMenu(v, R.menu.top_app_bar, this, getApplicationContext());});
+        toolbar.setOnClickListener (v-> showMenu(v, R.menu.top_app_bar, this, getApplicationContext()));
 
 
         groupInfo(token,group_id,user_id);
@@ -124,10 +118,7 @@ public class GroupActivity extends AppCompatActivity implements BottomNavigation
         compositeDisposable.add(myAPI.readNotifications(token, group_id, user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s -> {
-                    Log.d("READ NOTIFICATIONS", s);
-
-                }, t -> Log.d("HTTP GET NOTIFICATIONS OF GROUP ["+group_id+"] REQUEST ERROR", t.getMessage()))
+                .subscribe(s -> Log.d("READ NOTIFICATIONS", s), t -> Log.d("HTTP GET NOTIFICATIONS OF GROUP ["+group_id+"] REQUEST ERROR", t.getMessage()))
         );
     }
 

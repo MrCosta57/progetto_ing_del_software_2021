@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -30,13 +31,12 @@ import retrofit2.Retrofit;
 public class MembersGroupFragment extends Fragment {
 
     private INodeJS myAPI;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final ArrayList<String> mMemberName = new ArrayList<>();
     private final ArrayList<Boolean> mMemberRole = new ArrayList<>();
 
     private View view;
-    private String group_id, token, user_id;
 
     public MembersGroupFragment() {}
 
@@ -51,9 +51,10 @@ public class MembersGroupFragment extends Fragment {
 
         Bundle extras = this.getArguments();
 
-        group_id = extras.getString("group_id");
-        token = extras.getString("token");
-        user_id = extras.getString("user_id");
+        assert extras != null;
+        String group_id = extras.getString("group_id");
+        String token = extras.getString("token");
+        String user_id = extras.getString("user_id");
 
         mMemberName.clear();
         mMemberRole.clear();
@@ -63,7 +64,7 @@ public class MembersGroupFragment extends Fragment {
 
     private void initMemberRecycler(){
         RecyclerView memberRecyclerView = view.findViewById(R.id.memberRecycler);
-        MemberRecycleAdapter adapter = new MemberRecycleAdapter(getActivity(), mMemberName, mMemberRole);
+        MemberRecycleAdapter adapter = new MemberRecycleAdapter(mMemberName, mMemberRole);
         memberRecyclerView.addItemDecoration(new DividerItemDecoration(memberRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL));
         memberRecyclerView.setAdapter(adapter);
@@ -99,7 +100,7 @@ public class MembersGroupFragment extends Fragment {
                         mMemberName.add(obj.getString("given_name") + obj.getString("family_name"));
                     }
                     initMemberRecycler();
-                }, t -> Log.d("HTTP GET PROFILEINFOS "+ids.toString()+" REQUEST ERROR", t.getMessage()))
+                }, t -> Log.d("HTTP GET PROFILEINFOS "+ Arrays.toString(ids) +" REQUEST ERROR", t.getMessage()))
         );
     }
 }

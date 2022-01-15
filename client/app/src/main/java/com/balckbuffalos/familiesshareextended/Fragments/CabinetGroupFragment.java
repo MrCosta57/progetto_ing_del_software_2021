@@ -68,6 +68,7 @@ public class CabinetGroupFragment extends Fragment {
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
 
+        // permission
         if(ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
 
@@ -93,6 +94,7 @@ public class CabinetGroupFragment extends Fragment {
         return view;
     }
 
+    //popup use to load file
     private void showPopup(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity()).setTitle("Select File");
 
@@ -137,6 +139,7 @@ public class CabinetGroupFragment extends Fragment {
             }
     );
 
+    //open directory to choose file
     public void openFileDialog() {
         Intent data = new Intent(Intent.ACTION_GET_CONTENT);
         data.setType("*/*");

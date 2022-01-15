@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.balckbuffalos.familiesshareextended.R;
@@ -35,7 +33,7 @@ import retrofit2.Retrofit;
 public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter.ViewHolder>{
 
     private INodeJS myAPI;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final ArrayList<String> mFileId;
     private final ArrayList<String> mFileName;
@@ -47,7 +45,7 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
 
     private NotificationManager mNotificationManager;
 
-    private String group_id, token, user_id;
+    private final String group_id, token, user_id;
 
     private final Context mContext;
 
@@ -79,20 +77,22 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         holder.memberName.setText(mMemberName.get(position));
         holder.description.setText(mDescription.get(position));
         holder.date.setText(mDate.get(position));
+
+        //if the user is the creator of the file --> he can delete it
         String file_id = mFileId.get(position);
         String creator_id = mCreatorId.get(position);
-        int pos = position;
         if(creator_id.equals(user_id))
             holder.trash_image.setVisibility(View.VISIBLE);
-
         holder.trash_image.setOnClickListener(view -> {
             if(creator_id.equals(user_id))
-                deleteFile(token, group_id, user_id, file_id, pos);
+                deleteFile(token, group_id, user_id, file_id, position);
         });
 
+        //setting the icon related to MimeType
         if(mFileType.get(position).contains("audio"))
             holder.file_image.setImageResource(R.drawable.file_audio_icon);
         else if(mFileType.get(position).contains("image"))
@@ -146,22 +146,25 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
-                    assert s.body() != null;
-                    Toast.makeText(mContext, "DOWNLOAD STARTED", Toast.LENGTH_LONG);
+                    //download del file in background
                     new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected Void doInBackground(Void... voids) {
-                        createNotification(file_name, "downloading", id);
+                        //notification of downloading
+                        createNotification(file_name, id);
                         assert s.body() != null;
                         boolean writtenToDisk = writeResponseBodyToDisk(s.body(), file_name);
 
                         Log.d("DOWNLOAD INFO", "file download was a success? " + writtenToDisk);
-                        finishNotifications(file_name, "download completed", id);
+                        //notification of end download
+                        finishNotifications(file_name, id);
                         return null;
                     }
-                }.execute();},t->Log.d("HTTP GET FILE ["+file_id+"] REQUEST ERROR", t.getMessage())));
+                }.execute();},
+                        t ->Log.d("HTTP GET FILE ["+file_id+"] REQUEST ERROR", t.getMessage())));
     }
 
+    // usign inputStream and Output stream to save picture in download folder
     private boolean writeResponseBodyToDisk(ResponseBody body, String file_name) {
         try {
             File futureStudioIconFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + file_name);
@@ -171,9 +174,6 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
 
             try {
                 byte[] fileReader = new byte[4096];
-
-                long fileSize = body.contentLength();
-                long fileSizeDownloaded = 0;
 
                 inputStream = body.byteStream();
                 outputStream = new FileOutputStream(futureStudioIconFile);
@@ -187,9 +187,6 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
 
                     outputStream.write(fileReader, 0, read);
 
-                    fileSizeDownloaded += read;
-
-                    Log.d("DOWNLOAD INFO", "file download: " + fileSizeDownloaded + " of " + fileSize);
                 }
 
                 outputStream.flush();
@@ -210,7 +207,7 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
         }
     }
 
-    private void createNotification(String contentTitle, String contentText, int id) {
+    private void createNotification(String contentTitle, int id) {
 
         mNotificationManager = (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         //Build the notification using Notification.Builder
@@ -218,14 +215,14 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
                 .setSmallIcon(android.R.drawable.stat_sys_download)
                 .setAutoCancel(true)
                 .setContentTitle(contentTitle)
-                .setContentText(contentText);
+                .setContentText("downloading");
 
 
         //Show the notification
         mNotificationManager.notify(id, builder.build());
     }
 
-    private void finishNotifications(String contentTitle, String contentText, int id) {
+    private void finishNotifications(String contentTitle, int id) {
 
         mNotificationManager = (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         //Build the notification using Notification.Builder
@@ -233,7 +230,7 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
                 .setSmallIcon(android.R.drawable.stat_sys_download_done)
                 .setAutoCancel(true)
                 .setContentTitle(contentTitle)
-                .setContentText(contentText);
+                .setContentText("download completed");
 
 
         //Show the notification
