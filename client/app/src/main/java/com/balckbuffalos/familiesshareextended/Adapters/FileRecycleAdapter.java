@@ -142,6 +142,7 @@ public class FileRecycleAdapter extends  RecyclerView.Adapter<FileRecycleAdapter
         );
     }
 
+    @SuppressWarnings("deprecation")
     @SuppressLint({"StaticFieldLeak", "ShowToast"})
     private void getFile(String token, String group_id, String user_id, String file_id, String file_name, int id) {
         compositeDisposable.add(myAPI.getFile(token, group_id, file_id, user_id)

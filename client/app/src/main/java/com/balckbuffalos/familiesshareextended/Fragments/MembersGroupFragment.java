@@ -97,7 +97,7 @@ public class MembersGroupFragment extends Fragment {
                     JSONArray arr = new JSONArray(s);
                     for(int i = 0; i<arr.length();i++) {
                         JSONObject obj = arr.getJSONObject(i);
-                        mMemberName.add(obj.getString("given_name") + obj.getString("family_name"));
+                        mMemberName.add(obj.getString("given_name") +" "+ obj.getString("family_name"));
                     }
                     initMemberRecycler();
                 }, t -> Log.d("HTTP GET PROFILEINFOS "+ Arrays.toString(ids) +" REQUEST ERROR", t.getMessage()))

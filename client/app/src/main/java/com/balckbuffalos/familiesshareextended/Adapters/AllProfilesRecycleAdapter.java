@@ -28,7 +28,7 @@ public class AllProfilesRecycleAdapter extends RecyclerView.Adapter<AllProfilesR
     public AllProfilesRecycleAdapter(JSONArray mProfileInfo) throws JSONException {
         this.mProfileInfoAll=new JSONArray();
         this.mProfileInfo=mProfileInfo;
-        //this.mContext = mContext;
+
         for (int i = 0; i < mProfileInfo.length(); i++) {
             this.mProfileInfoAll.put(mProfileInfo.getJSONObject(i));
         }
@@ -52,6 +52,8 @@ public class AllProfilesRecycleAdapter extends RecyclerView.Adapter<AllProfilesR
             holder.profileEmail.setText(tmp.getString("email"));
             holder.profileIcon.setImageResource(R.drawable.user_icon);
             String tmp_id = tmp.getString("user_id");
+
+            holder.checkBox.setChecked(ids.contains(tmp_id));
 
             //Check/uncheck the checkbox to add/remove user to the group initial members
             holder.checkBox.setOnClickListener(new View.OnClickListener() {

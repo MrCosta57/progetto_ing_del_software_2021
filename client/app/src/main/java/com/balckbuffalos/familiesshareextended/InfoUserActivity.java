@@ -21,7 +21,6 @@ import android.widget.CheckBox;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,7 +48,7 @@ public class InfoUserActivity extends AppCompatActivity {
     private PopupWindow popupEditWindow;
 
     //User information
-    private String req_givenName, req_familyName, req_email, req_phone, req_phoneType, req_description, req_contactOption;
+    private String req_givenName, req_familyName, req_email, req_description, req_contactOption;
     private Boolean req_visible;
 
     @SuppressWarnings("deprecation")
@@ -91,42 +90,43 @@ public class InfoUserActivity extends AppCompatActivity {
         mChildrenName.clear();
         mChildrenBirthdate.clear();
         childrenList(token, user_id, user_id);
+        if (!mChildrenName.isEmpty()) {
+            //Greenpass state change
+            switchGreenpass.setOnClickListener(v -> {
+                if (switchGreenpass.isChecked()) {
+                    changeGreenpassState(token, user_id, true);
+                    setGreenPass(true);
+                } else {
+                    changeGreenpassState(token, user_id, false);
+                    setGreenPass(false);
+                }
+            });
 
-        //Greenpass state change
-        switchGreenpass.setOnClickListener(v->{
-            if(switchGreenpass.isChecked()){
-                changeGreenpassState(token, user_id, true);
-                setGreenPass(true);
-            }
-            else{
-                changeGreenpassState(token, user_id, false);
-                setGreenPass(false);
-            }
-        });
+            //Positivity state change
+            check_posisitity.setOnClickListener(v -> {
+                if (check_posisitity.isChecked()) {
+                    changePositivity(token, user_id, true);
+                    setPositivity(true);
+                } else {
+                    changePositivity(token, user_id, false);
+                    setPositivity(false);
+                }
+            });
 
-        //Positivity state change
-        check_posisitity.setOnClickListener(v->{
-            if(check_posisitity.isChecked()){
-                changePositivity(token, user_id, true);
-                setPositivity(true);
-            }
-            else{
-                changePositivity(token, user_id, false);
-                setPositivity(false);
-            }
-        });
-
-        //Child positivity state change
-        check_positivity_child.setOnClickListener(v->{
-            if(check_positivity_child.isChecked()){
-                changeChildsPositivity(token, user_id, child_id, true);
-                setChildsPositivity(true);
-            }
-            else{
-                changeChildsPositivity(token, user_id, child_id, false);
-                setChildsPositivity(false);
-            }
-        });
+            //Child positivity state change
+            check_positivity_child.setOnClickListener(v -> {
+                if (check_positivity_child.isChecked()) {
+                    changeChildsPositivity(token, user_id, child_id, true);
+                    setChildsPositivity(true);
+                } else {
+                    changeChildsPositivity(token, user_id, child_id, false);
+                    setChildsPositivity(false);
+                }
+            });
+        }else{
+            findViewById(R.id.child_label).setVisibility(View.INVISIBLE);
+            check_positivity_child.setVisibility(View.INVISIBLE);
+        }
 
         //Editing
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -148,11 +148,11 @@ public class InfoUserActivity extends AppCompatActivity {
         buttonEdit.setOnClickListener(z->{
             //Checking what information has to be changed
             if(rdbName.isChecked())
-                editUser(token, user_id, editInfo.getText().toString(), req_familyName, req_email, req_phone, req_phoneType, req_visible, req_description, req_contactOption);
+                editUser(token, user_id, editInfo.getText().toString(), req_familyName, req_email, req_visible, req_description, req_contactOption);
             else if(rdbSurname.isChecked())
-                editUser(token, user_id, req_givenName, editInfo.getText().toString(), req_email, req_phone, req_phoneType, req_visible, req_description, req_contactOption);
+                editUser(token, user_id, req_givenName, editInfo.getText().toString(), req_email, req_visible, req_description, req_contactOption);
             else
-                editUser(token, user_id, req_givenName, req_familyName, editInfo.getText().toString(), req_phone, req_phoneType, req_visible, req_description, req_contactOption);
+                editUser(token, user_id, req_givenName, req_familyName, editInfo.getText().toString(), req_visible, req_description, req_contactOption);
             popupEditWindow.dismiss();
 
             //Reload MyProfile
@@ -176,8 +176,6 @@ public class InfoUserActivity extends AppCompatActivity {
                     req_givenName = obj.getString("given_name");
                     req_familyName = obj.getString("family_name");
                     req_email = obj.getString("email");
-                    req_phone = obj.getString("phone");
-                    req_phoneType = obj.getString("phone_type");
                     req_visible = obj.getBoolean("visible");
                     req_description = obj.getString("description");
                     req_contactOption = obj.getString("contact_option");
@@ -294,8 +292,8 @@ public class InfoUserActivity extends AppCompatActivity {
         );
     }
 
-    private void editUser(String token, String user_id, String given_name, String family_name, String email, String phone, String phone_type, Boolean visible, String description, String contact_option) {
-        compositeDisposable.add(myAPI.editUser(token, user_id, given_name, family_name, email, phone, phone_type, visible, "", "", "", description, contact_option)
+    private void editUser(String token, String user_id, String given_name, String family_name, String email, Boolean visible, String description, String contact_option) {
+        compositeDisposable.add(myAPI.editUser(token, user_id, given_name, family_name, email, "", "", visible, "", "", "", description, contact_option)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s ->{}, t -> Log.d("HTTP REQUEST ERROR: ", t.getMessage()))
