@@ -75,11 +75,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
         switch_activity_partecipate.setOnCheckedChangeListener((buttonView, isChecked) -> onClickEditPartecipants("parents", user_id, isChecked));
 
         switch_activity_info_partecipate_child = findViewById(R.id.switch_activity_info_partecipate_child);
-        if (!child_id.equals("")) {
-            switch_activity_info_partecipate_child.setOnCheckedChangeListener((buttonView, isChecked) -> onClickEditPartecipants("children", child_id, isChecked));
-        } else {
-            switch_activity_info_partecipate_child.setVisibility(View.INVISIBLE);
-        }
+        switch_activity_info_partecipate_child.setOnCheckedChangeListener((buttonView, isChecked) -> onClickEditPartecipants("children", child_id, isChecked));
     }
 
     // Gets the user's child's id and calls the function that populates the fields inside the screen
@@ -249,6 +245,7 @@ public class ActivitiesInfoActivity extends AppCompatActivity {
 
                     switch_activity_info_partecipate_child = findViewById(R.id.switch_activity_info_partecipate_child);
                     if (!child_id.equals("")) {
+                        switch_activity_info_partecipate_child.setVisibility(View.VISIBLE);
                         JSONArray oldChildren = new JSONArray(prop.getString("children"));
                         if (contains(oldChildren, child_id)) {
                             switch_activity_info_partecipate_child.setChecked(true);

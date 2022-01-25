@@ -100,6 +100,10 @@ public class SignUpActivity extends AppCompatActivity implements StepperLayout.S
                                 insertChild(obj.getString("token"), obj.getString("id"), obj.getString("id"), new Date(birthdate.getCalendarView().getDate()), edt_children_name.getText().toString(), edt_children_surname.getText().toString(), edt_gender.getText().toString(), edt_allergy.getText().toString());
 
                             }
+                            else {
+                                Intent myIntent = new Intent(SignUpActivity.this, LoginActivity.class);
+                                SignUpActivity.this.startActivity(myIntent);
+                            }
                         },
                         t -> {Toast.makeText(SignUpActivity.this, "ERROR user register", Toast.LENGTH_LONG).show();
                             Log.d("HTTP POST USER REQUEST ERROR", t.getMessage());
